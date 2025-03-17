@@ -17,6 +17,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { siDocker } from 'simple-icons';
 
 interface FloatingBarProps {
   selectedCount: number;
@@ -83,7 +84,7 @@ export default function FloatingBar({
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleReset}>Reset All</AlertDialogAction>
+            <AlertDialogAction className="bg-destructive hover:bg-destructive/90" onClick={handleReset}>Reset All</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -107,11 +108,11 @@ export default function FloatingBar({
         className={cn(
           'w-full transition-all duration-300 z-30',
           isFixed
-            ? 'fixed top-0 left-0 right-0 bg-background/60 backdrop-blur-md shadow-md py-4'
+            ? 'fixed top-0 left-0 right-0 bg-background/60 backdrop-blur-md shadow-lg py-4'
             : 'relative mb-8 motion-safe:animate-slide-down [animation-delay:450ms]'
         )}
       >
-        <div className={cn('container px-0 w-full', isFixed && 'max-w-7xl')}>
+        <div className={cn('container mx-auto px-0 w-full', isFixed && 'max-w-7xl px-4')}>
           <div className={cn(isFixed ? 'flex flex-col gap-4' : 'flex flex-col gap-4')}>
             {/* Selected Tools Information */}
             <div
@@ -150,7 +151,7 @@ export default function FloatingBar({
                   <Button
                     variant="outline"
                     size="sm"
-                    className="text-xs motion-safe:hover:scale-105 transition-transform flex items-center gap-2"
+                    className="motion-safe:hover:scale-105 transition-transform flex items-center gap-2"
                     onClick={(e) => {
                       e.preventDefault();
                       // Dispatch the keyboard shortcut
@@ -166,10 +167,7 @@ export default function FloatingBar({
                     <Search className="h-3.5 w-3.5" />
                     <span>Search</span>
                     <kbd className="pointer-events-none ml-1 inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
-                      <span className="text-xs">
-                        {isApple ? '⌘' : 'Ctrl'}
-                      </span>
-                      K
+                      <span className="text-xs">{isApple ? '⌘' : 'Ctrl'}</span>K
                     </kbd>
                   </Button>
 
@@ -178,13 +176,15 @@ export default function FloatingBar({
                       variant="outline"
                       size="sm"
                       onClick={() => setIsResetDialogOpen(true)}
-                      className="text-xs motion-safe:hover:scale-105 transition-transform"
+                      className="motion-safe:hover:scale-105 transition-transform"
                     >
                       Reset All
                     </Button>
                   )}
                   <Button
-                    className="whitespace-nowrap bg-primary hover:bg-primary/90 text-primary-foreground motion-safe:animate-scale-in motion-safe:hover:scale-105 transition-transform"
+                    disabled={selectedCount === 0}
+                    size="sm"
+                    className="font-semibold hover:motion-preset-confetti"
                     onClick={() => setIsCopyDialogOpen(true)}
                   >
                     Copy Compose
