@@ -2,13 +2,13 @@
 
 import { Badge } from "@/components/ui/badge"
 import {
-    CommandDialog,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandItem,
-    CommandList,
-    CommandSeparator,
+	CommandDialog,
+	CommandEmpty,
+	CommandGroup,
+	CommandInput,
+	CommandItem,
+	CommandList,
+	CommandSeparator,
 } from "@/components/ui/command"
 import { DockerTool, dockerTools } from "@/lib/docker-tools"
 import { cn } from "@/lib/utils"
