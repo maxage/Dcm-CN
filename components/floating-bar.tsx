@@ -1,5 +1,6 @@
 "use client"
 
+import { SearchCommand } from "@/components/search-command"
 import type { DockerSettings } from "@/components/settings-panel"
 import {
   AlertDialog,
@@ -13,34 +14,32 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { Search } from "lucide-react"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 
 interface FloatingBarProps {
   selectedCount: number
   selectedTools: string[]
+  selectedToolIds: string[]
   settings: DockerSettings
   onReset?: () => void
-  searchTerm: string
-  onSearchChange: (value: string) => void
+  onToggleToolSelection: (toolId: string) => void
   scrollPosition?: number
 }
 
 export default function FloatingBar({ 
   selectedCount, 
   selectedTools, 
+  selectedToolIds,
   settings, 
   onReset,
-  searchTerm,
-  onSearchChange,
+  onToggleToolSelection,
   scrollPosition = 200
 }: FloatingBarProps) {
   const [isResetDialogOpen, setIsResetDialogOpen] = useState(false)
   const [isCopyDialogOpen, setIsCopyDialogOpen] = useState(false)
   const [isFixed, setIsFixed] = useState(false)
-  const searchInputRef = useRef<HTMLInputElement>(null)
   
   // Listen for scroll to determine if the bar should be fixed
   useEffect(() => {
@@ -51,13 +50,6 @@ export default function FloatingBar({
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [scrollPosition])
-
-  // Focus search input on component mount
-  useEffect(() => {
-    if (searchInputRef.current) {
-      searchInputRef.current.focus()
-    }
-  }, [])
 
   const handleReset = () => {
     if (onReset) {
@@ -71,8 +63,15 @@ export default function FloatingBar({
     setIsCopyDialogOpen(false)
   }
 
+  const isApple = typeof navigator !== 'undefined' ? /Mac|iPod|iPhone|iPad/.test(navigator.userAgent) : false
+
   return (
     <>
+      <SearchCommand 
+        selectedTools={selectedToolIds} 
+        onToggleToolSelection={onToggleToolSelection}
+      />
+
       <AlertDialog open={isResetDialogOpen} onOpenChange={setIsResetDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -105,45 +104,34 @@ export default function FloatingBar({
 
       <div
         className={cn(
-          "w-full transition-all duration-300 z-30 motion-safe:animate-slide-down [animation-delay:450ms]",
-          isFixed ? "fixed top-0 left-0 right-0 bg-background/80 backdrop-blur-md shadow-md py-4" : "relative mb-8"
+          "w-full transition-all duration-300 z-30",
+          isFixed 
+            ? "fixed top-0 left-0 right-0 bg-background/60 backdrop-blur-md shadow-md py-4" 
+            : "relative mb-8 motion-safe:animate-slide-down [animation-delay:450ms]"
         )}
       >
-        <div className={cn("container mx-auto px-4", isFixed && "max-w-7xl")}>
-          <div className="flex flex-col gap-4">
-            {/* Search Input */}
-            <div className="relative w-full">
-              <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none z-10">
-                <span className="text-muted-foreground text-sm">
-                  <Search />
-                </span>
-              </div>
-              <Input
-                ref={searchInputRef}
-                type="search"
-                placeholder="Search for tools..."
-                className="pl-12 w-full shadow-sm transition-all duration-300 focus:ring-2 focus:ring-primary/50"
-                value={searchTerm}
-                onChange={(e) => onSearchChange(e.target.value)}
-                autoFocus
-              />
-            </div>
+        <div className={cn("container px-0 w-full", isFixed && "max-w-7xl")}>
+          <div className={cn(
+            isFixed 
+              ? "flex flex-col gap-4" 
+              : "flex flex-col gap-4"
+          )}>
+            {/* Selected Tools Information */}
+            <div className={cn(
+              isFixed 
+                ? "" 
+                : "bg-background/40 backdrop-blur-md border border-border rounded-lg shadow-lg p-4 motion-safe:animate-slide-up"
+            )}>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="flex flex-col">
+                  <div className="flex items-center gap-2">
+                    <div className="h-3 w-3 rounded-full bg-primary motion-safe:animate-pulse"></div>
+                    <span className="font-medium">
+                      {selectedCount} tool{selectedCount !== 1 ? "s" : ""} selected
+                    </span>
+                  </div>
 
-            {/* Selected Tools Information (Only shown when tools are selected) */}
-            {selectedCount > 0 && (
-              <div className={cn(
-                "bg-background/80 backdrop-blur-md border border-border rounded-lg shadow-lg p-4",
-                !isFixed && "motion-safe:animate-slide-up"
-              )}>
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                  <div className="flex flex-col">
-                    <div className="flex items-center gap-2">
-                      <div className="h-3 w-3 rounded-full bg-primary motion-safe:animate-pulse"></div>
-                      <span className="font-medium">
-                        {selectedCount} tool{selectedCount !== 1 ? "s" : ""} selected
-                      </span>
-                    </div>
-
+                  {selectedCount > 0 && (
                     <div className="flex flex-wrap gap-1.5 mt-2 max-w-[600px]">
                       {selectedTools.map((tool, index) => (
                         <Badge
@@ -156,29 +144,52 @@ export default function FloatingBar({
                         </Badge>
                       ))}
                     </div>
-                  </div>
+                  )}
+                </div>
 
-                  <div className="flex gap-2">
-                    {onReset && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setIsResetDialogOpen(true)}
-                        className="text-xs motion-safe:hover:scale-105 transition-transform"
-                      >
-                        Reset All
-                      </Button>
-                    )}
-                    <Button 
-                      className="whitespace-nowrap bg-primary hover:bg-primary/90 text-primary-foreground motion-safe:animate-scale-in motion-safe:hover:scale-105 transition-transform"
-                      onClick={() => setIsCopyDialogOpen(true)}
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-xs motion-safe:hover:scale-105 transition-transform flex items-center gap-2"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      // Dispatch the keyboard shortcut
+                      const kEvent = new KeyboardEvent('keydown', {
+                        key: 'k',
+                        metaKey: isApple,
+                        ctrlKey: !isApple,
+                        bubbles: true
+                      })
+                      document.dispatchEvent(kEvent)
+                    }}
+                  >
+                    <Search className="h-3.5 w-3.5" />
+                    <span>Search</span>
+                    <kbd className="pointer-events-none ml-1 inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
+                      <span className="text-xs">{isApple ? '⌘' : 'Ctrl'}</span>K
+                    </kbd>
+                  </Button>
+                  
+                  {onReset && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setIsResetDialogOpen(true)}
+                      className="text-xs motion-safe:hover:scale-105 transition-transform"
                     >
-                      Copy Compose
+                      Reset All
                     </Button>
-                  </div>
+                  )}
+                  <Button 
+                    className="whitespace-nowrap bg-primary hover:bg-primary/90 text-primary-foreground motion-safe:animate-scale-in motion-safe:hover:scale-105 transition-transform"
+                    onClick={() => setIsCopyDialogOpen(true)}
+                  >
+                    Copy Compose
+                  </Button>
                 </div>
               </div>
-            )}
+            </div>
           </div>
         </div>
       </div>

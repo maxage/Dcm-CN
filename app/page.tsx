@@ -3,10 +3,8 @@
 import DockerCard from '@/components/docker-card';
 import FloatingBar from '@/components/floating-bar';
 import SettingsPanel, { type DockerSettings } from '@/components/settings-panel';
-import { Button } from '@/components/ui/button';
 import { dockerTools } from '@/lib/docker-tools';
 import { useForm } from '@tanstack/react-form';
-import { Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 // Default settings
@@ -26,7 +24,6 @@ const defaultSettings: DockerSettings = {
 
 export default function Home() {
   const [selectedTools, setSelectedTools] = useState<string[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
   const [settings, setSettings] = useState<DockerSettings>(defaultSettings);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -56,18 +53,11 @@ export default function Home() {
         if (savedSettings) {
           setSettings(JSON.parse(savedSettings));
         }
-
-        // Load search term (optional)
-        const savedSearchTerm = localStorage.getItem('dockerComposeSearchTerm');
-        if (savedSearchTerm) {
-          setSearchTerm(savedSearchTerm);
-        }
       } catch (error) {
         console.error('Error loading data from localStorage:', error);
         // If there's an error, use default values
         setSelectedTools([]);
         setSettings(defaultSettings);
-        setSearchTerm('');
       }
 
       setIsLoaded(true);
@@ -96,17 +86,6 @@ export default function Home() {
     }
   }, [settings, isLoaded]);
 
-  // Save search term to localStorage when it changes
-  useEffect(() => {
-    if (isLoaded && typeof window !== 'undefined') {
-      try {
-        localStorage.setItem('dockerComposeSearchTerm', searchTerm);
-      } catch (error) {
-        console.error('Error saving search term to localStorage:', error);
-      }
-    }
-  }, [searchTerm, isLoaded]);
-
   const toggleToolSelection = (toolId: string) => {
     setSelectedTools((prev) => {
       if (prev.includes(toolId)) {
@@ -117,12 +96,6 @@ export default function Home() {
     });
   };
 
-  const filteredTools = dockerTools.filter((tool) => 
-    tool.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    tool.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())) ||
-    tool.description.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
   const handleReset = () => {
     // Clear selected tools
     setSelectedTools([]);
@@ -130,14 +103,10 @@ export default function Home() {
     // Reset settings to defaults
     setSettings(defaultSettings);
 
-    // Clear search term
-    setSearchTerm('');
-
     // Clear localStorage
     try {
       localStorage.removeItem('dockerComposeSelectedTools');
       localStorage.removeItem('dockerComposeSettings');
-      localStorage.removeItem('dockerComposeSearchTerm');
     } catch (error) {
       console.error('Error clearing localStorage:', error);
     }
@@ -158,48 +127,27 @@ export default function Home() {
           <SettingsPanel settings={settings} onSettingsChange={setSettings} />
         </div>
 
-        {/* FloatingBar with search functionality */}
+        {/* FloatingBar with search button */}
         <FloatingBar
           selectedCount={selectedTools.length}
           selectedTools={selectedTools.map((id) => dockerTools.find((tool) => tool.id === id)?.name || '')}
+          selectedToolIds={selectedTools}
           settings={settings}
           onReset={handleReset}
-          searchTerm={searchTerm}
-          onSearchChange={setSearchTerm}
+          onToggleToolSelection={toggleToolSelection}
         />
 
-        {filteredTools.length === 0 ? (
-          <div className="text-center py-12 motion-safe:animate-scale-in">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-muted mb-4 motion-safe:animate-bounce-subtle">
-              <span className="text-2xl">
-                <Search fill="currentColor" />
-              </span>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 3xl:grid-cols-7 gap-4">
+          {dockerTools.map((tool) => (
+            <div key={tool.id} className="h-full">
+              <DockerCard
+                tool={tool}
+                isSelected={selectedTools.includes(tool.id)}
+                onSelect={() => toggleToolSelection(tool.id)}
+              />
             </div>
-            <h3 className="text-xl font-medium mb-2">No tools found</h3>
-            <p className="text-muted-foreground">Try adjusting your search or browse all available tools</p>
-            {searchTerm && (
-              <Button
-                variant="outline"
-                className="mt-4 motion-safe:animate-slide-up [animation-delay:150ms]"
-                onClick={() => setSearchTerm('')}
-              >
-                Clear search
-              </Button>
-            )}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 3xl:grid-cols-7 gap-4">
-            {filteredTools.map((tool, index) => (
-              <div key={tool.id} className="h-full">
-                <DockerCard
-                  tool={tool}
-                  isSelected={selectedTools.includes(tool.id)}
-                  onSelect={() => toggleToolSelection(tool.id)}
-                />
-              </div>
-            ))}
-          </div>
-        )}
+          ))}
+        </div>
       </main>
     </div>
   );
