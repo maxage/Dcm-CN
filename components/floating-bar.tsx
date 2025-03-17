@@ -86,7 +86,7 @@ export default function FloatingBar({ show, selectedCount, selectedTools, settin
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div className="flex flex-col">
                 <div className="flex items-center gap-2">
-                  <div className="h-3 w-3 rounded-full bg-primary motion-safe:animate-pulse-subtle"></div>
+                  <div className="h-3 w-3 rounded-full bg-primary motion-safe:animate-pulse"></div>
                   <span className="font-medium">
                     {selectedCount} tool{selectedCount !== 1 ? "s" : ""} selected
                   </span>
@@ -98,7 +98,7 @@ export default function FloatingBar({ show, selectedCount, selectedTools, settin
                       <Badge
                         key={tool}
                         variant="outline"
-                        className="text-xs py-0 h-5 bg-primary/5 hover:bg-primary/10 transition-colors motion-safe:animate-fade-in"
+                        className="text-xs py-0 h-5 bg-primary/5 hover:bg-primary/10"
                         style={{ animationDelay: `${index * 50}ms` }}
                       >
                         {tool}

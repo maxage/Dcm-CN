@@ -1,3 +1,4 @@
+import { ContainerSubmissionForm } from '@/components/container-submission-form';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Button } from '@/components/ui/button';
 import { Heart } from 'lucide-react';
@@ -38,6 +39,7 @@ export default function RootLayout({
                     </p>
                   </div>
                   <div className="flex flex-col gap-3">
+                    <ContainerSubmissionForm />
                     <Link href="https://ko-fi.com/ajnart" target="_blank">
                       <Button
                         variant="outline"
