@@ -2,15 +2,22 @@
 
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import {
+	MultiSelector,
+	MultiSelectorContent,
+	MultiSelectorInput,
+	MultiSelectorItem,
+	MultiSelectorList,
+	MultiSelectorTrigger,
+} from '@/components/ui/multi-select';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { TagsInput } from '@/components/ui/tags-input';
 import { Textarea } from '@/components/ui/textarea';
 import { dockerTools } from '@/lib/docker-tools';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DialogDescription } from '@radix-ui/react-dialog';
-import { HelpCircle, PlusCircle, X } from 'lucide-react';
+import { ExternalLink, Github, HelpCircle, PlusCircle, X } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
@@ -45,17 +52,31 @@ type FormValues = z.infer<typeof formSchema>;
 export function ContainerSubmissionForm() {
   const [open, setOpen] = useState(false);
   const [showExample, setShowExample] = useState(false);
+  const [tagInput, setTagInput] = useState('');
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      id: '',
-      name: '',
+      id: 'sonarr',
+      name: 'Sonarr',
       description: '',
-      category: '',
-      tags: [],
+      category: 'Media',
+      tags: ['TV', 'PVR', 'Monitoring'],
       githubUrl: '',
-      containerData: '',
+      containerData: `services:
+  sonarr:
+    container_name: sonarr
+    image: ghcr.io/hotio/sonarr
+    ports:
+      - "8989:8989"
+    environment:
+      - PUID=\${PUID}
+      - PGID=\${PGID}
+      - UMASK=\${UMASK}
+      - TZ=\${TZ}
+    volumes:
+      - \${CONFIG}/sonarr:/config
+      - \${DATA}/data:/data`,
     },
   });
 
@@ -64,17 +85,10 @@ export function ContainerSubmissionForm() {
     setOpen(false);
   }
 
-  // Function to filter tag suggestions based on existing selected tags and input value
-  const getTagSuggestions = (inputValue: string, selectedTags: string[]) => {
-    const filteredTags = ALL_TAGS.filter(
-      (tag) =>
-        // Filter out already selected tags
-        !selectedTags.includes(tag) &&
-        // Filter by input value if it exists
-        (inputValue === '' || tag.toLowerCase().includes(inputValue.toLowerCase()))
-    );
-
-    return filteredTags;
+  // Function to open GitHub issue template directly
+  const openGitHubIssue = () => {
+    const issueUrl = 'https://github.com/username/docker-compose-selector/issues/new?template=container-submission.md';
+    window.open(issueUrl, '_blank');
   };
 
   return (
@@ -91,17 +105,17 @@ export function ContainerSubmissionForm() {
           <span className="absolute inset-0 bg-gradient-to-r from-green-500/20 to-green-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-4xl max-h-[95vh]">
         <DialogHeader>
-          <DialogTitle>Add New Container</DialogTitle>
+          <DialogTitle>Suggest a new container</DialogTitle>
           <DialogDescription>
             Creating a submission will redirect you to creating an issue on GitHub, pre-filled with this form. The
             submission will then be reviewed by the maintainers and added to the list of containers if accepted.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 py-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
               <FormField
                 control={form.control}
                 name="id"
@@ -137,14 +151,18 @@ export function ContainerSubmissionForm() {
                 <FormItem className="space-y-2">
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="Brief description of the container's purpose" {...field} />
+                    <Textarea
+                      placeholder="Brief description of the container's purpose"
+                      className="resize-none min-h-[50px]"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
               <FormField
                 control={form.control}
                 name="category"
@@ -191,35 +209,28 @@ export function ContainerSubmissionForm() {
                 <FormItem className="space-y-2">
                   <FormLabel>Tags</FormLabel>
                   <FormControl>
-                    <div className="relative">
-                      <TagsInput
-                        value={field.value}
-                        onValueChange={field.onChange}
-                        placeholder="Add tags and press Enter"
-                        maxItems={10}
-                      />
-                      {field.value.length > 0 && (
-                        <div className="mt-2 flex flex-wrap gap-2">
-                          <p className="text-xs text-muted-foreground mb-1 w-full">Suggestions:</p>
-                          {getTagSuggestions('', field.value)
-                            .slice(0, 5)
-                            .map((tag) => (
-                              <Button
-                                key={tag}
-                                variant="outline"
-                                size="sm"
-                                type="button"
-                                onClick={() => field.onChange([...field.value, tag])}
-                                className="h-6 text-xs px-2 py-0"
-                              >
-                                {tag}
-                              </Button>
-                            ))}
-                        </div>
-                      )}
-                    </div>
+                    <MultiSelector values={field.value} onValuesChange={field.onChange}>
+                      <MultiSelectorTrigger>
+                        <MultiSelectorInput
+                          placeholder="Add tags and press Enter"
+                          value={tagInput}
+                          onValueChange={setTagInput}
+                        />
+                      </MultiSelectorTrigger>
+                      <MultiSelectorContent>
+                        <MultiSelectorList>
+                          {tagInput.length > 0 && !ALL_TAGS.includes(tagInput) && (
+                            <MultiSelectorItem value={tagInput}>Create tag "{tagInput}"</MultiSelectorItem>
+                          )}
+                          {ALL_TAGS.filter((tag) => tag.toLowerCase().includes(tagInput.toLowerCase())).map((tag) => (
+                            <MultiSelectorItem key={tag} value={tag}>
+                              {tag}
+                            </MultiSelectorItem>
+                          ))}
+                        </MultiSelectorList>
+                      </MultiSelectorContent>
+                    </MultiSelector>
                   </FormControl>
-                  <FormDescription>Add related tags and press Enter after each tag</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -245,7 +256,7 @@ export function ContainerSubmissionForm() {
                   <FormControl>
                     <Textarea
                       placeholder="Enter the service definition in YAML format"
-                      className="font-mono min-h-[200px]"
+                      className="font-mono min-h-[280px] resize-none"
                       {...field}
                     />
                   </FormControl>
@@ -275,10 +286,24 @@ export function ContainerSubmissionForm() {
               )}
             />
 
-            <div className="flex justify-end pt-4">
-              <Button type="submit" className="bg-primary text-primary-foreground hover:bg-primary/90">
-                Submit Container
+            <div className="flex justify-between pt-4">
+              <Button type="button" variant="outline" onClick={openGitHubIssue} className="flex items-center gap-2">
+                <Github size={18} />
+                <span>Open GitHub Issue template directly</span>
               </Button>
+
+              <div className="flex items-center gap-2">
+                <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center gap-1"
+                >
+                  <span>Submit Container</span>
+                  <ExternalLink size={16} />
+                </Button>
+              </div>
             </div>
           </form>
         </Form>
