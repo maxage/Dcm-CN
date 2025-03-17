@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { SearchCommand } from '@/components/search-command';
-import type { DockerSettings } from '@/components/settings-panel';
+import { SearchCommand } from "@/components/search-command";
+import type { DockerSettings } from "@/components/settings-panel";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,13 +11,13 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import { Search } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { siDocker } from 'simple-icons';
+} from "@/components/ui/alert-dialog";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { Search } from "lucide-react";
+import { useEffect, useState } from "react";
+import { siDocker } from "simple-icons";
 
 interface FloatingBarProps {
   selectedCount: number;
@@ -54,8 +54,8 @@ export default function FloatingBar({
       setIsFixed(window.scrollY > scrollPosition);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [scrollPosition]);
 
   const handleReset = () => {
@@ -66,25 +66,32 @@ export default function FloatingBar({
   };
 
   const handleCopy = () => {
-    console.log('Copy docker-compose.yaml with:', { selectedTools, settings });
+    console.log("Copy docker-compose.yaml with:", { selectedTools, settings });
     setIsCopyDialogOpen(false);
   };
 
   return (
     <>
-      <SearchCommand selectedTools={selectedToolIds} onToggleToolSelection={onToggleToolSelection} />
+      <SearchCommand
+        selectedTools={selectedToolIds}
+        onToggleToolSelection={onToggleToolSelection}
+      />
 
       <AlertDialog open={isResetDialogOpen} onOpenChange={setIsResetDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This will reset all selections and settings to their default values.
+              This will reset all selections and settings to their default
+              values.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction className="bg-destructive hover:bg-destructive/90" onClick={handleReset}>
+            <AlertDialogAction
+              className="bg-destructive hover:bg-destructive/90"
+              onClick={handleReset}
+            >
               Reset All
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -96,49 +103,62 @@ export default function FloatingBar({
           <AlertDialogHeader>
             <AlertDialogTitle>Copy Docker Compose</AlertDialogTitle>
             <AlertDialogDescription>
-              Generate and copy docker-compose.yaml for {selectedCount} selected tool{selectedCount !== 1 ? 's' : ''}.
+              Generate and copy docker-compose.yaml for {selectedCount} selected
+              tool{selectedCount !== 1 ? "s" : ""}.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleCopy}>Copy to Clipboard</AlertDialogAction>
+            <AlertDialogAction onClick={handleCopy}>
+              Copy to Clipboard
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
 
       <div
         className={cn(
-          'w-full transition-all duration-300 z-30',
+          "z-30 w-full transition-all duration-300",
           isFixed
-            ? 'fixed top-0 left-0 right-0 bg-background/60 backdrop-blur-md shadow-lg py-4'
-            : 'relative mb-8 motion-safe:animate-slide-down [animation-delay:450ms]'
+            ? "fixed top-0 right-0 left-0 bg-background/60 py-4 shadow-lg backdrop-blur-md"
+            : "relative mb-8 [animation-delay:450ms] motion-safe:animate-slide-down",
         )}
       >
-        <div className={cn('container mx-auto px-0 w-full', isFixed && 'max-w-7xl px-4')}>
-          <div className={cn(isFixed ? 'flex flex-col gap-4' : 'flex flex-col gap-4')}>
+        <div
+          className={cn(
+            "container mx-auto w-full px-0",
+            isFixed && "max-w-7xl px-4",
+          )}
+        >
+          <div
+            className={cn(
+              isFixed ? "flex flex-col gap-4" : "flex flex-col gap-4",
+            )}
+          >
             {/* Selected Tools Information */}
             <div
               className={cn(
                 isFixed
-                  ? ''
-                  : 'bg-background/40 backdrop-blur-md border border-border rounded-lg shadow-lg p-4 motion-safe:animate-slide-up'
+                  ? ""
+                  : "rounded-lg border border-border bg-background/40 p-4 shadow-lg backdrop-blur-md motion-safe:animate-slide-up",
               )}
             >
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
                 <div className="flex flex-col">
                   <div className="flex items-center gap-2">
                     <span className="font-medium text-lg">
-                      {selectedCount} tool{selectedCount !== 1 ? 's' : ''} selected
+                      {selectedCount} tool{selectedCount !== 1 ? "s" : ""}{" "}
+                      selected
                     </span>
                   </div>
 
                   {selectedCount > 0 && (
-                    <div className="flex flex-wrap gap-1.5 mt-2 max-w-[600px]">
+                    <div className="mt-2 flex max-w-[600px] flex-wrap gap-1.5">
                       {selectedTools.map((tool, index) => (
                         <Badge
                           key={tool}
                           variant="outline"
-                          className="text-xs py-0 h-5 bg-primary/5 hover:bg-primary/10"
+                          className="h-5 bg-primary/5 py-0 text-xs hover:bg-primary/10"
                           style={{ animationDelay: `${index * 50}ms` }}
                         >
                           {tool}
@@ -152,12 +172,12 @@ export default function FloatingBar({
                   <Button
                     variant="outline"
                     size="sm"
-                    className="motion-safe:hover:scale-105 transition-transform flex items-center gap-2"
+                    className="flex items-center gap-2 transition-transform motion-safe:hover:scale-105"
                     onClick={(e) => {
                       e.preventDefault();
                       // Dispatch the keyboard shortcut
-                      const kEvent = new KeyboardEvent('keydown', {
-                        key: 'k',
+                      const kEvent = new KeyboardEvent("keydown", {
+                        key: "k",
                         metaKey: isApple,
                         ctrlKey: !isApple,
                         bubbles: true,
@@ -167,8 +187,8 @@ export default function FloatingBar({
                   >
                     <Search className="h-3.5 w-3.5" />
                     <span>Search</span>
-                    <kbd className="pointer-events-none ml-1 inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
-                      <span className="text-xs">{isApple ? '⌘' : 'Ctrl'}</span>K
+                    <kbd className="pointer-events-none ml-1 inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-medium font-mono text-[10px] text-muted-foreground opacity-100">
+                      <span className="text-xs">{isApple ? "⌘" : "Ctrl"}</span>K
                     </kbd>
                   </Button>
 
@@ -177,7 +197,7 @@ export default function FloatingBar({
                       variant="outline"
                       size="sm"
                       onClick={() => setIsResetDialogOpen(true)}
-                      className="motion-safe:hover:scale-105 transition-transform"
+                      className="transition-transform motion-safe:hover:scale-105"
                     >
                       Reset All
                     </Button>
@@ -185,7 +205,7 @@ export default function FloatingBar({
                   <Button
                     disabled={selectedCount === 0}
                     size="sm"
-                    className="font-semibold hover:motion-preset-confetti"
+                    className="hover:motion-preset-confetti font-semibold"
                     onClick={() => setIsCopyDialogOpen(true)}
                   >
                     Copy Compose

@@ -1,20 +1,21 @@
 export interface DockerTool {
-  id: string
-  name: string
-  description: string
-  category: string
-  tags: string[]
-  githubUrl?: string
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  tags: string[];
+  githubUrl?: string;
 }
 
 export const dockerTools: DockerTool[] = [
   {
     id: "sonarr",
     name: "Sonarr",
-    description: "Smart PVR for newsgroup and bittorrent users to monitor TV shows.",
+    description:
+      "Smart PVR for newsgroup and bittorrent users to monitor TV shows.",
     category: "Media",
     tags: ["TV", "PVR", "Monitoring"],
-    githubUrl: "https://github.com/Sonarr/Sonarr"
+    githubUrl: "https://github.com/Sonarr/Sonarr",
   },
   {
     id: "radarr",
@@ -22,7 +23,7 @@ export const dockerTools: DockerTool[] = [
     description: "A fork of Sonarr to work with movies à la Couchpotato.",
     category: "Media",
     tags: ["Movies", "PVR", "Monitoring"],
-    githubUrl: "https://github.com/Radarr/Radarr"
+    githubUrl: "https://github.com/Radarr/Radarr",
   },
   {
     id: "lidarr",
@@ -30,15 +31,16 @@ export const dockerTools: DockerTool[] = [
     description: "Looks and smells like Sonarr but made for music.",
     category: "Media",
     tags: ["Music", "PVR", "Monitoring"],
-    githubUrl: "https://github.com/lidarr/Lidarr"
+    githubUrl: "https://github.com/lidarr/Lidarr",
   },
   {
     id: "readarr",
     name: "Readarr",
-    description: "Book, Magazine, Comics eBook and Audiobook Manager and Automation.",
+    description:
+      "Book, Magazine, Comics eBook and Audiobook Manager and Automation.",
     category: "Media",
     tags: ["Books", "PVR", "Monitoring"],
-    githubUrl: "https://github.com/Readarr/Readarr"
+    githubUrl: "https://github.com/Readarr/Readarr",
   },
   {
     id: "prowlarr",
@@ -46,31 +48,34 @@ export const dockerTools: DockerTool[] = [
     description: "Indexer manager/proxy for Sonarr, Radarr, Lidarr, etc.",
     category: "Media",
     tags: ["Indexer", "Proxy"],
-    githubUrl: "https://github.com/Prowlarr/Prowlarr"
+    githubUrl: "https://github.com/Prowlarr/Prowlarr",
   },
   {
     id: "jellyfin",
     name: "Jellyfin",
-    description: "The Free Software Media System that puts you in control of your media.",
+    description:
+      "The Free Software Media System that puts you in control of your media.",
     category: "Media",
     tags: ["Streaming", "Media Server"],
-    githubUrl: "https://github.com/jellyfin/jellyfin"
+    githubUrl: "https://github.com/jellyfin/jellyfin",
   },
   {
     id: "plex",
     name: "Plex",
-    description: "Organize, stream, and share your personal collection of movies, TV, music, and photos.",
+    description:
+      "Organize, stream, and share your personal collection of movies, TV, music, and photos.",
     category: "Media",
     tags: ["Streaming", "Media Server"],
-    githubUrl: "https://github.com/plexinc"
+    githubUrl: "https://github.com/plexinc",
   },
   {
     id: "emby",
     name: "Emby",
-    description: "Bring all of your home videos, music, and photos together into one place.",
+    description:
+      "Bring all of your home videos, music, and photos together into one place.",
     category: "Media",
     tags: ["Streaming", "Media Server"],
-    githubUrl: "https://github.com/MediaBrowser/Emby"
+    githubUrl: "https://github.com/MediaBrowser/Emby",
   },
   {
     id: "portainer",
@@ -78,7 +83,7 @@ export const dockerTools: DockerTool[] = [
     description: "Making Docker and Kubernetes management easy.",
     category: "Management",
     tags: ["Docker", "Management", "UI"],
-    githubUrl: "https://github.com/portainer/portainer"
+    githubUrl: "https://github.com/portainer/portainer",
   },
   {
     id: "heimdall",
@@ -86,7 +91,7 @@ export const dockerTools: DockerTool[] = [
     description: "An Application dashboard and launcher for your webapps.",
     category: "Management",
     tags: ["Dashboard", "Launcher"],
-    githubUrl: "https://github.com/linuxserver/Heimdall"
+    githubUrl: "https://github.com/linuxserver/Heimdall",
   },
   {
     id: "traefik",
@@ -161,14 +166,16 @@ export const dockerTools: DockerTool[] = [
   {
     id: "prometheus",
     name: "Prometheus",
-    description: "Power your metrics and alerting with a leading open-source monitoring solution.",
+    description:
+      "Power your metrics and alerting with a leading open-source monitoring solution.",
     category: "Monitoring",
     tags: ["Monitoring", "Metrics", "Alerting"],
   },
   {
     id: "homeassistant",
     name: "Home Assistant",
-    description: "Open source home automation that puts local control and privacy first.",
+    description:
+      "Open source home automation that puts local control and privacy first.",
     category: "Home Automation",
     tags: ["Smart Home", "Automation", "IoT"],
   },
@@ -185,15 +192,15 @@ export const dockerTools: DockerTool[] = [
     description: "A painless self-hosted Git service.",
     category: "Development",
     tags: ["Git", "Version Control", "CI/CD"],
-    githubUrl: "https://github.com/go-gitea/gitea"
+    githubUrl: "https://github.com/go-gitea/gitea",
   },
   {
     id: "code-server",
     name: "Code Server",
-    description: "Run VS Code on any machine anywhere and access it in the browser.",
+    description:
+      "Run VS Code on any machine anywhere and access it in the browser.",
     category: "Development",
     tags: ["IDE", "Development", "VS Code"],
-    githubUrl: "https://github.com/coder/code-server"
+    githubUrl: "https://github.com/coder/code-server",
   },
-]
-
+];
