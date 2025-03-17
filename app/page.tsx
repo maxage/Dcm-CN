@@ -122,7 +122,7 @@ export default function Home() {
         </div>
       </div>
 
-      <main className="container relative z-10 mx-auto px-4 py-12">
+      <main className="container relative z-10 mx-auto px-4 pt-4">
         <div className="motion-safe:animate-slide-down [animation-delay:300ms]">
           <SettingsPanel settings={settings} onSettingsChange={setSettings} />
         </div>

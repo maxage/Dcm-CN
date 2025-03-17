@@ -84,7 +84,9 @@ export default function FloatingBar({
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction className="bg-destructive hover:bg-destructive/90" onClick={handleReset}>Reset All</AlertDialogAction>
+            <AlertDialogAction className="bg-destructive hover:bg-destructive/90" onClick={handleReset}>
+              Reset All
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -125,8 +127,7 @@ export default function FloatingBar({
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="flex flex-col">
                   <div className="flex items-center gap-2">
-                    <div className="h-3 w-3 rounded-full bg-primary motion-safe:animate-pulse"></div>
-                    <span className="font-medium">
+                    <span className="font-medium text-lg">
                       {selectedCount} tool{selectedCount !== 1 ? 's' : ''} selected
                     </span>
                   </div>

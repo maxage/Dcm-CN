@@ -57,7 +57,6 @@ export default function SettingsPanel({ settings, onSettingsChange }: SettingsPa
       >
         <div className="flex items-center justify-between px-4 py-3 bg-muted/30">
           <div className="flex items-center gap-2">
-            <div className="h-2 w-2 rounded-full bg-primary motion-safe:animate-pulse-subtle"></div>
             <h3 className="text-lg font-medium">Docker Compose Settings</h3>
             {isSaving && (
               <span className="text-xs text-muted-foreground flex items-center gap-1 ml-2">
