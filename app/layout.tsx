@@ -38,7 +38,7 @@ export default function RootLayout({
                       Select the tools you want to include in your docker-compose.yml
                     </p>
                   </div>
-                  <div className="flex flex-col gap-3">
+                  <div className="flex flex-wrap gap-3">
                     <ContainerSubmissionForm />
                     <Link href="https://ko-fi.com/ajnart" target="_blank">
                       <Button

@@ -4,11 +4,10 @@ import DockerCard from '@/components/docker-card';
 import FloatingBar from '@/components/floating-bar';
 import SettingsPanel, { type DockerSettings } from '@/components/settings-panel';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { dockerTools } from '@/lib/docker-tools';
 import { useForm } from '@tanstack/react-form';
 import { Search } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // Default settings
 const defaultSettings: DockerSettings = {
@@ -28,10 +27,8 @@ const defaultSettings: DockerSettings = {
 export default function Home() {
   const [selectedTools, setSelectedTools] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [showFloatingBar, setShowFloatingBar] = useState(false);
   const [settings, setSettings] = useState<DockerSettings>(defaultSettings);
   const [isLoaded, setIsLoaded] = useState(false);
-  const searchInputRef = useRef<HTMLInputElement>(null);
 
   const form = useForm({
     defaultValues: {
@@ -74,11 +71,6 @@ export default function Home() {
       }
 
       setIsLoaded(true);
-
-      // Focus search input after component is mounted
-      if (searchInputRef.current) {
-        searchInputRef.current.focus();
-      }
     }
   }, []);
 
@@ -115,15 +107,6 @@ export default function Home() {
     }
   }, [searchTerm, isLoaded]);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowFloatingBar(window.scrollY > 200);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   const toggleToolSelection = (toolId: string) => {
     setSelectedTools((prev) => {
       if (prev.includes(toolId)) {
@@ -134,7 +117,11 @@ export default function Home() {
     });
   };
 
-  const filteredTools = dockerTools.filter((tool) => tool.name.toLowerCase().includes(searchTerm.toLowerCase()));
+  const filteredTools = dockerTools.filter((tool) => 
+    tool.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    tool.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    tool.description.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleReset = () => {
     // Clear selected tools
@@ -171,22 +158,15 @@ export default function Home() {
           <SettingsPanel settings={settings} onSettingsChange={setSettings} />
         </div>
 
-        <div className="relative mb-8 w-full motion-safe:animate-slide-down [animation-delay:450ms]">
-          <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none z-10">
-            <span className="text-muted-foreground text-sm">
-              <Search />
-            </span>
-          </div>
-          <Input
-            ref={searchInputRef}
-            type="search"
-            placeholder="Search for tools..."
-            className="pl-12 w-full shadow-sm transition-all duration-300 focus:ring-2 focus:ring-primary/50"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            autoFocus
-          />
-        </div>
+        {/* FloatingBar with search functionality */}
+        <FloatingBar
+          selectedCount={selectedTools.length}
+          selectedTools={selectedTools.map((id) => dockerTools.find((tool) => tool.id === id)?.name || '')}
+          settings={settings}
+          onReset={handleReset}
+          searchTerm={searchTerm}
+          onSearchChange={setSearchTerm}
+        />
 
         {filteredTools.length === 0 ? (
           <div className="text-center py-12 motion-safe:animate-scale-in">
@@ -221,14 +201,6 @@ export default function Home() {
           </div>
         )}
       </main>
-
-      <FloatingBar
-        show={selectedTools.length > 0}
-        selectedCount={selectedTools.length}
-        selectedTools={selectedTools.map((id) => dockerTools.find((tool) => tool.id === id)?.name || '')}
-        settings={settings}
-        onReset={handleReset}
-      />
     </div>
   );
 }
