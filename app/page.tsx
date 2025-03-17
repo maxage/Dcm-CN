@@ -167,8 +167,12 @@ export default function Home() {
       </div>
 
       <main className="container relative z-10 mx-auto px-4 py-12">
-        <div className="relative mb-8 max-w-5xl mx-auto motion-safe:animate-slide-down [animation-delay:450ms]">
-          <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+        <div className="motion-safe:animate-slide-down [animation-delay:300ms]">
+          <SettingsPanel settings={settings} onSettingsChange={setSettings} />
+        </div>
+
+        <div className="relative mb-8 w-full motion-safe:animate-slide-down [animation-delay:450ms]">
+          <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none z-10">
             <span className="text-muted-foreground text-sm">
               <Search />
             </span>
@@ -177,15 +181,11 @@ export default function Home() {
             ref={searchInputRef}
             type="search"
             placeholder="Search for tools..."
-            className="pl-10 w-full shadow-sm transition-all duration-300 focus:ring-2 focus:ring-primary/50 focus:scale-[1.01]"
+            className="pl-12 w-full shadow-sm transition-all duration-300 focus:ring-2 focus:ring-primary/50"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             autoFocus
           />
-        </div>
-
-        <div className="motion-safe:animate-slide-down [animation-delay:300ms]">
-          <SettingsPanel settings={settings} onSettingsChange={setSettings} />
         </div>
 
         {filteredTools.length === 0 ? (
@@ -208,7 +208,7 @@ export default function Home() {
             )}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 3xl:grid-cols-7 gap-4">
             {filteredTools.map((tool, index) => (
               <div key={tool.id} className="h-full">
                 <DockerCard
