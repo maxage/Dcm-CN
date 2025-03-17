@@ -9,6 +9,7 @@ import { TagsInput } from '@/components/ui/tags-input';
 import { Textarea } from '@/components/ui/textarea';
 import { dockerTools } from '@/lib/docker-tools';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { DialogDescription } from '@radix-ui/react-dialog';
 import { HelpCircle, PlusCircle, X } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -85,7 +86,7 @@ export function ContainerSubmissionForm() {
         >
           <span className="relative z-10 flex items-center gap-2">
             <PlusCircle size={18} />
-            <span>Add New Container</span>
+            <span>Suggest a new container</span>
           </span>
           <span className="absolute inset-0 bg-gradient-to-r from-green-500/20 to-green-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
         </Button>
@@ -93,6 +94,10 @@ export function ContainerSubmissionForm() {
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Add New Container</DialogTitle>
+          <DialogDescription>
+            Creating a submission will redirect you to creating an issue on GitHub, pre-filled with this form. The
+            submission will then be reviewed by the maintainers and added to the list of containers if accepted.
+          </DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 py-4">

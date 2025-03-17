@@ -13,7 +13,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Docker Compose Generator',
-  description: 'Select tools to generate your docker-compose.yml file',
+  description: 'Select tools to generate your docker-compose.yaml file',
   generator: 'v0.dev',
 };
 
@@ -35,7 +35,7 @@ export default function RootLayout({
                       Docker Compose Generator
                     </h1>
                     <p className="text-lg opacity-90 motion-safe:animate-slide-in-left [animation-delay:150ms]">
-                      Select the tools you want to include in your docker-compose.yml
+                      Select the tools you want to include in your docker-compose.yaml
                     </p>
                   </div>
                   <div className="flex flex-wrap gap-3">

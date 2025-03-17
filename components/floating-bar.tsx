@@ -66,7 +66,7 @@ export default function FloatingBar({
   };
 
   const handleCopy = () => {
-    console.log('Copy docker-compose.yml with:', { selectedTools, settings });
+    console.log('Copy docker-compose.yaml with:', { selectedTools, settings });
     setIsCopyDialogOpen(false);
   };
 
@@ -96,7 +96,7 @@ export default function FloatingBar({
           <AlertDialogHeader>
             <AlertDialogTitle>Copy Docker Compose</AlertDialogTitle>
             <AlertDialogDescription>
-              Generate and copy docker-compose.yml for {selectedCount} selected tool{selectedCount !== 1 ? 's' : ''}.
+              Generate and copy docker-compose.yaml for {selectedCount} selected tool{selectedCount !== 1 ? 's' : ''}.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
