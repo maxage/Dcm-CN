@@ -14,6 +14,11 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 import { Search } from "lucide-react"
 import posthog from "posthog-js"
@@ -82,11 +87,11 @@ export default function FloatingBar({
     if (!isMounted) return
 
     e.preventDefault()
-    
+
     // Use a custom event that the SearchCommand component will listen for
     // Instead of trying to simulate a keyboard event
-    const customEvent = new CustomEvent('triggerCommandK', {
-      bubbles: true
+    const customEvent = new CustomEvent("triggerCommandK", {
+      bubbles: true,
     })
     document.dispatchEvent(customEvent)
   }
@@ -138,13 +143,15 @@ export default function FloatingBar({
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={() => {
-                  posthog.capture("copy_compose_clicked", {
-                    selected_tools: selectedTools,
-                    settings: settings,
-                  })
-                  handleCopy()
-                }}>
+                <AlertDialogAction
+                  onClick={() => {
+                    posthog.capture("copy_compose_clicked", {
+                      selected_tools: selectedTools,
+                      settings: settings,
+                    })
+                    handleCopy()
+                  }}
+                >
                   Copy to Clipboard
                 </AlertDialogAction>
               </AlertDialogFooter>
@@ -190,7 +197,7 @@ export default function FloatingBar({
 
                   {selectedCount > 0 && (
                     <div className="mt-2 flex max-w-[600px] flex-wrap gap-1.5">
-                      {selectedTools.map((tool, index) => (
+                      {selectedTools.slice(0, 4).map((tool, index) => (
                         <Badge
                           key={tool}
                           variant="outline"
@@ -200,6 +207,32 @@ export default function FloatingBar({
                           {tool}
                         </Badge>
                       ))}
+
+                      {selectedTools.length > 4 && (
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Badge
+                              variant="outline"
+                              className="h-5 cursor-pointer bg-primary/5 py-0 text-xs hover:bg-primary/10"
+                              style={{ animationDelay: `${4 * 50}ms` }}
+                            >
+                              +{selectedTools.length - 4} others
+                            </Badge>
+                          </PopoverTrigger>
+                          <PopoverContent className="max-h-[300px] w-auto overflow-y-auto p-0">
+                            <div className="flex flex-col gap-1 p-2">
+                              {selectedTools.slice(4).map((tool) => (
+                                <div
+                                  key={tool}
+                                  className="rounded-sm px-2 py-1 text-sm hover:bg-muted"
+                                >
+                                  {tool}
+                                </div>
+                              ))}
+                            </div>
+                          </PopoverContent>
+                        </Popover>
+                      )}
                     </div>
                   )}
                 </div>

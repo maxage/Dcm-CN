@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/command"
 import { DialogTitle } from "@/components/ui/dialog"
 import { dockerTools } from "@/lib/docker-tools"
-import { Check } from "lucide-react"
+import { Check, X } from "lucide-react"
 import { useEffect, useState } from "react"
 
 interface SearchCommandProps {
@@ -46,12 +46,21 @@ export function SearchCommand({
 
     document.addEventListener("keydown", down)
     document.addEventListener("triggerCommandK", handleCustomTrigger)
-    
+
     return () => {
       document.removeEventListener("keydown", down)
       document.removeEventListener("triggerCommandK", handleCustomTrigger)
     }
   }, [])
+
+  // Handle tool selection with unsupported check
+  const handleToolSelect = (toolId: string) => {
+    const tool = dockerTools.find((t) => t.id === toolId)
+    // Only toggle selection if the tool is not marked as unsupported
+    if (tool && !tool.isUnsupported) {
+      onToggleToolSelection(toolId)
+    }
+  }
 
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
@@ -68,10 +77,21 @@ export function SearchCommand({
           {filteredTools.map((tool) => (
             <CommandItem
               key={tool.id}
-              onSelect={() => onToggleToolSelection(tool.id)}
-              className="flex items-center justify-between"
+              onSelect={() => handleToolSelect(tool.id)}
+              className={"flex items-center justify-between"}
+              disabled={tool.isUnsupported}
             >
-              <span>{tool.name}</span>
+              <div className="flex items-center">
+                <span>{tool.name}</span>
+              </div>
+              {tool.isUnsupported && (
+                <div
+                  className="ml-2 flex items-center text-destructive"
+                  title="This service is not supported"
+                >
+                  <X className="h-4 w-4" />
+                </div>
+              )}
               {selectedTools.includes(tool.id) && (
                 <Check className="ml-2 h-4 w-4 text-primary" />
               )}

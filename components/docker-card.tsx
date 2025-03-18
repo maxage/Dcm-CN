@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/hover-card"
 import type { DockerTool } from "@/lib/docker-tools"
 import { cn } from "@/lib/utils"
-import { AlertCircle, Star } from "lucide-react"
+import { Star } from "lucide-react"
 import Link from "next/link"
 import posthog from "posthog-js"
 import { useEffect, useRef, useState } from "react"
@@ -39,22 +39,22 @@ function TruncatedText({ text }: { text: string }) {
         "select-none text-xs",
         !isExpanded && "line-clamp-3",
       )}
-      onClick={(e) => {
-        if (isTruncated) {
-          e.stopPropagation()
-          setIsExpanded(!isExpanded)
-        }
-      }}
-      onKeyUp={(e) => {
-        if (e.key === "Enter" && isTruncated) {
-          e.stopPropagation()
-          setIsExpanded(!isExpanded)
-        }
-      }}
     >
       {text}
       {isTruncated && !isExpanded && (
-        <span className="description-expand cursor-pointer text-primary hover:underline">
+        <span 
+          className="description-expand cursor-pointer text-blue-500 hover:underline"
+          onClick={(e) => {
+            e.stopPropagation()
+            setIsExpanded(!isExpanded)
+          }}
+          onKeyUp={(e) => {
+            if (e.key === "Enter") {
+              e.stopPropagation()
+              setIsExpanded(!isExpanded)
+            }
+          }}
+        >
           {" "}
           ...
         </span>
@@ -94,7 +94,7 @@ export default function DockerCard({
   const CardComponent = (
     <Card
       className={cn(
-        "group relative h-full cursor-pointer overflow-hidden rounded-sm transition-all hover:shadow-md",
+        "group relative h-full cursor-pointer select-none overflow-hidden rounded-sm transition-all hover:shadow-md",
         isSelected && !tool.isUnsupported
           ? "bg-primary/5"
           : tool.isUnsupported
@@ -154,7 +154,7 @@ export default function DockerCard({
             className={cn(
               "flex h-10 w-10 items-center justify-center overflow-hidden rounded-md transition-all duration-300",
               isSelected && !tool.isUnsupported
-                ? "bg-primary text-primary-foreground"
+                ? "bg-primary/40 text-primary-foreground"
                 : "bg-primary/10 text-primary group-hover:bg-primary/20",
             )}
           >
