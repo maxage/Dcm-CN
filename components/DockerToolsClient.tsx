@@ -8,7 +8,7 @@ import type { DockerTool } from "@/lib/docker-tools"
 import { useForm } from "@tanstack/react-form"
 import posthog from "posthog-js"
 
-const defaultSettings: DockerSettings = {
+const DEFAULT_SETTINGS: DockerSettings = {
   configPath: "/opt/appdata/config",
   dataPath: "/opt/appdata/data",
   timezone: "UTC",
@@ -38,12 +38,12 @@ export default function DockerToolsClient({
     value: settings,
     setValue: setSettings,
     removeValue: clearSettings,
-  } = useLocalStorage<DockerSettings>("dockerComposeSettings", defaultSettings)
+  } = useLocalStorage<DockerSettings>("dockerComposeSettings", DEFAULT_SETTINGS)
 
   const form = useForm({
     defaultValues: {
       selectedTools: [] as string[],
-      settings: settings,
+      settings,
     },
     onSubmit: async ({ value }) => {
       console.log("Form submitted:", value)
@@ -51,10 +51,7 @@ export default function DockerToolsClient({
   })
 
   const toggleToolSelection = (toolId: string) => {
-    // Find the tool to check if it's unsupported
     const tool = dockerTools.find((t) => t.id === toolId)
-
-    // If the tool is unsupported, don't allow selection
     if (tool?.isUnsupported) {
       return
     }
