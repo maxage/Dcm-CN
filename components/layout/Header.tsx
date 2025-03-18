@@ -22,7 +22,7 @@ export function Header() {
             
             <GradientButton 
               href="https://ko-fi.com/ajnart" 
-              external 
+              external
               gradientFrom="from-amber-500/20" 
               gradientTo="to-orange-400/20"
             >

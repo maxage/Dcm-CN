@@ -40,6 +40,7 @@ import { ExternalLink, Github, HelpCircle, PlusCircle, X } from "lucide-react"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
+import { GradientButton } from "./ui/gradient-button"
 
 const CATEGORIES = [
   "Media",
@@ -116,16 +117,14 @@ export function ContainerSubmissionForm() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          className="group relative overflow-hidden border-primary-foreground/30 bg-primary-foreground/15 px-4 py-2 font-medium text-primary-foreground shadow-md transition-all duration-300 [animation-delay:300ms] hover:scale-105 hover:bg-primary-foreground/25 hover:shadow-lg motion-safe:animate-slide-in-right"
+        <GradientButton
+          gradientFrom="from-green-500/20"
+          gradientTo="to-green-400/20"
+          className="[animation-delay:300ms] motion-safe:animate-slide-in-right"
         >
-          <span className="relative z-10 flex items-center gap-2">
-            <PlusCircle size={18} />
-            <span>Suggest container</span>
-          </span>
-          <span className="absolute inset-0 bg-gradient-to-r from-green-500/20 to-green-400/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-        </Button>
+          <PlusCircle size={18} />
+          <span>Suggest container</span>
+        </GradientButton>
       </DialogTrigger>
       <DialogContent className="max-h-[95vh] max-w-4xl">
         <DialogHeader>

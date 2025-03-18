@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { ReactNode } from "react"
+import { Button } from "./button"
 
 interface GradientButtonProps {
   href?: string
@@ -37,7 +38,7 @@ export function GradientButton({
   )
 
   const buttonClasses = cn(
-    "group relative overflow-hidden border-primary-foreground/30 bg-primary-foreground/15 px-4 py-2 font-medium text-primary-foreground shadow-md transition-all duration-300 hover:scale-105 hover:bg-primary-foreground/25 hover:shadow-lg motion-safe:animate-slide-in-right",
+    "rounded-md group relative overflow-hidden border-primary-foreground/30 bg-primary-foreground/15  px-4 py-2 font-medium shadow-md transition-all duration-300 hover:scale-105 hover:bg-primary-foreground/25 hover:shadow-lg motion-safe:animate-slide-in-right",
     className
   )
 
@@ -46,16 +47,17 @@ export function GradientButton({
       <Link
         href={href}
         target={external ? "_blank" : undefined}
-        className={buttonClasses}
       >
-        {buttonContent}
+        <Button size="sm" className={buttonClasses} onClick={onClick}>
+          {buttonContent}
+        </Button>
       </Link>
     )
   }
 
   return (
-    <button className={buttonClasses} onClick={onClick}>
+    <Button size="sm" className={buttonClasses} onClick={onClick}>
       {buttonContent}
-    </button>
+    </Button>
   )
 } 
