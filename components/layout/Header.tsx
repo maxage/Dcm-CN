@@ -1,7 +1,6 @@
 import { ContainerSubmissionForm } from "@/components/container-submission-form"
-import { Button } from "@/components/ui/button"
+import { GradientButton } from "@/components/ui/gradient-button"
 import { Heart } from "lucide-react"
-import Link from "next/link"
 import { siGithub } from "simple-icons"
 
 export function Header() {
@@ -20,45 +19,32 @@ export function Header() {
           </div>
           <div className="flex flex-wrap gap-3">
             <ContainerSubmissionForm />
-            <Link href="https://ko-fi.com/ajnart" target="_blank">
-              <Button
-                variant="outline"
-                className="group relative overflow-hidden border-primary-foreground/30 bg-primary-foreground/15 px-4 py-2 font-medium text-primary-foreground shadow-md transition-all duration-300 hover:scale-105 hover:bg-primary-foreground/25 hover:shadow-lg motion-safe:animate-slide-in-right"
-              >
-                <span className="relative z-10 flex items-center gap-2">
-                  <span>
-                    <Heart fill="currentColor" />
-                  </span>
-                  <span>Support me</span>
-                </span>
-                <span className="absolute inset-0 bg-gradient-to-r from-amber-500/20 to-orange-400/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-              </Button>
-            </Link>
-            <Link
-              href="https://github.com/ajnart/docker-compose-selector"
-              target="_blank"
+            
+            <GradientButton 
+              href="https://ko-fi.com/ajnart" 
+              external 
+              gradientFrom="from-amber-500/20" 
+              gradientTo="to-orange-400/20"
             >
-              <Button
-                variant="outline"
-                className="group relative overflow-hidden border-primary-foreground/30 bg-primary-foreground/15 px-4 py-2 font-medium text-primary-foreground shadow-md transition-all duration-300 hover:scale-105 hover:bg-primary-foreground/25 hover:shadow-lg motion-safe:animate-slide-in-right"
+              <Heart fill="currentColor" />
+              <span>Support me</span>
+            </GradientButton>
+            
+            <GradientButton 
+              href="https://github.com/ajnart/docker-compose-selector" 
+              external
+            >
+              <svg
+                aria-label="GitHub"
+                role="img"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4 fill-current"
               >
-                <span className="relative z-10 flex items-center gap-2">
-                  <span>
-                    <svg
-                      aria-label="GitHub"
-                      role="img"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4 fill-current"
-                    >
-                      <path d={siGithub.path} />
-                    </svg>
-                  </span>
-                  <span>GitHub</span>
-                </span>
-                <span className="absolute inset-0 bg-gradient-to-r from-gray-500/20 to-gray-400/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-              </Button>
-            </Link>
+                <path d={siGithub.path} />
+              </svg>
+              <span>GitHub</span>
+            </GradientButton>
           </div>
         </div>
       </div>
