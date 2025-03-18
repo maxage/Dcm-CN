@@ -40,10 +40,10 @@ export default function RootLayout({
                 <div className="container mx-auto px-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h1 className="mb-2 font-bold text-3xl motion-safe:animate-slide-in-left">
+                      <h1 className="mb-2 font-bold text-xl motion-safe:animate-slide-in-left md:text-2xl lg:text-3xl">
                         Docker Compose Generator
                       </h1>
-                      <p className="text-lg opacity-90 [animation-delay:150ms] motion-safe:animate-slide-in-left">
+                      <p className="text-sm opacity-90 [animation-delay:150ms] motion-safe:animate-slide-in-left md:text-lg lg:text-xl">
                         Select the tools you want to include in your
                         docker-compose.yaml
                       </p>
@@ -59,7 +59,7 @@ export default function RootLayout({
                             <span>
                               <Heart fill="currentColor" />
                             </span>
-                            <span>Support this project</span>
+                            <span>Support me</span>
                           </span>
                           <span className="absolute inset-0 bg-gradient-to-r from-amber-500/20 to-orange-400/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                         </Button>
