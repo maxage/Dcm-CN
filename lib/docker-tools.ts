@@ -7,6 +7,7 @@ export interface DockerTool {
   githubUrl?: string;
   /** We recommend following this schema for common icons: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/<Format>/<Name>.<Format> */
   icon?: string;
+  stars?: number;
 }
 
 export const dockerTools: DockerTool[] = [
@@ -244,3 +245,89 @@ export const dockerTools: DockerTool[] = [
     icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/code-server.svg",
   },
 ];
+
+// Cache for GitHub stars data
+let cachedTools: DockerTool[] | null = null;
+
+/**
+ * Extracts the owner and repo from a GitHub URL
+ * @param url GitHub URL in format https://github.com/owner/repo
+ */
+function extractGitHubInfo(url: string): { owner: string; repo: string } | null {
+  try {
+    const match = url.match(/github\.com\/([^/]+)\/([^/]+)/);
+    if (!match) return null;
+    return { owner: match[1], repo: match[2] };
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Helper function to add delay between requests
+ */
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+/**
+ * Fetches GitHub stars for all tools that have a GitHub URL
+ * This function should be called at build time to populate the stars field
+ */
+export async function fetchGitHubStars(): Promise<DockerTool[]> {
+  // Return cached data if available
+  if (cachedTools) {
+    return cachedTools;
+  }
+
+  const toolsWithGitHub = dockerTools.filter(tool => tool.githubUrl);
+  
+  const updatedTools = [];
+  
+  // Process tools sequentially with delay
+  for (const tool of dockerTools) {
+    if (!tool.githubUrl) {
+      updatedTools.push(tool);
+      continue;
+    }
+
+    const githubInfo = extractGitHubInfo(tool.githubUrl);
+    if (!githubInfo) {
+      updatedTools.push(tool);
+      continue;
+    }
+
+    try {
+      const response = await fetch(
+        `https://api.github.com/repos/${githubInfo.owner}/${githubInfo.repo}`,
+        {
+          headers: {
+            'Accept': 'application/vnd.github.v3+json',
+            ...(process.env.GITHUB_TOKEN && {
+              'Authorization': `Bearer ${process.env.GITHUB_TOKEN}`
+            })
+          }
+        }
+      );
+
+      if (!response.ok) {
+        console.warn(`Failed to fetch stars for ${tool.name}: ${response.statusText}`);
+        updatedTools.push(tool);
+      } else {
+        const data = await response.json();
+        updatedTools.push({
+          ...tool,
+          stars: data.stargazers_count
+        });
+      }
+
+      // Add delay between requests
+      await delay(250);
+    } catch (error) {
+      console.warn(`Error fetching stars for ${tool.name}:`, error);
+      updatedTools.push(tool);
+    }
+  }
+
+  // Cache the results
+  cachedTools = updatedTools;
+  return updatedTools;
+}

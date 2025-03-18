@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import type { DockerTool } from "@/lib/docker-tools";
 import { cn } from "@/lib/utils";
+import { Star } from "lucide-react";
 import Link from "next/link";
 import { siGithub } from "simple-icons";
 
@@ -27,6 +28,14 @@ export default function DockerCard({
     onSelect();
   };
 
+  const formatStars = (count?: number) => {
+    if (!count) return "0";
+    if (count >= 1000) {
+      return `${(count / 1000).toFixed(1)}k`;
+    }
+    return count.toString();
+  };
+
   return (
     <Card
       className={cn(
@@ -48,23 +57,33 @@ export default function DockerCard({
       />
 
       {tool.githubUrl && (
-        <Link
-          href={tool.githubUrl}
-          target="_blank"
-          className="github-link absolute top-2 right-2 z-10 rounded-full bg-background/80 p-1.5 opacity-0 shadow-sm transition-opacity duration-300 hover:scale-110 hover:bg-background hover:shadow-md group-hover:opacity-100"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <svg
-            aria-label="GitHub"
-            role="img"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 fill-primary"
+        <div className="absolute top-2 right-2 z-10 flex items-center gap-2">
+          {tool.stars !== undefined && (
+            <div className="flex items-center gap-1 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+              <span className="font-medium text-muted-foreground text-sm">
+                {formatStars(tool.stars)}
+              </span>
+              <Star className="h-4 w-4 fill-muted-foreground text-muted-foreground" />
+            </div>
+          )}
+          <Link
+            href={tool.githubUrl}
+            target="_blank"
+            className="github-link rounded-full bg-background/80 p-1.5 opacity-0 shadow-sm transition-all duration-300 hover:scale-110 hover:bg-background hover:shadow-md group-hover:opacity-100"
+            onClick={(e) => e.stopPropagation()}
           >
-            <path d={siGithub.path} />
-          </svg>
-          <span className="sr-only">GitHub repository</span>
-        </Link>
+            <svg
+              aria-label="GitHub"
+              role="img"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4 fill-primary"
+            >
+              <path d={siGithub.path} />
+            </svg>
+            <span className="sr-only">GitHub repository</span>
+          </Link>
+        </div>
       )}
 
       <CardContent className="p-4">
