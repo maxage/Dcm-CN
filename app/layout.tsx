@@ -1,7 +1,7 @@
 import { ContainerSubmissionForm } from "@/components/container-submission-form";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Button } from "@/components/ui/button";
-import { Heart } from "lucide-react";
+import { Heart, HeartIcon } from "lucide-react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Link from "next/link";
@@ -32,7 +32,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <div className="flex min-h-screen flex-col">
-            <header className="relative z-10 bg-primary/80 py-8 text-primary-foreground shadow-md bg-stripes dark:bg-stripes-dark">
+            <header className="relative z-10 bg-primary/80 bg-stripes py-8 text-primary-foreground shadow-md dark:bg-stripes-dark">
               <div className="container mx-auto px-4">
                 <div className="flex items-center justify-between">
                   <div>
@@ -92,10 +92,14 @@ export default function RootLayout({
 
             <main className="flex-1">{children}</main>
 
-            <footer className="border-t bg-background py-6 mt-8">
+            <footer className="mt-8 border-t bg-background py-6">
               <div className="container mx-auto px-4 text-center text-muted-foreground">
                 <p className="flex items-center justify-center gap-1">
-                  Made with <span className="text-red-500">❤️</span> by{" "}
+                  Made with{" "}
+                  <span className="text-red-500 motion-safe:animate-pulse">
+                    <HeartIcon size={16} fill="currentColor" />
+                  </span>{" "}
+                  by{" "}
                   <Link
                     href="https://github.com/ajnart"
                     target="_blank"

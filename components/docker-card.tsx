@@ -71,20 +71,28 @@ export default function DockerCard({
         <div className="mb-3 flex items-center gap-3">
           <div
             className={cn(
-              "flex h-10 w-10 items-center justify-center rounded-md transition-all duration-300",
+              "flex h-10 w-10 items-center justify-center overflow-hidden rounded-md transition-all duration-300",
               isSelected
                 ? "bg-primary text-primary-foreground"
                 : "bg-primary/10 text-primary group-hover:bg-primary/20",
             )}
           >
-            <div className="font-bold">{tool.name.charAt(0)}</div>
+            {tool.icon ? (
+              <img
+                src={tool.icon}
+                alt={tool.name}
+                className="h-full w-full object-contain p-1.5"
+              />
+            ) : (
+              <div className="font-bold">{tool.name.charAt(0)}</div>
+            )}
           </div>
           <div>
             <h3 className="font-medium">{tool.name}</h3>
             <p className="text-muted-foreground text-xs">{tool.category}</p>
           </div>
         </div>
-        <p className="mb-3 line-clamp-2 text-muted-foreground text-sm">
+        <p className="mb-3 line-clamp-2 select-none text-muted-foreground text-sm">
           {tool.description}
         </p>
         <div className="flex flex-wrap gap-1">

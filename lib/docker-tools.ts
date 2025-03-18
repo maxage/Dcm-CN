@@ -5,6 +5,8 @@ export interface DockerTool {
   category: string;
   tags: string[];
   githubUrl?: string;
+  /** We recommend following this schema for common icons: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/<Format>/<Name>.<Format> */
+  icon?: string;
 }
 
 export const dockerTools: DockerTool[] = [
@@ -16,6 +18,7 @@ export const dockerTools: DockerTool[] = [
     category: "Media",
     tags: ["TV", "PVR", "Monitoring"],
     githubUrl: "https://github.com/Sonarr/Sonarr",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/sonarr.svg",
   },
   {
     id: "radarr",
@@ -24,6 +27,7 @@ export const dockerTools: DockerTool[] = [
     category: "Media",
     tags: ["Movies", "PVR", "Monitoring"],
     githubUrl: "https://github.com/Radarr/Radarr",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/radarr.svg",
   },
   {
     id: "lidarr",
@@ -32,6 +36,7 @@ export const dockerTools: DockerTool[] = [
     category: "Media",
     tags: ["Music", "PVR", "Monitoring"],
     githubUrl: "https://github.com/lidarr/Lidarr",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/lidarr.svg",
   },
   {
     id: "readarr",
@@ -41,6 +46,7 @@ export const dockerTools: DockerTool[] = [
     category: "Media",
     tags: ["Books", "PVR", "Monitoring"],
     githubUrl: "https://github.com/Readarr/Readarr",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/readarr.svg",
   },
   {
     id: "prowlarr",
@@ -49,6 +55,7 @@ export const dockerTools: DockerTool[] = [
     category: "Media",
     tags: ["Indexer", "Proxy"],
     githubUrl: "https://github.com/Prowlarr/Prowlarr",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/prowlarr.svg",
   },
   {
     id: "jellyfin",
@@ -58,6 +65,7 @@ export const dockerTools: DockerTool[] = [
     category: "Media",
     tags: ["Streaming", "Media Server"],
     githubUrl: "https://github.com/jellyfin/jellyfin",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/jellyfin.svg",
   },
   {
     id: "plex",
@@ -67,6 +75,7 @@ export const dockerTools: DockerTool[] = [
     category: "Media",
     tags: ["Streaming", "Media Server"],
     githubUrl: "https://github.com/plexinc",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/plex.svg",
   },
   {
     id: "emby",
@@ -76,6 +85,7 @@ export const dockerTools: DockerTool[] = [
     category: "Media",
     tags: ["Streaming", "Media Server"],
     githubUrl: "https://github.com/MediaBrowser/Emby",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/emby.svg",
   },
   {
     id: "portainer",
@@ -84,6 +94,7 @@ export const dockerTools: DockerTool[] = [
     category: "Management",
     tags: ["Docker", "Management", "UI"],
     githubUrl: "https://github.com/portainer/portainer",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/portainer.svg",
   },
   {
     id: "heimdall",
@@ -92,6 +103,7 @@ export const dockerTools: DockerTool[] = [
     category: "Management",
     tags: ["Dashboard", "Launcher"],
     githubUrl: "https://github.com/linuxserver/Heimdall",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/heimdall.svg",
   },
   {
     id: "traefik",
@@ -99,6 +111,8 @@ export const dockerTools: DockerTool[] = [
     description: "The Cloud Native Application Proxy.",
     category: "Networking",
     tags: ["Proxy", "Load Balancer", "SSL"],
+    githubUrl: "https://github.com/traefik/traefik",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/traefik.svg",
   },
   {
     id: "nginx",
@@ -106,6 +120,8 @@ export const dockerTools: DockerTool[] = [
     description: "High Performance Load Balancer, Web Server, & Reverse Proxy.",
     category: "Networking",
     tags: ["Web Server", "Proxy", "Load Balancer"],
+    githubUrl: "https://github.com/nginx/nginx",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/nginx.svg",
   },
   {
     id: "pihole",
@@ -113,6 +129,8 @@ export const dockerTools: DockerTool[] = [
     description: "Network-wide Ad Blocking.",
     category: "Networking",
     tags: ["Ad Blocking", "DNS", "Privacy"],
+    githubUrl: "https://github.com/pi-hole/pi-hole",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/pihole.svg",
   },
   {
     id: "adguardhome",
@@ -120,6 +138,8 @@ export const dockerTools: DockerTool[] = [
     description: "Network-wide ads & trackers blocking DNS server.",
     category: "Networking",
     tags: ["Ad Blocking", "DNS", "Privacy"],
+    githubUrl: "https://github.com/AdguardTeam/AdGuardHome",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/adguardhome.svg",
   },
   {
     id: "nextcloud",
@@ -127,6 +147,8 @@ export const dockerTools: DockerTool[] = [
     description: "A safe home for all your data.",
     category: "Storage",
     tags: ["Cloud Storage", "Collaboration", "File Sharing"],
+    githubUrl: "https://github.com/nextcloud/server",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/nextcloud.svg",
   },
   {
     id: "mariadb",
@@ -134,6 +156,8 @@ export const dockerTools: DockerTool[] = [
     description: "One of the most popular database servers.",
     category: "Database",
     tags: ["SQL", "Database", "MySQL"],
+    githubUrl: "https://github.com/MariaDB/server",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/mariadb.svg",
   },
   {
     id: "postgres",
@@ -141,6 +165,8 @@ export const dockerTools: DockerTool[] = [
     description: "The world's most advanced open source database.",
     category: "Database",
     tags: ["SQL", "Database"],
+    githubUrl: "https://github.com/postgres/postgres",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/postgres.svg",
   },
   {
     id: "mongodb",
@@ -148,6 +174,8 @@ export const dockerTools: DockerTool[] = [
     description: "The most popular database for modern apps.",
     category: "Database",
     tags: ["NoSQL", "Database"],
+    githubUrl: "https://github.com/mongodb/mongo",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/mongodb.svg",
   },
   {
     id: "redis",
@@ -155,6 +183,8 @@ export const dockerTools: DockerTool[] = [
     description: "Open source in-memory data structure store.",
     category: "Database",
     tags: ["Cache", "NoSQL", "Database"],
+    githubUrl: "https://github.com/redis/redis",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/redis.svg",
   },
   {
     id: "grafana",
@@ -162,6 +192,8 @@ export const dockerTools: DockerTool[] = [
     description: "The open observability platform.",
     category: "Monitoring",
     tags: ["Monitoring", "Visualization", "Metrics"],
+    githubUrl: "https://github.com/grafana/grafana",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/grafana.svg",
   },
   {
     id: "prometheus",
@@ -170,6 +202,8 @@ export const dockerTools: DockerTool[] = [
       "Power your metrics and alerting with a leading open-source monitoring solution.",
     category: "Monitoring",
     tags: ["Monitoring", "Metrics", "Alerting"],
+    githubUrl: "https://github.com/prometheus/prometheus",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/prometheus.svg",
   },
   {
     id: "homeassistant",
@@ -178,6 +212,8 @@ export const dockerTools: DockerTool[] = [
       "Open source home automation that puts local control and privacy first.",
     category: "Home Automation",
     tags: ["Smart Home", "Automation", "IoT"],
+    githubUrl: "https://github.com/home-assistant/core",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/homeassistant.svg",
   },
   {
     id: "vaultwarden",
@@ -185,6 +221,8 @@ export const dockerTools: DockerTool[] = [
     description: "Unofficial Bitwarden compatible server written in Rust.",
     category: "Security",
     tags: ["Password Manager", "Security"],
+    githubUrl: "https://github.com/dani-garcia/vaultwarden",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/vaultwarden.svg",
   },
   {
     id: "gitea",
@@ -193,6 +231,7 @@ export const dockerTools: DockerTool[] = [
     category: "Development",
     tags: ["Git", "Version Control", "CI/CD"],
     githubUrl: "https://github.com/go-gitea/gitea",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/gitea.svg",
   },
   {
     id: "code-server",
@@ -202,5 +241,6 @@ export const dockerTools: DockerTool[] = [
     category: "Development",
     tags: ["IDE", "Development", "VS Code"],
     githubUrl: "https://github.com/coder/code-server",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/code-server.svg",
   },
 ];
