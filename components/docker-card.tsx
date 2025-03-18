@@ -2,18 +2,17 @@
 
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
+import { GitHubLink } from "@/components/ui/github-link"
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card"
+import { StarCount } from "@/components/ui/star-count"
+import { TruncatedText } from "@/components/ui/truncated-text"
 import type { DockerTool } from "@/lib/docker-tools"
 import { cn } from "@/lib/utils"
-import { Star } from "lucide-react"
 import Link from "next/link"
-import posthog from "posthog-js"
-import { useEffect, useRef, useState } from "react"
-import { siGithub } from "simple-icons"
 
 interface DockerCardProps {
   tool: DockerTool
@@ -21,54 +20,12 @@ interface DockerCardProps {
   onSelect: () => void
 }
 
-function TruncatedText({ text }: { text: string }) {
-  const [isExpanded, setIsExpanded] = useState(false)
-  const [isTruncated, setIsTruncated] = useState(false)
-  const textRef = useRef<HTMLParagraphElement>(null)
-
-  useEffect(() => {
-    const element = textRef.current
-    if (element) {
-      setIsTruncated(element.scrollHeight > element.clientHeight)
-    }
-  }, [text])
-  return (
-    <p
-      ref={textRef}
-      className={cn("select-none text-xs", !isExpanded && "line-clamp-3")}
-    >
-      {text}
-      {isTruncated && !isExpanded && (
-        <span
-          className="description-expand cursor-pointer text-blue-500 hover:underline"
-          onClick={(e) => {
-            e.stopPropagation()
-            setIsExpanded(!isExpanded)
-          }}
-          onKeyUp={(e) => {
-            if (e.key === "Enter") {
-              e.stopPropagation()
-              setIsExpanded(!isExpanded)
-            }
-          }}
-        >
-          {" "}
-          ...
-        </span>
-      )}
-    </p>
-  )
-}
-
 export default function DockerCard({
   tool,
   isSelected,
   onSelect,
 }: DockerCardProps) {
-  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false)
-
   const handleCardClick = (e: React.MouseEvent) => {
-    // Don't select the card if clicking on the GitHub icon, description expand button, or if the container is unsupported
     if (
       (e.target as Element).closest(".github-link") ||
       (e.target as Element).closest(".description-expand") ||
@@ -78,14 +35,6 @@ export default function DockerCard({
       return
     }
     onSelect()
-  }
-
-  const formatStars = (count?: number) => {
-    if (!count) return "0"
-    if (count >= 1000) {
-      return `${(count / 1000).toFixed(1)}k`
-    }
-    return count.toString()
   }
 
   const CardComponent = (
@@ -114,34 +63,8 @@ export default function DockerCard({
 
       {tool.githubUrl && (
         <div className="absolute top-2 right-2 z-10 flex items-center gap-2">
-          {tool.stars !== undefined && (
-            <div className="flex items-center gap-1 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-              <span className="font-medium text-muted-foreground text-sm">
-                {formatStars(tool.stars)}
-              </span>
-              <Star className="h-4 w-4 fill-muted-foreground text-muted-foreground" />
-            </div>
-          )}
-          <Link
-            href={tool.githubUrl}
-            target="_blank"
-            className="github-link rounded-full bg-background/80 p-1.5 opacity-0 shadow-sm transition-all duration-300 hover:scale-110 hover:bg-background hover:shadow-md group-hover:opacity-100"
-            onClick={(e) => {
-              posthog.capture("github_link_clicked", { tool_id: tool.id })
-              e.stopPropagation()
-            }}
-          >
-            <svg
-              aria-label="GitHub"
-              role="img"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 fill-primary"
-            >
-              <path d={siGithub.path} />
-            </svg>
-            <span className="sr-only">GitHub repository</span>
-          </Link>
+          {tool.stars !== undefined && <StarCount count={tool.stars} />}
+          <GitHubLink url={tool.githubUrl} toolId={tool.id} />
         </div>
       )}
 
