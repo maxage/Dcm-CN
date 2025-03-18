@@ -196,14 +196,14 @@ const MultiSelector = ({
         setInputValue,
         activeIndex,
         setActiveIndex,
-        ref: inputRef,
+        ref: inputRef as React.RefObject<HTMLInputElement>,
         handleSelect,
       }}
     >
       <Command
         onKeyDown={handleKeyDown}
         className={cn(
-          "overflow-visible bg-transparent flex flex-col space-y-2",
+          "flex flex-col space-y-2 overflow-visible bg-transparent",
           className,
         )}
         dir={dir}

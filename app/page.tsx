@@ -1,15 +1,14 @@
 "use client";
 
-import DockerCard from "@/components/docker-card";
+import ToolGrid from "@/components/ToolGrid";
 import FloatingBar from "@/components/floating-bar";
 import SettingsPanel, {
   type DockerSettings,
 } from "@/components/settings-panel";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { dockerTools } from "@/lib/docker-tools";
 import { useForm } from "@tanstack/react-form";
-import { useEffect, useState } from "react";
 
-// Default settings
 const defaultSettings: DockerSettings = {
   configPath: "/opt/appdata/config",
   dataPath: "/opt/appdata/data",
@@ -21,13 +20,20 @@ const defaultSettings: DockerSettings = {
   networkMode: "bridge",
   useTraefik: false,
   containerNamePrefix: "docker_",
-  preferredImageProvider: "linuxserver",
 };
 
 export default function Home() {
-  const [selectedTools, setSelectedTools] = useState<string[]>([]);
-  const [settings, setSettings] = useState<DockerSettings>(defaultSettings);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const {
+    value: selectedTools,
+    setValue: setSelectedTools,
+    removeValue: clearSelectedTools,
+  } = useLocalStorage<string[]>("dockerComposeSelectedTools", []);
+
+  const {
+    value: settings,
+    setValue: setSettings,
+    removeValue: clearSettings,
+  } = useLocalStorage<DockerSettings>("dockerComposeSettings", defaultSettings);
 
   const form = useForm({
     defaultValues: {
@@ -39,99 +45,26 @@ export default function Home() {
     },
   });
 
-  // Load data from localStorage on component mount
-  useEffect(() => {
-    // Only run in the browser
-    if (typeof window !== "undefined") {
-      try {
-        // Load selected tools
-        const savedTools = localStorage.getItem("dockerComposeSelectedTools");
-        if (savedTools) {
-          setSelectedTools(JSON.parse(savedTools));
-        }
-
-        // Load settings
-        const savedSettings = localStorage.getItem("dockerComposeSettings");
-        if (savedSettings) {
-          setSettings(JSON.parse(savedSettings));
-        }
-      } catch (error) {
-        console.error("Error loading data from localStorage:", error);
-        // If there's an error, use default values
-        setSelectedTools([]);
-        setSettings(defaultSettings);
-      }
-
-      setIsLoaded(true);
-    }
-  }, []);
-
-  // Save selected tools to localStorage when they change
-  useEffect(() => {
-    if (isLoaded && typeof window !== "undefined") {
-      try {
-        localStorage.setItem(
-          "dockerComposeSelectedTools",
-          JSON.stringify(selectedTools),
-        );
-      } catch (error) {
-        console.error("Error saving selected tools to localStorage:", error);
-      }
-    }
-  }, [selectedTools, isLoaded]);
-
-  // Save settings to localStorage when they change
-  useEffect(() => {
-    if (isLoaded && typeof window !== "undefined") {
-      try {
-        localStorage.setItem("dockerComposeSettings", JSON.stringify(settings));
-      } catch (error) {
-        console.error("Error saving settings to localStorage:", error);
-      }
-    }
-  }, [settings, isLoaded]);
-
   const toggleToolSelection = (toolId: string) => {
-    setSelectedTools((prev) => {
-      if (prev.includes(toolId)) {
-        return prev.filter((id) => id !== toolId);
-      }
-      return [...prev, toolId];
-    });
+    setSelectedTools((prev) =>
+      prev.includes(toolId)
+        ? prev.filter((id) => id !== toolId)
+        : [...prev, toolId],
+    );
   };
 
   const handleReset = () => {
-    // Clear selected tools
-    setSelectedTools([]);
-
-    // Reset settings to defaults
-    setSettings(defaultSettings);
-
-    // Clear localStorage
-    try {
-      localStorage.removeItem("dockerComposeSelectedTools");
-      localStorage.removeItem("dockerComposeSettings");
-    } catch (error) {
-      console.error("Error clearing localStorage:", error);
-    }
+    clearSelectedTools();
+    clearSettings();
   };
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-b from-primary/10 to-background motion-safe:animate-fade-in">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 left-[10%] h-64 w-64 rounded-full bg-primary/20 blur-3xl motion-safe:animate-float" />
-          <div className="absolute top-40 right-[15%] h-72 w-72 rounded-full bg-primary/20 blur-3xl [animation-delay:1s] motion-safe:animate-float" />
-          <div className="absolute bottom-40 left-[20%] h-80 w-80 rounded-full bg-primary/20 blur-3xl [animation-delay:2s] motion-safe:animate-float" />
-        </div>
-      </div>
-
       <main className="container relative z-10 mx-auto px-4 pt-4">
         <div className="[animation-delay:300ms] motion-safe:animate-slide-down">
           <SettingsPanel settings={settings} onSettingsChange={setSettings} />
         </div>
 
-        {/* FloatingBar with search button */}
         <FloatingBar
           selectedCount={selectedTools.length}
           selectedTools={selectedTools.map(
@@ -143,17 +76,11 @@ export default function Home() {
           onToggleToolSelection={toggleToolSelection}
         />
 
-        <div className="grid 3xl:grid-cols-7 grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-          {dockerTools.map((tool) => (
-            <div key={tool.id} className="h-full">
-              <DockerCard
-                tool={tool}
-                isSelected={selectedTools.includes(tool.id)}
-                onSelect={() => toggleToolSelection(tool.id)}
-              />
-            </div>
-          ))}
-        </div>
+        <ToolGrid
+          tools={dockerTools}
+          selectedTools={selectedTools}
+          onToggleSelection={toggleToolSelection}
+        />
       </main>
     </div>
   );

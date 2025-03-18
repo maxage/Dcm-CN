@@ -1,7 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { CardContent } from "@/components/ui/card";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -11,16 +16,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { cn } from "@/lib/utils";
+import { useState } from "react";
 
 interface SettingsPanelProps {
   settings: DockerSettings;
@@ -38,7 +36,6 @@ export interface DockerSettings {
   networkMode: string;
   useTraefik: boolean;
   containerNamePrefix: string;
-  preferredImageProvider: "default" | "linuxserver" | "hotio";
 }
 
 export default function SettingsPanel({
@@ -46,19 +43,12 @@ export default function SettingsPanel({
   onSettingsChange,
 }: SettingsPanelProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
 
   const handleChange = (key: keyof DockerSettings, value: string | boolean) => {
-    setIsSaving(true);
     onSettingsChange({
       ...settings,
       [key]: value,
     });
-
-    // Show saving indicator briefly
-    setTimeout(() => {
-      setIsSaving(false);
-    }, 1000);
   };
 
   return (
@@ -71,12 +61,6 @@ export default function SettingsPanel({
         <div className="flex items-center justify-between bg-muted/30 px-4 py-3">
           <div className="flex items-center gap-2">
             <h3 className="font-medium text-lg">Docker Compose Settings</h3>
-            {isSaving && (
-              <span className="ml-2 flex items-center gap-1 text-muted-foreground text-xs">
-                <span className="inline-block h-1.5 w-1.5 rounded-full bg-green-500 motion-safe:animate-pulse" />
-                Saving...
-              </span>
-            )}
           </div>
           <CollapsibleTrigger asChild>
             <Button
@@ -129,64 +113,6 @@ export default function SettingsPanel({
               </div>
 
               <Separator className="[animation-delay:100ms] motion-safe:animate-fade-in" />
-
-              <div className="[animation-delay:200ms] motion-safe:animate-fade-in">
-                <h4 className="mb-3 font-medium text-sm">
-                  Docker Image Preferences
-                </h4>
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <Label>Preferred Image Provider</Label>
-                    <p className="text-muted-foreground text-xs">
-                      Select your preferred Docker image provider
-                    </p>
-                  </div>
-                  <div className="relative">
-                    <ToggleGroup
-                      type="single"
-                      value={settings.preferredImageProvider}
-                      onValueChange={(value) => {
-                        if (value)
-                          handleChange("preferredImageProvider", value);
-                      }}
-                      className="w-auto motion-safe:transition-all motion-safe:duration-300 motion-safe:hover:scale-[1.02]"
-                    >
-                      <ToggleGroupItem
-                        value="default"
-                        className={cn(
-                          "px-2 py-1 text-xs motion-safe:transition-all motion-safe:duration-300",
-                          settings.preferredImageProvider === "default" &&
-                            "motion-safe:animate-scale-in",
-                        )}
-                      >
-                        Default
-                      </ToggleGroupItem>
-                      <ToggleGroupItem
-                        value="linuxserver"
-                        className={cn(
-                          "relative px-2 py-1 text-xs motion-safe:transition-all motion-safe:duration-300",
-                          settings.preferredImageProvider === "linuxserver" &&
-                            "motion-safe:animate-scale-in",
-                        )}
-                      >
-                        LinuxServer
-                      </ToggleGroupItem>
-                      <ToggleGroupItem
-                        value="hotio"
-                        className={cn(
-                          "px-2 py-1 text-xs motion-safe:transition-all motion-safe:duration-300",
-                          settings.preferredImageProvider === "hotio" &&
-                            "motion-safe:animate-scale-in",
-                        )}
-                      >
-                        Hotio
-                      </ToggleGroupItem>
-                    </ToggleGroup>
-                  </div>
-                </div>
-              </div>
-
-              <Separator className="[animation-delay:300ms] motion-safe:animate-fade-in" />
 
               <div className="[animation-delay:400ms] motion-safe:animate-fade-in">
                 <h4 className="mb-3 font-medium text-sm">

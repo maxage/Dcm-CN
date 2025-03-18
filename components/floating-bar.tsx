@@ -17,7 +17,6 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
-import { siDocker } from "simple-icons";
 
 interface FloatingBarProps {
   selectedCount: number;
@@ -42,14 +41,21 @@ export default function FloatingBar({
   const [isCopyDialogOpen, setIsCopyDialogOpen] = useState(false);
   const [isFixed, setIsFixed] = useState(false);
   const [isApple, setIsApple] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
-  // Detect platform after hydration to avoid mismatch
   useEffect(() => {
-    setIsApple(/Mac|iPod|iPhone|iPad/.test(navigator.userAgent));
+    setIsMounted(true);
   }, []);
 
-  // Listen for scroll to determine if the bar should be fixed
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsApple(/Mac|iPod|iPhone|iPad/.test(navigator.userAgent));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    
     const handleScroll = () => {
       setIsFixed(window.scrollY > scrollPosition);
     };
@@ -70,6 +76,21 @@ export default function FloatingBar({
     setIsCopyDialogOpen(false);
   };
 
+  // Prevent rendering client-interactive elements during SSR
+  const triggerSearchShortcut = (e: React.MouseEvent) => {
+    if (!isMounted) return;
+    
+    e.preventDefault();
+    // Dispatch the keyboard shortcut
+    const kEvent = new KeyboardEvent("keydown", {
+      key: "k",
+      metaKey: isApple,
+      ctrlKey: !isApple,
+      bubbles: true,
+    });
+    document.dispatchEvent(kEvent);
+  };
+
   return (
     <>
       <SearchCommand
@@ -77,44 +98,48 @@ export default function FloatingBar({
         onToggleToolSelection={onToggleToolSelection}
       />
 
-      <AlertDialog open={isResetDialogOpen} onOpenChange={setIsResetDialogOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This will reset all selections and settings to their default
-              values.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              className="bg-destructive hover:bg-destructive/90"
-              onClick={handleReset}
-            >
-              Reset All
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      {isMounted && (
+        <>
+          <AlertDialog open={isResetDialogOpen} onOpenChange={setIsResetDialogOpen}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This will reset all selections and settings to their default
+                  values.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  className="bg-destructive hover:bg-destructive/90"
+                  onClick={handleReset}
+                >
+                  Reset All
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
 
-      <AlertDialog open={isCopyDialogOpen} onOpenChange={setIsCopyDialogOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Copy Docker Compose</AlertDialogTitle>
-            <AlertDialogDescription>
-              Generate and copy docker-compose.yaml for {selectedCount} selected
-              tool{selectedCount !== 1 ? "s" : ""}.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleCopy}>
-              Copy to Clipboard
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+          <AlertDialog open={isCopyDialogOpen} onOpenChange={setIsCopyDialogOpen}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Copy Docker Compose</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Generate and copy docker-compose.yaml for {selectedCount} selected
+                  tool{selectedCount !== 1 ? "s" : ""}.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={handleCopy}>
+                  Copy to Clipboard
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </>
+      )}
 
       <div
         className={cn(
@@ -135,7 +160,6 @@ export default function FloatingBar({
               isFixed ? "flex flex-col gap-4" : "flex flex-col gap-4",
             )}
           >
-            {/* Selected Tools Information */}
             <div
               className={cn(
                 isFixed
@@ -173,22 +197,12 @@ export default function FloatingBar({
                     variant="outline"
                     size="sm"
                     className="flex items-center gap-2 transition-transform motion-safe:hover:scale-105"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      // Dispatch the keyboard shortcut
-                      const kEvent = new KeyboardEvent("keydown", {
-                        key: "k",
-                        metaKey: isApple,
-                        ctrlKey: !isApple,
-                        bubbles: true,
-                      });
-                      document.dispatchEvent(kEvent);
-                    }}
+                    onClick={triggerSearchShortcut}
                   >
                     <Search className="h-3.5 w-3.5" />
                     <span>Search</span>
                     <kbd className="pointer-events-none ml-1 inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-medium font-mono text-[10px] text-muted-foreground opacity-100">
-                      <span className="text-xs">{isApple ? "⌘" : "Ctrl"}</span>K
+                      <span className="text-xs">{isMounted ? (isApple ? "⌘" : "Ctrl") : "⌘"}</span>K
                     </kbd>
                   </Button>
 
