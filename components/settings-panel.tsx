@@ -1,55 +1,55 @@
-"use client";
+"use client"
 
-import { Button } from "@/components/ui/button";
-import { CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button"
+import { CardContent } from "@/components/ui/card"
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+} from "@/components/ui/collapsible"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
-import { Switch } from "@/components/ui/switch";
-import { useState } from "react";
+} from "@/components/ui/select"
+import { Separator } from "@/components/ui/separator"
+import { Switch } from "@/components/ui/switch"
+import { useState } from "react"
 
 interface SettingsPanelProps {
-  settings: DockerSettings;
-  onSettingsChange: (settings: DockerSettings) => void;
+  settings: DockerSettings
+  onSettingsChange: (settings: DockerSettings) => void
 }
 
 export interface DockerSettings {
-  configPath: string;
-  dataPath: string;
-  timezone: string;
-  puid: string;
-  pgid: string;
-  umask: string;
-  restartPolicy: string;
-  networkMode: string;
-  useTraefik: boolean;
-  containerNamePrefix: string;
+  configPath: string
+  dataPath: string
+  timezone: string
+  puid: string
+  pgid: string
+  umask: string
+  restartPolicy: string
+  networkMode: string
+  useTraefik: boolean
+  containerNamePrefix: string
 }
 
 export default function SettingsPanel({
   settings,
   onSettingsChange,
 }: SettingsPanelProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
 
   const handleChange = (key: keyof DockerSettings, value: string | boolean) => {
     onSettingsChange({
       ...settings,
       [key]: value,
-    });
-  };
+    })
+  }
 
   return (
     <div className="mb-8 w-full">
@@ -303,5 +303,5 @@ export default function SettingsPanel({
         </CollapsibleContent>
       </Collapsible>
     </div>
-  );
+  )
 }

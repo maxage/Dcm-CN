@@ -1,7 +1,7 @@
-"use client";
+"use client"
 
-import { SearchCommand } from "@/components/search-command";
-import type { DockerSettings } from "@/components/settings-panel";
+import { SearchCommand } from "@/components/search-command"
+import type { DockerSettings } from "@/components/settings-panel"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,21 +11,21 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { Search } from "lucide-react";
-import { useEffect, useState } from "react";
+} from "@/components/ui/alert-dialog"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
+import { Search } from "lucide-react"
+import { useEffect, useState } from "react"
 
 interface FloatingBarProps {
-  selectedCount: number;
-  selectedTools: string[];
-  selectedToolIds: string[];
-  settings: DockerSettings;
-  onReset?: () => void;
-  onToggleToolSelection: (toolId: string) => void;
-  scrollPosition?: number;
+  selectedCount: number
+  selectedTools: string[]
+  selectedToolIds: string[]
+  settings: DockerSettings
+  onReset?: () => void
+  onToggleToolSelection: (toolId: string) => void
+  scrollPosition?: number
 }
 
 export default function FloatingBar({
@@ -37,59 +37,59 @@ export default function FloatingBar({
   onToggleToolSelection,
   scrollPosition = 200,
 }: FloatingBarProps) {
-  const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
-  const [isCopyDialogOpen, setIsCopyDialogOpen] = useState(false);
-  const [isFixed, setIsFixed] = useState(false);
-  const [isApple, setIsApple] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
+  const [isResetDialogOpen, setIsResetDialogOpen] = useState(false)
+  const [isCopyDialogOpen, setIsCopyDialogOpen] = useState(false)
+  const [isFixed, setIsFixed] = useState(false)
+  const [isApple, setIsApple] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
-    setIsMounted(true);
-  }, []);
+    setIsMounted(true)
+  }, [])
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      setIsApple(/Mac|iPod|iPhone|iPad/.test(navigator.userAgent));
+      setIsApple(/Mac|iPod|iPhone|iPad/.test(navigator.userAgent))
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    
-    const handleScroll = () => {
-      setIsFixed(window.scrollY > scrollPosition);
-    };
+    if (typeof window === "undefined") return
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [scrollPosition]);
+    const handleScroll = () => {
+      setIsFixed(window.scrollY > scrollPosition)
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [scrollPosition])
 
   const handleReset = () => {
     if (onReset) {
-      onReset();
+      onReset()
     }
-    setIsResetDialogOpen(false);
-  };
+    setIsResetDialogOpen(false)
+  }
 
   const handleCopy = () => {
-    console.log("Copy docker-compose.yaml with:", { selectedTools, settings });
-    setIsCopyDialogOpen(false);
-  };
+    console.log("Copy docker-compose.yaml with:", { selectedTools, settings })
+    setIsCopyDialogOpen(false)
+  }
 
   // Prevent rendering client-interactive elements during SSR
   const triggerSearchShortcut = (e: React.MouseEvent) => {
-    if (!isMounted) return;
-    
-    e.preventDefault();
+    if (!isMounted) return
+
+    e.preventDefault()
     // Dispatch the keyboard shortcut
     const kEvent = new KeyboardEvent("keydown", {
       key: "k",
       metaKey: isApple,
       ctrlKey: !isApple,
       bubbles: true,
-    });
-    document.dispatchEvent(kEvent);
-  };
+    })
+    document.dispatchEvent(kEvent)
+  }
 
   return (
     <>
@@ -100,7 +100,10 @@ export default function FloatingBar({
 
       {isMounted && (
         <>
-          <AlertDialog open={isResetDialogOpen} onOpenChange={setIsResetDialogOpen}>
+          <AlertDialog
+            open={isResetDialogOpen}
+            onOpenChange={setIsResetDialogOpen}
+          >
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>Are you sure?</AlertDialogTitle>
@@ -121,13 +124,16 @@ export default function FloatingBar({
             </AlertDialogContent>
           </AlertDialog>
 
-          <AlertDialog open={isCopyDialogOpen} onOpenChange={setIsCopyDialogOpen}>
+          <AlertDialog
+            open={isCopyDialogOpen}
+            onOpenChange={setIsCopyDialogOpen}
+          >
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>Copy Docker Compose</AlertDialogTitle>
                 <AlertDialogDescription>
-                  Generate and copy docker-compose.yaml for {selectedCount} selected
-                  tool{selectedCount !== 1 ? "s" : ""}.
+                  Generate and copy docker-compose.yaml for {selectedCount}{" "}
+                  selected tool{selectedCount !== 1 ? "s" : ""}.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
@@ -202,7 +208,10 @@ export default function FloatingBar({
                     <Search className="h-3.5 w-3.5" />
                     <span>Search</span>
                     <kbd className="pointer-events-none ml-1 inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-medium font-mono text-[10px] text-muted-foreground opacity-100">
-                      <span className="text-xs">{isMounted ? (isApple ? "⌘" : "Ctrl") : "⌘"}</span>K
+                      <span className="text-xs">
+                        {isMounted ? (isApple ? "⌘" : "Ctrl") : "⌘"}
+                      </span>
+                      K
                     </kbd>
                   </Button>
 
@@ -231,5 +240,5 @@ export default function FloatingBar({
         </div>
       </div>
     </>
-  );
+  )
 }

@@ -1,36 +1,36 @@
-"use client";
+"use client"
 
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge"
+import { Card, CardContent } from "@/components/ui/card"
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from "@/components/ui/hover-card";
-import type { DockerTool } from "@/lib/docker-tools";
-import { cn } from "@/lib/utils";
-import { AlertCircle, Star } from "lucide-react";
-import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-import { siGithub } from "simple-icons";
+} from "@/components/ui/hover-card"
+import type { DockerTool } from "@/lib/docker-tools"
+import { cn } from "@/lib/utils"
+import { AlertCircle, Star } from "lucide-react"
+import Link from "next/link"
+import { useEffect, useRef, useState } from "react"
+import { siGithub } from "simple-icons"
 
 interface DockerCardProps {
-  tool: DockerTool;
-  isSelected: boolean;
-  onSelect: () => void;
+  tool: DockerTool
+  isSelected: boolean
+  onSelect: () => void
 }
 
 function TruncatedText({ text }: { text: string }) {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [isTruncated, setIsTruncated] = useState(false);
-  const textRef = useRef<HTMLParagraphElement>(null);
+  const [isExpanded, setIsExpanded] = useState(false)
+  const [isTruncated, setIsTruncated] = useState(false)
+  const textRef = useRef<HTMLParagraphElement>(null)
 
   useEffect(() => {
-    const element = textRef.current;
+    const element = textRef.current
     if (element) {
-      setIsTruncated(element.scrollHeight > element.clientHeight);
+      setIsTruncated(element.scrollHeight > element.clientHeight)
     }
-  }, [text]);
+  }, [text])
   return (
     <p
       ref={textRef}
@@ -40,14 +40,14 @@ function TruncatedText({ text }: { text: string }) {
       )}
       onClick={(e) => {
         if (isTruncated) {
-          e.stopPropagation();
-          setIsExpanded(!isExpanded);
+          e.stopPropagation()
+          setIsExpanded(!isExpanded)
         }
       }}
       onKeyUp={(e) => {
         if (e.key === "Enter" && isTruncated) {
-          e.stopPropagation();
-          setIsExpanded(!isExpanded);
+          e.stopPropagation()
+          setIsExpanded(!isExpanded)
         }
       }}
     >
@@ -59,7 +59,7 @@ function TruncatedText({ text }: { text: string }) {
         </span>
       )}
     </p>
-  );
+  )
 }
 
 export default function DockerCard({
@@ -67,7 +67,7 @@ export default function DockerCard({
   isSelected,
   onSelect,
 }: DockerCardProps) {
-  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false)
 
   const handleCardClick = (e: React.MouseEvent) => {
     // Don't select the card if clicking on the GitHub icon, description expand button, or if the container is unsupported
@@ -76,19 +76,19 @@ export default function DockerCard({
       (e.target as Element).closest(".description-expand") ||
       tool.isUnsupported
     ) {
-      e.stopPropagation();
-      return;
+      e.stopPropagation()
+      return
     }
-    onSelect();
-  };
+    onSelect()
+  }
 
   const formatStars = (count?: number) => {
-    if (!count) return "0";
+    if (!count) return "0"
     if (count >= 1000) {
-      return `${(count / 1000).toFixed(1)}k`;
+      return `${(count / 1000).toFixed(1)}k`
     }
-    return count.toString();
-  };
+    return count.toString()
+  }
 
   const CardComponent = (
     <Card
@@ -188,7 +188,7 @@ export default function DockerCard({
         </div>
       </CardContent>
     </Card>
-  );
+  )
 
   if (tool.isUnsupported) {
     return (
@@ -214,8 +214,8 @@ export default function DockerCard({
           </div>
         </HoverCardContent>
       </HoverCard>
-    );
+    )
   }
 
-  return CardComponent;
+  return CardComponent
 }

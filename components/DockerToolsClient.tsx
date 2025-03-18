@@ -1,11 +1,11 @@
-"use client";
+"use client"
 
-import ToolGrid from "@/components/ToolGrid";
-import FloatingBar from "@/components/floating-bar";
-import SettingsPanel, { type DockerSettings } from "@/components/settings-panel";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
-import type { DockerTool } from "@/lib/docker-tools";
-import { useForm } from "@tanstack/react-form";
+import ToolGrid from "@/components/ToolGrid"
+import FloatingBar from "@/components/floating-bar"
+import SettingsPanel, { type DockerSettings } from "@/components/settings-panel"
+import { useLocalStorage } from "@/hooks/useLocalStorage"
+import type { DockerTool } from "@/lib/docker-tools"
+import { useForm } from "@tanstack/react-form"
 
 const defaultSettings: DockerSettings = {
   configPath: "/opt/appdata/config",
@@ -18,24 +18,26 @@ const defaultSettings: DockerSettings = {
   networkMode: "bridge",
   useTraefik: false,
   containerNamePrefix: "docker_",
-};
-
-interface DockerToolsClientProps {
-  dockerTools: DockerTool[];
 }
 
-export default function DockerToolsClient({ dockerTools }: DockerToolsClientProps) {
+interface DockerToolsClientProps {
+  dockerTools: DockerTool[]
+}
+
+export default function DockerToolsClient({
+  dockerTools,
+}: DockerToolsClientProps) {
   const {
     value: selectedTools,
     setValue: setSelectedTools,
     removeValue: clearSelectedTools,
-  } = useLocalStorage<string[]>("dockerComposeSelectedTools", []);
+  } = useLocalStorage<string[]>("dockerComposeSelectedTools", [])
 
   const {
     value: settings,
     setValue: setSettings,
     removeValue: clearSettings,
-  } = useLocalStorage<DockerSettings>("dockerComposeSettings", defaultSettings);
+  } = useLocalStorage<DockerSettings>("dockerComposeSettings", defaultSettings)
 
   const form = useForm({
     defaultValues: {
@@ -43,22 +45,22 @@ export default function DockerToolsClient({ dockerTools }: DockerToolsClientProp
       settings: settings,
     },
     onSubmit: async ({ value }) => {
-      console.log("Form submitted:", value);
+      console.log("Form submitted:", value)
     },
-  });
+  })
 
   const toggleToolSelection = (toolId: string) => {
     setSelectedTools((prev) =>
       prev.includes(toolId)
         ? prev.filter((id) => id !== toolId)
         : [...prev, toolId],
-    );
-  };
+    )
+  }
 
   const handleReset = () => {
-    clearSelectedTools();
-    clearSettings();
-  };
+    clearSelectedTools()
+    clearSettings()
+  }
 
   return (
     <>
@@ -83,5 +85,5 @@ export default function DockerToolsClient({ dockerTools }: DockerToolsClientProp
         onToggleSelection={toggleToolSelection}
       />
     </>
-  );
-} 
+  )
+}

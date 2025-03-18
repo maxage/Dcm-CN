@@ -1,22 +1,23 @@
 export interface DockerTool {
-  id: string;
-  name: string;
-  description: string;
-  category: string;
-  tags: string[];
-  githubUrl?: string;
+  id: string
+  name: string
+  description: string
+  category: string
+  tags: string[]
+  githubUrl?: string
   /** We recommend following this schema for common icons: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/<Format>/<Name>.<Format> */
-  icon?: string;
-  stars?: number;
-  composeContent?: string;
-  isUnsupported?: boolean;
+  icon?: string
+  stars?: number
+  composeContent?: string
+  isUnsupported?: boolean
 }
 
 export const dockerTools: DockerTool[] = [
   {
     id: "sonarr",
     name: "Sonarr",
-    description: "Smart PVR for usenet and bittorrent users. Monitors multiple RSS feeds for new TV show episodes, automatically grabbing, sorting, and renaming them.",
+    description:
+      "Smart PVR for usenet and bittorrent users. Monitors multiple RSS feeds for new TV show episodes, automatically grabbing, sorting, and renaming them.",
     category: "Media",
     tags: ["TV", "PVR", "Automation"],
     githubUrl: "https://github.com/Sonarr/Sonarr",
@@ -36,12 +37,13 @@ export const dockerTools: DockerTool[] = [
       - \${DATA_PATH}/downloads:/downloads
     ports:
       - 8989:8989
-    restart: \${RESTART_POLICY}`
+    restart: \${RESTART_POLICY}`,
   },
   {
     id: "radarr",
     name: "Radarr",
-    description: "A fork of Sonarr to work with movies. Automatically monitors and downloads movies, handles quality upgrades, and manages your movie collection with an elegant web interface.",
+    description:
+      "A fork of Sonarr to work with movies. Automatically monitors and downloads movies, handles quality upgrades, and manages your movie collection with an elegant web interface.",
     category: "Media",
     tags: ["Movies", "PVR", "Automation"],
     githubUrl: "https://github.com/Radarr/Radarr",
@@ -61,12 +63,13 @@ export const dockerTools: DockerTool[] = [
       - \${DATA_PATH}/downloads:/downloads
     ports:
       - 7878:7878
-    restart: \${RESTART_POLICY}`
+    restart: \${RESTART_POLICY}`,
   },
   {
     id: "lidarr",
     name: "Lidarr",
-    description: "A music collection manager for Usenet and BitTorrent users. Monitors multiple RSS feeds for new tracks from your favorite artists, automatically grabbing, sorting, and renaming them.",
+    description:
+      "A music collection manager for Usenet and BitTorrent users. Monitors multiple RSS feeds for new tracks from your favorite artists, automatically grabbing, sorting, and renaming them.",
     category: "Media",
     tags: ["Music", "PVR", "Automation"],
     githubUrl: "https://github.com/lidarr/Lidarr",
@@ -86,12 +89,13 @@ export const dockerTools: DockerTool[] = [
       - \${DATA_PATH}/downloads:/downloads
     ports:
       - 8686:8686
-    restart: \${RESTART_POLICY}`
+    restart: \${RESTART_POLICY}`,
   },
   {
     id: "readarr",
     name: "Readarr",
-    description: "A book, magazine, comics eBook and audiobook collection manager. Automatically monitors and downloads your favorite literature, handles quality upgrades, and manages your digital library.",
+    description:
+      "A book, magazine, comics eBook and audiobook collection manager. Automatically monitors and downloads your favorite literature, handles quality upgrades, and manages your digital library.",
     category: "Media",
     tags: ["Books", "eBooks", "Automation"],
     githubUrl: "https://github.com/Readarr/Readarr",
@@ -111,12 +115,13 @@ export const dockerTools: DockerTool[] = [
       - \${DATA_PATH}/downloads:/downloads
     ports:
       - 8787:8787
-    restart: \${RESTART_POLICY}`
+    restart: \${RESTART_POLICY}`,
   },
   {
     id: "prowlarr",
     name: "Prowlarr",
-    description: "A powerful indexer manager/proxy built on the arr stack. Seamlessly integrates with Sonarr, Radarr, Lidarr, and Readarr, supporting both Torrent Trackers and Usenet Indexers with centralized management.",
+    description:
+      "A powerful indexer manager/proxy built on the arr stack. Seamlessly integrates with Sonarr, Radarr, Lidarr, and Readarr, supporting both Torrent Trackers and Usenet Indexers with centralized management.",
     category: "Media",
     tags: ["Indexer", "Proxy", "Integration"],
     githubUrl: "https://github.com/Prowlarr/Prowlarr",
@@ -134,12 +139,13 @@ export const dockerTools: DockerTool[] = [
       - \${CONFIG_PATH}/prowlarr:/config
     ports:
       - 9696:9696
-    restart: \${RESTART_POLICY}`
+    restart: \${RESTART_POLICY}`,
   },
   {
     id: "homarr",
     name: "Homarr",
-    description: "A modern, feature-rich dashboard for your server. Integrates with Docker for container management, supports multiple users with advanced permissions, and provides a sleek interface for managing your self-hosted services.",
+    description:
+      "A modern, feature-rich dashboard for your server. Integrates with Docker for container management, supports multiple users with advanced permissions, and provides a sleek interface for managing your self-hosted services.",
     category: "Management",
     tags: ["Dashboard", "Management", "Monitoring"],
     githubUrl: "https://github.com/homarr-labs/homarr",
@@ -156,12 +162,13 @@ export const dockerTools: DockerTool[] = [
       - SECRET_ENCRYPTION_KEY=your_64_character_hex_string
     ports:
       - '7575:7575'
-    restart: \${RESTART_POLICY}`
+    restart: \${RESTART_POLICY}`,
   },
   {
     id: "jellyfin",
     name: "Jellyfin",
-    description: "A free software media system that puts you in control of managing and streaming your media. It is an alternative to the proprietary Emby and Plex, with no premium features behind a paywall.",
+    description:
+      "A free software media system that puts you in control of managing and streaming your media. It is an alternative to the proprietary Emby and Plex, with no premium features behind a paywall.",
     category: "Media",
     tags: ["Streaming", "Media Server", "Transcoding"],
     githubUrl: "https://github.com/jellyfin/jellyfin",
@@ -179,12 +186,13 @@ export const dockerTools: DockerTool[] = [
     environment:
       - TZ=\${TZ}
       - JELLYFIN_PublishedServerUrl=http://example.com
-    restart: \${RESTART_POLICY}`
+    restart: \${RESTART_POLICY}`,
   },
   {
     id: "plex",
     name: "Plex",
-    description: "A powerful media server that organizes video, music, and photos from personal libraries and streams them to smart TVs, streaming boxes, and mobile devices. Features a polished interface and advanced features for media management.",
+    description:
+      "A powerful media server that organizes video, music, and photos from personal libraries and streams them to smart TVs, streaming boxes, and mobile devices. Features a polished interface and advanced features for media management.",
     category: "Media",
     tags: ["Streaming", "Media Server", "Transcoding"],
     githubUrl: "https://github.com/plexinc/pms-docker",
@@ -204,12 +212,13 @@ export const dockerTools: DockerTool[] = [
       - \${CONFIG_PATH}/plex:/config
       - \${DATA_PATH}/tv:/tv
       - \${DATA_PATH}/movies:/movies
-    restart: \${RESTART_POLICY}`
+    restart: \${RESTART_POLICY}`,
   },
   {
     id: "emby",
     name: "Emby",
-    description: "A powerful media server that organizes and streams your video, music, live TV, and photos from personal media libraries to smart TVs, streaming boxes, and mobile devices. Features a standalone server with comprehensive media management capabilities.",
+    description:
+      "A powerful media server that organizes and streams your video, music, live TV, and photos from personal media libraries to smart TVs, streaming boxes, and mobile devices. Features a standalone server with comprehensive media management capabilities.",
     category: "Media",
     tags: ["Streaming", "Media Server", "Live TV"],
     githubUrl: "https://github.com/MediaBrowser/Emby",
@@ -231,12 +240,13 @@ export const dockerTools: DockerTool[] = [
       - 8920:8920 #optional
     devices:
       - /dev/dri:/dev/dri #optional
-    restart: \${RESTART_POLICY}`
+    restart: \${RESTART_POLICY}`,
   },
   {
     id: "portainer",
     name: "Portainer",
-    description: "A powerful container management interface that provides a user-friendly web UI for managing Docker environments. Features include container deployment, stack management with Docker Compose support, volume management, network configuration, and real-time container monitoring.",
+    description:
+      "A powerful container management interface that provides a user-friendly web UI for managing Docker environments. Features include container deployment, stack management with Docker Compose support, volume management, network configuration, and real-time container monitoring.",
     category: "Management",
     tags: ["Management", "UI", "Monitoring"],
     githubUrl: "https://github.com/portainer/portainer",
@@ -255,12 +265,13 @@ export const dockerTools: DockerTool[] = [
       - TZ=\${TZ}
     restart: \${RESTART_POLICY}
 volumes:
-  portainer_data:`
+  portainer_data:`,
   },
   {
     id: "heimdall",
     name: "Heimdall",
-    description: "A modern, elegant application dashboard and launcher that helps you organize all your web applications. Features a clean interface, customizable categories, and support for various authentication methods.",
+    description:
+      "A modern, elegant application dashboard and launcher that helps you organize all your web applications. Features a clean interface, customizable categories, and support for various authentication methods.",
     category: "Dashboard",
     tags: ["Dashboard", "Launcher", "Organization"],
     githubUrl: "https://github.com/linuxserver/Heimdall",
@@ -278,12 +289,13 @@ volumes:
     ports:
       - "80:80"
       - "443:443"
-    restart: \${RESTART_POLICY}`
+    restart: \${RESTART_POLICY}`,
   },
   {
     id: "traefik",
     name: "Traefik",
-    description: "A modern, cloud-native application proxy and load balancer that makes deploying microservices easy. Features automatic service discovery, Let's Encrypt support, and dynamic configuration.",
+    description:
+      "A modern, cloud-native application proxy and load balancer that makes deploying microservices easy. Features automatic service discovery, Let's Encrypt support, and dynamic configuration.",
     category: "Networking",
     tags: ["Proxy", "Load Balancer", "SSL"],
     githubUrl: "https://github.com/traefik/traefik",
@@ -307,12 +319,13 @@ volumes:
       - \${CONFIG_PATH}/traefik:/etc/traefik
     environment:
       - TZ=\${TZ}
-    restart: \${RESTART_POLICY}`
+    restart: \${RESTART_POLICY}`,
   },
   {
     id: "nginx",
     name: "Nginx",
-    description: "A powerful, high-performance web server and reverse proxy server. Features include load balancing, HTTP caching, serving static files, SSL/TLS termination, and acting as a reverse proxy for other services.",
+    description:
+      "A powerful, high-performance web server and reverse proxy server. Features include load balancing, HTTP caching, serving static files, SSL/TLS termination, and acting as a reverse proxy for other services.",
     category: "Networking",
     tags: ["Web Server", "Reverse Proxy", "Load Balancer"],
     githubUrl: "https://github.com/nginx/nginx",
@@ -330,7 +343,7 @@ volumes:
       - \${CONFIG_PATH}/nginx/ssl:/etc/nginx/ssl
     environment:
       - TZ=\${TZ}
-    restart: \${RESTART_POLICY}`
+    restart: \${RESTART_POLICY}`,
   },
   {
     id: "pihole",
@@ -356,7 +369,7 @@ volumes:
       - \${CONFIG_PATH}/pihole:/etc/pihole
     cap_add:
       - NET_ADMIN
-    restart: \${RESTART_POLICY}`
+    restart: \${RESTART_POLICY}`,
   },
   {
     id: "adguardhome",
@@ -381,7 +394,7 @@ volumes:
       - \${CONFIG_PATH}/adguardhome/work:/opt/adguardhome/work
     environment:
       - TZ=\${TZ}
-    restart: \${RESTART_POLICY}`
+    restart: \${RESTART_POLICY}`,
   },
   {
     id: "nextcloud",
@@ -425,7 +438,7 @@ volumes:
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
       - TZ=\${TZ}
-    restart: \${RESTART_POLICY}`
+    restart: \${RESTART_POLICY}`,
   },
   {
     id: "mariadb",
@@ -450,12 +463,13 @@ volumes:
       - MYSQL_USER=default_user
       - MYSQL_PASSWORD=your_password
       - TZ=\${TZ}
-    restart: \${RESTART_POLICY}`
+    restart: \${RESTART_POLICY}`,
   },
   {
     id: "mysql",
     name: "MySQL",
-    description: "The world's most popular open source database. Features high performance, reliability, and ease of use.",
+    description:
+      "The world's most popular open source database. Features high performance, reliability, and ease of use.",
     category: "Database",
     tags: ["SQL", "Database", "Relational"],
     githubUrl: "https://github.com/mysql/mysql-server",
@@ -478,7 +492,7 @@ volumes:
       - MYSQL_USER=your_user
       - MYSQL_PASSWORD=your_password
       - TZ=\${TZ}
-    restart: \${RESTART_POLICY}`
+    restart: \${RESTART_POLICY}`,
   },
   {
     id: "postgres",
@@ -503,12 +517,13 @@ volumes:
       - POSTGRES_DB=postgres
       - TZ=\${TZ}
     shm_size: 128mb
-    restart: \${RESTART_POLICY}`
+    restart: \${RESTART_POLICY}`,
   },
   {
     id: "mongodb",
     name: "MongoDB",
-    description: "A document-oriented NoSQL database that provides high performance, high availability, and easy scalability.",
+    description:
+      "A document-oriented NoSQL database that provides high performance, high availability, and easy scalability.",
     category: "Database",
     tags: ["NoSQL", "Database", "Document"],
     githubUrl: "https://github.com/mongodb/mongo",
@@ -527,12 +542,13 @@ volumes:
       - MONGO_INITDB_ROOT_PASSWORD=your_password
       - MONGO_INITDB_DATABASE=admin
       - TZ=\${TZ}
-    restart: \${RESTART_POLICY}`
+    restart: \${RESTART_POLICY}`,
   },
   {
     id: "redis",
     name: "Redis",
-    description: "An open-source, in-memory data structure store used as a database, cache, message broker, and queue.",
+    description:
+      "An open-source, in-memory data structure store used as a database, cache, message broker, and queue.",
     category: "Database",
     tags: ["Cache", "Database", "In-Memory"],
     githubUrl: "https://github.com/redis/redis",
@@ -549,12 +565,13 @@ volumes:
       - \${CONFIG_PATH}/redis:/usr/local/etc/redis
     environment:
       - TZ=\${TZ}
-    restart: \${RESTART_POLICY}`
+    restart: \${RESTART_POLICY}`,
   },
   {
     id: "grafana",
     name: "Grafana",
-    description: "The open and composable observability and data visualization platform. Visualize metrics, logs, and traces from multiple sources.",
+    description:
+      "The open and composable observability and data visualization platform. Visualize metrics, logs, and traces from multiple sources.",
     category: "Monitoring",
     tags: ["Monitoring", "Visualization", "Analytics"],
     githubUrl: "https://github.com/grafana/grafana",
@@ -573,12 +590,13 @@ volumes:
       - GF_SECURITY_ADMIN_PASSWORD=your_password
       - GF_USERS_ALLOW_SIGN_UP=false
       - TZ=\${TZ}
-    restart: \${RESTART_POLICY}`
+    restart: \${RESTART_POLICY}`,
   },
   {
     id: "prometheus",
     name: "Prometheus",
-    description: "A powerful monitoring and alerting toolkit designed for reliability. Features include a multi-dimensional data model, flexible query language (PromQL), efficient time series database, and modern alerting approach.",
+    description:
+      "A powerful monitoring and alerting toolkit designed for reliability. Features include a multi-dimensional data model, flexible query language (PromQL), efficient time series database, and modern alerting approach.",
     category: "Monitoring",
     tags: ["Monitoring", "Metrics", "Alerting"],
     githubUrl: "https://github.com/prometheus/prometheus",
@@ -599,12 +617,13 @@ volumes:
       - "9090:9090"
     environment:
       - TZ=\${TZ}
-    restart: \${RESTART_POLICY}`
+    restart: \${RESTART_POLICY}`,
   },
   {
     id: "homeassistant",
     name: "Home Assistant",
-    description: "Open source home automation that puts local control and privacy first.",
+    description:
+      "Open source home automation that puts local control and privacy first.",
     category: "Home Automation",
     tags: ["Smart Home", "Automation", "IoT"],
     githubUrl: "https://github.com/home-assistant/core",
@@ -619,7 +638,7 @@ volumes:
       - \${CONFIG_PATH}/homeassistant:/config
     environment:
       - TZ=\${TZ}
-    restart: \${RESTART_POLICY}`
+    restart: \${RESTART_POLICY}`,
   },
   {
     id: "vaultwarden",
@@ -641,7 +660,7 @@ volumes:
       - WEBSOCKET_ENABLED=true
       - WEBSOCKET_PORT=8080
       - TZ=\${TZ}
-    restart: \${RESTART_POLICY}`
+    restart: \${RESTART_POLICY}`,
   },
   {
     id: "gitea",
@@ -666,12 +685,13 @@ volumes:
       - MYSQL_PASSWORD=gitea_db_password
       - TZ=\${TZ}
     command: --custom-path /data/custom --app-url http://localhost:3000
-    restart: \${RESTART_POLICY}`
+    restart: \${RESTART_POLICY}`,
   },
   {
     id: "code-server",
     name: "Code Server",
-    description: "Run VS Code on any machine anywhere and access it in the browser.",
+    description:
+      "Run VS Code on any machine anywhere and access it in the browser.",
     category: "Development",
     tags: ["IDE", "Development", "VS Code"],
     githubUrl: "https://github.com/coder/code-server",
@@ -688,12 +708,13 @@ volumes:
       - PASSWORD=your_password
       - TZ=\${TZ}
     command: code-server --bind-addr 0.0.0.0:8080 --auth password --disable-telemetry
-    restart: \${RESTART_POLICY}`
+    restart: \${RESTART_POLICY}`,
   },
   {
     id: "watchtower",
     name: "Watchtower",
-    description: "An automated solution for keeping Docker containers up to date. Monitors running containers and automatically pulls and redeploys containers when it detects that a relevant image has been updated.",
+    description:
+      "An automated solution for keeping Docker containers up to date. Monitors running containers and automatically pulls and redeploys containers when it detects that a relevant image has been updated.",
     category: "Maintenance",
     tags: ["Automation", "Updates", "Monitoring"],
     githubUrl: "https://github.com/containrrr/watchtower",
@@ -710,12 +731,13 @@ volumes:
       - WATCHTOWER_SCHEDULE=0 0 4 * * * # Update at 4 AM daily
       - WATCHTOWER_CLEANUP=true
       - WATCHTOWER_INCLUDE_STOPPED=false
-    restart: \${RESTART_POLICY}`
+    restart: \${RESTART_POLICY}`,
   },
   {
     id: "elasticsearch",
     name: "Elasticsearch",
-    description: "A distributed, RESTful search and analytics engine capable of addressing a growing number of use cases.",
+    description:
+      "A distributed, RESTful search and analytics engine capable of addressing a growing number of use cases.",
     category: "Database",
     tags: ["Search", "Analytics", "Full-Text"],
     githubUrl: "https://github.com/elastic/elasticsearch",
@@ -742,42 +764,45 @@ volumes:
     ports:
       - "9200:9200"
       - "9300:9300"
-    restart: \${RESTART_POLICY}`
+    restart: \${RESTART_POLICY}`,
   },
   // Unsupported Immich
   {
     id: "immich",
     name: "Immich",
-    description: "High performance self-hosted photo and video backup solution.",
+    description:
+      "High performance self-hosted photo and video backup solution.",
     category: "Media",
     tags: ["Photos", "Videos", "Backup"],
     githubUrl: "https://github.com/immich-app/immich",
     icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/immich.svg",
     isUnsupported: true,
   },
-];
+]
 
 // Cache for GitHub stars data
-let cachedTools: DockerTool[] | null = null;
+let cachedTools: DockerTool[] | null = null
 
 /**
  * Extracts the owner and repo from a GitHub URL
  * @param url GitHub URL in format https://github.com/owner/repo
  */
-function extractGitHubInfo(url: string): { owner: string; repo: string } | null {
+function extractGitHubInfo(
+  url: string,
+): { owner: string; repo: string } | null {
   try {
-    const match = url.match(/github\.com\/([^/]+)\/([^/]+)/);
-    if (!match) return null;
-    return { owner: match[1], repo: match[2] };
+    const match = url.match(/github\.com\/([^/]+)\/([^/]+)/)
+    if (!match) return null
+    return { owner: match[1], repo: match[2] }
   } catch {
-    return null;
+    return null
   }
 }
 
 /**
  * Helper function to add delay between requests
  */
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 /**
  * Fetches GitHub stars for all tools that have a GitHub URL
@@ -786,24 +811,24 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 export async function fetchGitHubStars(): Promise<DockerTool[]> {
   // Return cached data if available
   if (cachedTools) {
-    return cachedTools;
+    return cachedTools
   }
 
-  const toolsWithGitHub = dockerTools.filter(tool => tool.githubUrl);
-  
-  const updatedTools = [];
-  
+  const toolsWithGitHub = dockerTools.filter((tool) => tool.githubUrl)
+
+  const updatedTools = []
+
   // Process tools sequentially with delay
   for (const tool of dockerTools) {
     if (!tool.githubUrl) {
-      updatedTools.push(tool);
-      continue;
+      updatedTools.push(tool)
+      continue
     }
 
-    const githubInfo = extractGitHubInfo(tool.githubUrl);
+    const githubInfo = extractGitHubInfo(tool.githubUrl)
     if (!githubInfo) {
-      updatedTools.push(tool);
-      continue;
+      updatedTools.push(tool)
+      continue
     }
 
     try {
@@ -811,34 +836,36 @@ export async function fetchGitHubStars(): Promise<DockerTool[]> {
         `https://api.github.com/repos/${githubInfo.owner}/${githubInfo.repo}`,
         {
           headers: {
-            'Accept': 'application/vnd.github.v3+json',
+            Accept: "application/vnd.github.v3+json",
             ...(process.env.GITHUB_TOKEN && {
-              'Authorization': `Bearer ${process.env.GITHUB_TOKEN}`
-            })
-          }
-        }
-      );
+              Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+            }),
+          },
+        },
+      )
 
       if (!response.ok) {
-        console.warn(`Failed to fetch stars for ${tool.name}: ${response.statusText}`);
-        updatedTools.push(tool);
+        console.warn(
+          `Failed to fetch stars for ${tool.name}: ${response.statusText}`,
+        )
+        updatedTools.push(tool)
       } else {
-        const data = await response.json();
+        const data = await response.json()
         updatedTools.push({
           ...tool,
-          stars: data.stargazers_count
-        });
+          stars: data.stargazers_count,
+        })
       }
 
       // Add delay between requests
-      await delay(250);
+      await delay(250)
     } catch (error) {
-      console.warn(`Error fetching stars for ${tool.name}:`, error);
-      updatedTools.push(tool);
+      console.warn(`Error fetching stars for ${tool.name}:`, error)
+      updatedTools.push(tool)
     }
   }
 
   // Cache the results
-  cachedTools = updatedTools;
-  return updatedTools;
+  cachedTools = updatedTools
+  return updatedTools
 }

@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import {
   CommandDialog,
@@ -7,41 +7,41 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/components/ui/command";
-import { DialogTitle } from "@/components/ui/dialog";
-import { dockerTools } from "@/lib/docker-tools";
-import { Check } from "lucide-react";
-import { useEffect, useState } from "react";
+} from "@/components/ui/command"
+import { DialogTitle } from "@/components/ui/dialog"
+import { dockerTools } from "@/lib/docker-tools"
+import { Check } from "lucide-react"
+import { useEffect, useState } from "react"
 
 interface SearchCommandProps {
-  selectedTools: string[];
-  onToggleToolSelection: (toolId: string) => void;
+  selectedTools: string[]
+  onToggleToolSelection: (toolId: string) => void
 }
 
 export function SearchCommand({
   selectedTools,
   onToggleToolSelection,
 }: SearchCommandProps) {
-  const [open, setOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [open, setOpen] = useState(false)
+  const [searchTerm, setSearchTerm] = useState("")
 
   // Filter tools based on search term
   const filteredTools = dockerTools.filter((tool) =>
     tool.name.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
+  )
 
   // Handle keyboard shortcut to open dialog
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        setOpen((open) => !open);
+        e.preventDefault()
+        setOpen((open) => !open)
       }
-    };
+    }
 
-    document.addEventListener("keydown", down);
-    return () => document.removeEventListener("keydown", down);
-  }, []);
+    document.addEventListener("keydown", down)
+    return () => document.removeEventListener("keydown", down)
+  }, [])
 
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
@@ -70,5 +70,5 @@ export function SearchCommand({
         </CommandGroup>
       </CommandList>
     </CommandDialog>
-  );
+  )
 }

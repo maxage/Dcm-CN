@@ -1,13 +1,13 @@
-"use client";
+"use client"
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@/components/ui/dialog"
 import {
   Form,
   FormControl,
@@ -15,8 +15,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
 import {
   MultiSelector,
   MultiSelectorContent,
@@ -24,22 +24,22 @@ import {
   MultiSelectorItem,
   MultiSelectorList,
   MultiSelectorTrigger,
-} from "@/components/ui/multi-select";
+} from "@/components/ui/multi-select"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { dockerTools } from "@/lib/docker-tools";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { DialogDescription } from "@radix-ui/react-dialog";
-import { ExternalLink, Github, HelpCircle, PlusCircle, X } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
+} from "@/components/ui/select"
+import { Textarea } from "@/components/ui/textarea"
+import { dockerTools } from "@/lib/docker-tools"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { DialogDescription } from "@radix-ui/react-dialog"
+import { ExternalLink, Github, HelpCircle, PlusCircle, X } from "lucide-react"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
 
 const CATEGORIES = [
   "Media",
@@ -51,12 +51,12 @@ const CATEGORIES = [
   "Home Automation",
   "Security",
   "Development",
-];
+]
 
 // Collect all unique tags from existing tools
 const ALL_TAGS = Array.from(
   new Set(dockerTools.flatMap((tool) => tool.tags)),
-).sort();
+).sort()
 
 const formSchema = z.object({
   id: z.string().min(1, "Container ID is required"),
@@ -66,14 +66,14 @@ const formSchema = z.object({
   tags: z.array(z.string()).min(1, "At least one tag is required"),
   githubUrl: z.string().url().optional().or(z.literal("")),
   containerData: z.string().min(1, "Container definition is required"),
-});
+})
 
-type FormValues = z.infer<typeof formSchema>;
+type FormValues = z.infer<typeof formSchema>
 
 export function ContainerSubmissionForm() {
-  const [open, setOpen] = useState(false);
-  const [showExample, setShowExample] = useState(false);
-  const [tagInput, setTagInput] = useState("");
+  const [open, setOpen] = useState(false)
+  const [showExample, setShowExample] = useState(false)
+  const [tagInput, setTagInput] = useState("")
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -99,19 +99,19 @@ export function ContainerSubmissionForm() {
       - \${CONFIG}/sonarr:/config
       - \${DATA}/data:/data`,
     },
-  });
+  })
 
   function onSubmit(values: FormValues) {
-    console.log(values);
-    setOpen(false);
+    console.log(values)
+    setOpen(false)
   }
 
   // Function to open GitHub issue template directly
   const openGitHubIssue = () => {
     const issueUrl =
-      "https://github.com/username/docker-compose-selector/issues/new?template=container-submission.md";
-    window.open(issueUrl, "_blank");
-  };
+      "https://github.com/username/docker-compose-selector/issues/new?template=container-submission.md"
+    window.open(issueUrl, "_blank")
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -359,5 +359,5 @@ export function ContainerSubmissionForm() {
         </Form>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

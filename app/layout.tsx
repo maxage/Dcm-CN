@@ -1,26 +1,26 @@
-import { ContainerSubmissionForm } from "@/components/container-submission-form";
-import { ThemeProvider } from "@/components/theme-provider";
-import { Button } from "@/components/ui/button";
-import { Heart, HeartIcon } from "lucide-react";
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import Link from "next/link";
-import type React from "react";
-import { siGithub } from "simple-icons";
-import "./globals.css";
+import { ContainerSubmissionForm } from "@/components/container-submission-form"
+import { ThemeProvider } from "@/components/theme-provider"
+import { Button } from "@/components/ui/button"
+import { Heart, HeartIcon } from "lucide-react"
+import type { Metadata } from "next"
+import { Inter } from "next/font/google"
+import Link from "next/link"
+import type React from "react"
+import { siGithub } from "simple-icons"
+import "./globals.css"
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "Docker Compose Generator",
   description: "Select tools to generate your docker-compose.yaml file",
   generator: "v0.dev",
-};
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -114,5 +114,5 @@ export default function RootLayout({
         </ThemeProvider>
       </body>
     </html>
-  );
+  )
 }

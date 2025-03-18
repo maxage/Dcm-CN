@@ -1,11 +1,11 @@
-import type { DockerTool } from "@/lib/docker-tools";
-import DockerCard from "./docker-card";
+import type { DockerTool } from "@/lib/docker-tools"
+import DockerCard from "./docker-card"
 
 type ToolGridProps = {
-  tools: DockerTool[];
-  selectedTools: string[];
-  onToggleSelection: (toolId: string) => void;
-};
+  tools: DockerTool[]
+  selectedTools: string[]
+  onToggleSelection: (toolId: string) => void
+}
 
 const ToolGrid = ({
   tools,
@@ -13,7 +13,7 @@ const ToolGrid = ({
   onToggleSelection,
 }: ToolGridProps) => {
   const gridClasses =
-    "grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 3xl:grid-cols-7";
+    "grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 3xl:grid-cols-7"
 
   return (
     <div className={gridClasses}>
@@ -27,7 +27,7 @@ const ToolGrid = ({
         </div>
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default ToolGrid;
+export default ToolGrid
