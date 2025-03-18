@@ -149,7 +149,7 @@ export default function DockerCard({
       )}
 
       <CardContent className="flex h-full flex-col p-4">
-        <div className="mb-3 flex items-center gap-2">
+        <div className="mb-3 grid grid-cols-[auto_1fr] items-center gap-2">
           <div
             className={cn(
               "flex h-10 w-10 items-center justify-center overflow-hidden rounded-md transition-all duration-300",
