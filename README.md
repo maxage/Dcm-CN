@@ -1,5 +1,5 @@
 <!-- Project Title -->
-# 🐳 Docker Compose Generator
+# <img src="./public/favicon.png" width="30" height="30" alt="DCM Logo"> DCM - Docker Compose Maker
 
 <p align="center">
 <img src="https://img.shields.io/github/stars/ajnart/docker-compose-selector?label=%E2%AD%90%20Stars&style=flat-square?branch=master&kill_cache=1%22">
@@ -32,7 +32,7 @@
 
 ## 📋 About
 
-Docker Compose Generator is a simple yet powerful tool that helps you create `docker-compose.yaml` files for your self-hosted applications. Select from a curated list of popular containers and generate a ready-to-use configuration file with just a few clicks.
+DCM (Docker Compose Maker) is a simple yet powerful tool that helps you create `docker-compose.yaml` files for your self-hosted applications. Select from a curated list of popular containers and generate a ready-to-use configuration file with just a few clicks.
 
 No more copy-pasting from documentation or trying to remember the correct configuration options - this tool makes it easy to set up your Docker environment.
 
@@ -73,9 +73,9 @@ Create a `docker-compose.yaml` file:
 ```yaml
 version: '3'
 services:
-  docker-compose-generator:
+  dcm:
     image: ghcr.io/ajnart/dcm
-    container_name: docker-compose-generator
+    container_name: dcm
     ports:
       - "3000:3000"
     restart: unless-stopped
@@ -115,7 +115,7 @@ yarn start
 
 ## 🧰 Supported Tools
 
-The Docker Compose Generator includes configuration for many popular self-hosted applications, including:
+DCM includes configuration for many popular self-hosted applications, including:
 
 - 📺 **Media Management**: Sonarr, Radarr, Lidarr, Readarr, Prowlarr, Jellyfin, Plex, Emby
 - 🔍 **Dashboards**: Homarr, Heimdall, Portainer
