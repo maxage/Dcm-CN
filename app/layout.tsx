@@ -9,8 +9,8 @@ import { Inter } from "next/font/google"
 import Link from "next/link"
 import type React from "react"
 import { siGithub } from "simple-icons"
-import './globals.css'
-import { PostHogProvider } from './providers'
+import "./globals.css"
+import { PostHogProvider } from "./providers"
 
 const inter = Inter({ subsets: ["latin"] })
 

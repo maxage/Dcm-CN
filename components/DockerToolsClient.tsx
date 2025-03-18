@@ -52,13 +52,13 @@ export default function DockerToolsClient({
 
   const toggleToolSelection = (toolId: string) => {
     // Find the tool to check if it's unsupported
-    const tool = dockerTools.find(t => t.id === toolId)
-    
+    const tool = dockerTools.find((t) => t.id === toolId)
+
     // If the tool is unsupported, don't allow selection
     if (tool?.isUnsupported) {
       return
     }
-    
+
     posthog.capture("tool_selected", { tool_id: toolId })
     setSelectedTools((prev) =>
       prev.includes(toolId)

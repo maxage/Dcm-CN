@@ -35,14 +35,11 @@ function TruncatedText({ text }: { text: string }) {
   return (
     <p
       ref={textRef}
-      className={cn(
-        "select-none text-xs",
-        !isExpanded && "line-clamp-3",
-      )}
+      className={cn("select-none text-xs", !isExpanded && "line-clamp-3")}
     >
       {text}
       {isTruncated && !isExpanded && (
-        <span 
+        <span
           className="description-expand cursor-pointer text-blue-500 hover:underline"
           onClick={(e) => {
             e.stopPropagation()
@@ -169,7 +166,9 @@ export default function DockerCard({
             )}
           </div>
           <div className="flex w-full items-center justify-between gap-2">
-            <h3 className="font-mono font-semibold tracking-tight">{tool.name}</h3>
+            <h3 className="font-mono font-semibold tracking-tight">
+              {tool.name}
+            </h3>
             <p className="text-muted-foreground text-xs">{tool.category}</p>
           </div>
         </div>
@@ -197,9 +196,7 @@ export default function DockerCard({
         <HoverCardTrigger asChild>{CardComponent}</HoverCardTrigger>
         <HoverCardContent className="w-80 border-destructive shadow-md">
           <div className="flex flex-col gap-2">
-            <p className="font-semibold">
-              Unsupported Container
-            </p>
+            <p className="font-semibold">Unsupported Container</p>
             <p className="text-muted-foreground text-xs">
               This container is not officially supported in our tool. <br />
               We recommend following the official documentation for installation
