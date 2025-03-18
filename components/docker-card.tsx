@@ -93,7 +93,7 @@ export default function DockerCard({
   const CardComponent = (
     <Card
       className={cn(
-        "group relative h-full cursor-pointer overflow-hidden transition-all hover:shadow-md",
+        "group relative h-full cursor-pointer overflow-hidden rounded-sm transition-all hover:shadow-md",
         isSelected && !tool.isUnsupported
           ? "border-primary bg-primary/5"
           : tool.isUnsupported
@@ -145,7 +145,7 @@ export default function DockerCard({
       )}
 
       <CardContent className="flex h-full flex-col p-4">
-        <div className="mb-3 flex items-center gap-3">
+        <div className="mb-3 flex items-center gap-2">
           <div
             className={cn(
               "flex h-10 w-10 items-center justify-center overflow-hidden rounded-md transition-all duration-300",
@@ -194,12 +194,12 @@ export default function DockerCard({
     return (
       <HoverCard openDelay={100} closeDelay={100}>
         <HoverCardTrigger asChild>{CardComponent}</HoverCardTrigger>
-        <HoverCardContent className="w-80">
+        <HoverCardContent className="w-80 border-destructive shadow-md">
           <div className="flex flex-col gap-2">
-            <p className="font-semibold text-destructive">
+            <p className="font-semibold">
               Unsupported Container
             </p>
-            <p className="text-muted-foreground text-sm">
+            <p className="text-muted-foreground text-xs">
               This container is not officially supported in our tool. <br />
               We recommend following the official documentation for installation
               instructions.
