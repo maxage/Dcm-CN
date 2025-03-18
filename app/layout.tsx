@@ -1,6 +1,7 @@
 // app/layout.tsx
 
-import { Footer, Header } from "@/components/layout"
+import { Footer } from "@/components/layout/Footer"
+import { Header } from "@/components/layout/Header"
 import { ThemeProvider } from "@/components/theme-provider"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
@@ -22,6 +23,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="icon" href="/favicon.png" sizes="any" />
+      </head>
       <body className={inter.className}>
         <PostHogProvider>
           <ThemeProvider
