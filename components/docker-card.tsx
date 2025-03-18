@@ -69,7 +69,7 @@ export default function DockerCard({
           <Link
             href={tool.githubUrl}
             target="_blank"
-            className="github-link rounded-full bg-background/80 p-1.5 opacity-0 shadow-sm transition-all duration-300 hover:scale-110 hover:bg-background hover:shadow-md group-hover:opacity-100"
+            className="rounded-full bg-background/80 p-1.5 opacity-0 shadow-sm transition-all duration-300 hover:scale-110 hover:bg-background hover:shadow-md group-hover:opacity-100"
             onClick={(e) => e.stopPropagation()}
           >
             <svg

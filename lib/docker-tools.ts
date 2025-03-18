@@ -58,6 +58,16 @@ export const dockerTools: DockerTool[] = [
     githubUrl: "https://github.com/Prowlarr/Prowlarr",
     icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/prowlarr.svg",
   },
+  // Homarr
+  {
+    id: "homarr",
+    name: "Homarr",
+    description: "A simple, elegant, and easy-to-use home dashboard and launcher.",
+    category: "Management",
+    tags: ["Dashboard", "Launcher"],
+    githubUrl: "https://github.com/homarr-labs/homarr",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/homarr.svg",
+  },
   {
     id: "jellyfin",
     name: "Jellyfin",
@@ -75,7 +85,7 @@ export const dockerTools: DockerTool[] = [
       "Organize, stream, and share your personal collection of movies, TV, music, and photos.",
     category: "Media",
     tags: ["Streaming", "Media Server"],
-    githubUrl: "https://github.com/plexinc",
+    githubUrl: "https://github.com/plexinc/pms-docker",
     icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/plex.svg",
   },
   {
@@ -131,7 +141,7 @@ export const dockerTools: DockerTool[] = [
     category: "Networking",
     tags: ["Ad Blocking", "DNS", "Privacy"],
     githubUrl: "https://github.com/pi-hole/pi-hole",
-    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/pihole.svg",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/pi-hole.svg",
   },
   {
     id: "adguardhome",
@@ -140,7 +150,7 @@ export const dockerTools: DockerTool[] = [
     category: "Networking",
     tags: ["Ad Blocking", "DNS", "Privacy"],
     githubUrl: "https://github.com/AdguardTeam/AdGuardHome",
-    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/adguardhome.svg",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/adguard-home.svg",
   },
   {
     id: "nextcloud",
@@ -214,7 +224,7 @@ export const dockerTools: DockerTool[] = [
     category: "Home Automation",
     tags: ["Smart Home", "Automation", "IoT"],
     githubUrl: "https://github.com/home-assistant/core",
-    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/homeassistant.svg",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/home-assistant.svg",
   },
   {
     id: "vaultwarden",
@@ -242,7 +252,7 @@ export const dockerTools: DockerTool[] = [
     category: "Development",
     tags: ["IDE", "Development", "VS Code"],
     githubUrl: "https://github.com/coder/code-server",
-    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/code-server.svg",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/code-server.png",
   },
 ];
 

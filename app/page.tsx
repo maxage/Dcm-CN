@@ -6,7 +6,7 @@ import { fetchGitHubStars } from "@/lib/docker-tools";
 export const dynamic = 'force-static';
 
 // This ensures the data is cached and reused across requests
-export const revalidate = 3600; // revalidate every hour
+export const revalidate = 21600; // revalidate every 6 hours
 
 // Generate the data at build time
 export async function generateStaticParams() {
