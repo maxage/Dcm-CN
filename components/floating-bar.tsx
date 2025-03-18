@@ -12,8 +12,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { BadgeList } from "@/components/ui/badge-list"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 import { Search } from "lucide-react"
 import posthog from "posthog-js"
@@ -77,10 +82,14 @@ export default function FloatingBar({
     setIsCopyDialogOpen(false)
   }
 
+  // Prevent rendering client-interactive elements during SSR
   const triggerSearchShortcut = (e: React.MouseEvent) => {
     if (!isMounted) return
 
     e.preventDefault()
+
+    // Use a custom event that the SearchCommand component will listen for
+    // Instead of trying to simulate a keyboard event
     const customEvent = new CustomEvent("triggerCommandK", {
       bubbles: true,
     })
@@ -165,7 +174,11 @@ export default function FloatingBar({
             isFixed && "max-w-7xl px-4",
           )}
         >
-          <div className="flex flex-col gap-4">
+          <div
+            className={cn(
+              isFixed ? "flex flex-col gap-4" : "flex flex-col gap-4",
+            )}
+          >
             <div
               className={cn(
                 isFixed
@@ -182,7 +195,46 @@ export default function FloatingBar({
                     </span>
                   </div>
 
-                  {selectedCount > 0 && <BadgeList items={selectedTools} />}
+                  {selectedCount > 0 && (
+                    <div className="mt-2 flex max-w-[600px] flex-wrap gap-1.5">
+                      {selectedTools.slice(0, 4).map((tool, index) => (
+                        <Badge
+                          key={tool}
+                          variant="outline"
+                          className="h-5 bg-primary/5 py-0 text-xs hover:bg-primary/10"
+                          style={{ animationDelay: `${index * 50}ms` }}
+                        >
+                          {tool}
+                        </Badge>
+                      ))}
+
+                      {selectedTools.length > 4 && (
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Badge
+                              variant="outline"
+                              className="h-5 cursor-pointer bg-primary/5 py-0 text-xs hover:bg-primary/10"
+                              style={{ animationDelay: `${4 * 50}ms` }}
+                            >
+                              +{selectedTools.length - 4} others
+                            </Badge>
+                          </PopoverTrigger>
+                          <PopoverContent className="max-h-[300px] w-auto overflow-y-auto p-0">
+                            <div className="flex flex-col gap-1 p-2">
+                              {selectedTools.slice(4).map((tool) => (
+                                <div
+                                  key={tool}
+                                  className="rounded-sm px-2 py-1 text-sm hover:bg-muted"
+                                >
+                                  {tool}
+                                </div>
+                              ))}
+                            </div>
+                          </PopoverContent>
+                        </Popover>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 <div className="flex gap-2">
@@ -196,30 +248,29 @@ export default function FloatingBar({
                     <span>Search</span>
                     <kbd className="pointer-events-none ml-1 inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-medium font-mono text-[10px] text-muted-foreground opacity-100">
                       <span className="text-xs">
-                        {isApple ? "⌘" : "Ctrl"}
+                        {isMounted ? (isApple ? "⌘" : "Ctrl") : "⌘"}
                       </span>
                       K
                     </kbd>
                   </Button>
 
+                  {onReset && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setIsResetDialogOpen(true)}
+                      className="transition-transform motion-safe:hover:scale-105"
+                    >
+                      Reset All
+                    </Button>
+                  )}
                   <Button
-                    variant="outline"
-                    size="sm"
-                    className="transition-transform motion-safe:hover:scale-105"
-                    onClick={() => selectedCount > 0 && setIsCopyDialogOpen(true)}
                     disabled={selectedCount === 0}
-                  >
-                    Generate
-                  </Button>
-
-                  <Button
-                    variant="outline"
                     size="sm"
-                    className="text-destructive hover:bg-destructive/10 hover:text-destructive transition-transform motion-safe:hover:scale-105"
-                    onClick={() => selectedCount > 0 && setIsResetDialogOpen(true)}
-                    disabled={selectedCount === 0}
+                    className="hover:motion-preset-confetti font-semibold"
+                    onClick={() => setIsCopyDialogOpen(true)}
                   >
-                    Reset
+                    Copy Compose
                   </Button>
                 </div>
               </div>
