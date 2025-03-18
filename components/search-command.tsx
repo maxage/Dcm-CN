@@ -25,38 +25,33 @@ export function SearchCommand({
   const [open, setOpen] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
 
-  // Filter tools based on search term
   const filteredTools = dockerTools.filter((tool) =>
     tool.name.toLowerCase().includes(searchTerm.toLowerCase()),
   )
 
-  // Handle keyboard shortcut to open dialog
   useEffect(() => {
-    const down = (e: KeyboardEvent) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault()
         setOpen((open) => !open)
       }
     }
 
-    // Listen for our custom event from the floating bar button
     const handleCustomTrigger = () => {
       setOpen((open) => !open)
     }
 
-    document.addEventListener("keydown", down)
+    document.addEventListener("keydown", handleKeyDown)
     document.addEventListener("triggerCommandK", handleCustomTrigger)
 
     return () => {
-      document.removeEventListener("keydown", down)
+      document.removeEventListener("keydown", handleKeyDown)
       document.removeEventListener("triggerCommandK", handleCustomTrigger)
     }
   }, [])
 
-  // Handle tool selection with unsupported check
   const handleToolSelect = (toolId: string) => {
     const tool = dockerTools.find((t) => t.id === toolId)
-    // Only toggle selection if the tool is not marked as unsupported
     if (tool && !tool.isUnsupported) {
       onToggleToolSelection(toolId)
     }
@@ -78,7 +73,7 @@ export function SearchCommand({
             <CommandItem
               key={tool.id}
               onSelect={() => handleToolSelect(tool.id)}
-              className={"flex items-center justify-between"}
+              className="flex items-center justify-between"
               disabled={tool.isUnsupported}
             >
               <div className="flex items-center">
