@@ -15,10 +15,11 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
     if (!enableAnalytics) return
 
     posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY as string, {
-      ui_host: process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://eu.i.posthog.com',
+      ui_host: process.env.NEXT_PUBLIC_POSTHOG_UI_HOST || 'https://eu.i.posthog.com',
       api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://eu.i.posthog.com',
-      person_profiles: 'identified_only',
-      capture_pageview: false // Disable automatic pageview capture, as we capture manually
+      person_profiles: 'always',
+      capture_pageview: false, // Disable automatic pageview capture, as we capture manually
+			capture_pageleave: true,
     })
   }, [])
 
