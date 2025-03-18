@@ -814,21 +814,18 @@ export async function fetchGitHubStars(): Promise<DockerTool[]> {
     return cachedTools
   }
 
-  const toolsWithGitHub = dockerTools.filter((tool) => tool.githubUrl)
+  const toolsWithoutGitHub = dockerTools.filter((tool) => !tool.githubUrl);
+  const toolsWithGitHub = dockerTools.filter((tool) => tool.githubUrl);
 
-  const updatedTools = []
-
-  // Process tools sequentially with delay
-  for (const tool of dockerTools) {
+  // Create an array of promises for all GitHub requests
+  const fetchPromises = toolsWithGitHub.map(async (tool) => {
     if (!tool.githubUrl) {
-      updatedTools.push(tool)
-      continue
+      return tool;
     }
 
-    const githubInfo = extractGitHubInfo(tool.githubUrl)
+    const githubInfo = extractGitHubInfo(tool.githubUrl);
     if (!githubInfo) {
-      updatedTools.push(tool)
-      continue
+      return tool;
     }
 
     try {
@@ -842,30 +839,34 @@ export async function fetchGitHubStars(): Promise<DockerTool[]> {
             }),
           },
         },
-      )
+      );
 
       if (!response.ok) {
         console.warn(
           `Failed to fetch stars for ${tool.name}: ${response.statusText}`,
-        )
-        updatedTools.push(tool)
-      } else {
-        const data = await response.json()
-        updatedTools.push({
-          ...tool,
-          stars: data.stargazers_count,
-        })
+        );
+        return tool;
       }
 
-      // Add delay between requests
-      await delay(250)
+      const data = await response.json();
+      console.log(`Fetched stars for ${tool.name}`);
+      return {
+        ...tool,
+        stars: data.stargazers_count,
+      };
     } catch (error) {
-      console.warn(`Error fetching stars for ${tool.name}:`, error)
-      updatedTools.push(tool)
+      console.warn(`Error fetching stars for ${tool.name}:`, error);
+      return tool;
     }
-  }
+  });
+
+  // Execute all promises concurrently
+  const updatedGitHubTools = await Promise.all(fetchPromises);
+  
+  // Combine tools with and without GitHub URLs
+  const updatedTools = [...toolsWithoutGitHub, ...updatedGitHubTools];
 
   // Cache the results
-  cachedTools = updatedTools
-  return updatedTools
+  cachedTools = updatedTools;
+  return updatedTools;
 }
