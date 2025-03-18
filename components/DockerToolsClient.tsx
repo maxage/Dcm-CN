@@ -6,6 +6,7 @@ import SettingsPanel, { type DockerSettings } from "@/components/settings-panel"
 import { useLocalStorage } from "@/hooks/useLocalStorage"
 import type { DockerTool } from "@/lib/docker-tools"
 import { useForm } from "@tanstack/react-form"
+import posthog from "posthog-js"
 
 const defaultSettings: DockerSettings = {
   configPath: "/opt/appdata/config",
@@ -50,6 +51,7 @@ export default function DockerToolsClient({
   })
 
   const toggleToolSelection = (toolId: string) => {
+    posthog.capture("tool_selected", { tool_id: toolId })
     setSelectedTools((prev) =>
       prev.includes(toolId)
         ? prev.filter((id) => id !== toolId)

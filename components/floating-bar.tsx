@@ -16,6 +16,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { Search } from "lucide-react"
+import posthog from "posthog-js"
 import { useEffect, useState } from "react"
 
 interface FloatingBarProps {
@@ -81,14 +82,13 @@ export default function FloatingBar({
     if (!isMounted) return
 
     e.preventDefault()
-    // Dispatch the keyboard shortcut
-    const kEvent = new KeyboardEvent("keydown", {
-      key: "k",
-      metaKey: isApple,
-      ctrlKey: !isApple,
-      bubbles: true,
+    
+    // Use a custom event that the SearchCommand component will listen for
+    // Instead of trying to simulate a keyboard event
+    const customEvent = new CustomEvent('triggerCommandK', {
+      bubbles: true
     })
-    document.dispatchEvent(kEvent)
+    document.dispatchEvent(customEvent)
   }
 
   return (
@@ -138,7 +138,13 @@ export default function FloatingBar({
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={handleCopy}>
+                <AlertDialogAction onClick={() => {
+                  posthog.capture("copy_compose_clicked", {
+                    selected_tools: selectedTools,
+                    settings: settings,
+                  })
+                  handleCopy()
+                }}>
                   Copy to Clipboard
                 </AlertDialogAction>
               </AlertDialogFooter>

@@ -11,6 +11,7 @@ import type { DockerTool } from "@/lib/docker-tools"
 import { cn } from "@/lib/utils"
 import { AlertCircle, Star } from "lucide-react"
 import Link from "next/link"
+import posthog from "posthog-js"
 import { useEffect, useRef, useState } from "react"
 import { siGithub } from "simple-icons"
 
@@ -35,8 +36,8 @@ function TruncatedText({ text }: { text: string }) {
     <p
       ref={textRef}
       className={cn(
-        "select-none text-muted-foreground text-sm",
-        !isExpanded && "line-clamp-2",
+        "select-none text-xs",
+        !isExpanded && "line-clamp-3",
       )}
       onClick={(e) => {
         if (isTruncated) {
@@ -128,7 +129,10 @@ export default function DockerCard({
             href={tool.githubUrl}
             target="_blank"
             className="github-link rounded-full bg-background/80 p-1.5 opacity-0 shadow-sm transition-all duration-300 hover:scale-110 hover:bg-background hover:shadow-md group-hover:opacity-100"
-            onClick={(e) => e.stopPropagation()}
+            onClick={(e) => {
+              posthog.capture("github_link_clicked", { tool_id: tool.id })
+              e.stopPropagation()
+            }}
           >
             <svg
               aria-label="GitHub"
@@ -164,11 +168,8 @@ export default function DockerCard({
               <div className="font-bold">{tool.name.charAt(0)}</div>
             )}
           </div>
-          <div className="flex items-center gap-2">
-            <h3 className="font-medium">{tool.name}</h3>
-            {tool.isUnsupported && (
-              <AlertCircle className="h-4 w-4 text-destructive" />
-            )}
+          <div className="flex w-full items-center justify-between gap-2">
+            <h3 className="font-mono font-semibold tracking-tight">{tool.name}</h3>
             <p className="text-muted-foreground text-xs">{tool.category}</p>
           </div>
         </div>
@@ -179,8 +180,8 @@ export default function DockerCard({
           {tool.tags.map((tag) => (
             <Badge
               key={tag}
-              variant="secondary"
-              className="rounded-md text-xs transition-all duration-300"
+              variant="outline"
+              className="rounded-md px-1 font-normal text-xs transition-all duration-300"
             >
               {tag}
             </Badge>

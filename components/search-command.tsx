@@ -39,8 +39,18 @@ export function SearchCommand({
       }
     }
 
+    // Listen for our custom event from the floating bar button
+    const handleCustomTrigger = () => {
+      setOpen((open) => !open)
+    }
+
     document.addEventListener("keydown", down)
-    return () => document.removeEventListener("keydown", down)
+    document.addEventListener("triggerCommandK", handleCustomTrigger)
+    
+    return () => {
+      document.removeEventListener("keydown", down)
+      document.removeEventListener("triggerCommandK", handleCustomTrigger)
+    }
   }, [])
 
   return (
