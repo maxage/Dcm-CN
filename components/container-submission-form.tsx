@@ -122,7 +122,7 @@ export function ContainerSubmissionForm() {
         >
           <span className="relative z-10 flex items-center gap-2">
             <PlusCircle size={18} />
-            <span>Suggest a new container</span>
+            <span>Suggest container</span>
           </span>
           <span className="absolute inset-0 bg-gradient-to-r from-green-500/20 to-green-400/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
         </Button>

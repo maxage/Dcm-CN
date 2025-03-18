@@ -93,7 +93,7 @@ export default function DockerCard({
       className={cn(
         "group relative h-full cursor-pointer select-none overflow-hidden rounded-sm transition-all hover:shadow-md",
         isSelected && !tool.isUnsupported
-          ? "bg-primary/5"
+          ? "bg-secondary"
           : tool.isUnsupported
             ? "hover:border-destructive/50"
             : "hover:border-muted-foreground/20",
