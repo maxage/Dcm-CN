@@ -205,43 +205,35 @@ version: '3.8'
 			servicesSection += `  # ${tool.name}: ${tool.description}
 `;
 			// Process the compose content - properly indent everything
-			let toolContent = "";
-			const serviceLines = tool.composeContent
-				.replace(/^services:\s*/gm, "")  // Remove the services: line
-				.trim()
-				.split('\n');
-
-			// Process lines with proper indentation
-			let currentIndentLevel = 0;
-
-			// Process each line
-			serviceLines.forEach((line) => {
-				if (line.trim() === '') {
-					// Keep empty lines as is
-					toolContent += '\n';
-					return;
-				}
-
-				const trimmedLine = line.trim();
+			let toolContent = tool.composeContent
+				.replace(/^services:\s*/gm, "") // Remove the services: line
+				.replace(/^\s{2}(\S)/gm, "  $1"); // Ensure consistent indentation for first level
 				
-				// Detect service definitions by looking for lines with just a name and colon
-				if (trimmedLine.match(/^[a-zA-Z0-9_-]+:$/) && !line.trim().startsWith('-')) {
-					// This is a service name - reset indentation level for a new service
-					currentIndentLevel = 0;
-					// Output service name with 2 spaces indentation
-					toolContent += `  ${trimmedLine}\n`;
-				} 
-				// Line starts with a dash (-) means it's a list item and needs additional indentation
-				else if (trimmedLine.startsWith('-')) {
-					// This is a list item under a property, indent with 6 spaces
-					toolContent += `      ${trimmedLine}\n`;
+			// Make sure indentation is consistent throughout with service content indented 
+			// one more level than service names
+			const lines = toolContent.split('\n');
+			let isInServiceDef = false;
+			const processedLines = lines.map(line => {
+				// Skip empty lines
+				if (line.trim() === '') return line;
+				
+				// Check if this is a service definition line (service_name:)
+				// This catches lines that contain only a name followed by a colon with no other properties
+				if (line.trim().match(/^[a-zA-Z0-9_-]+:$/)) {
+					isInServiceDef = true;
+					return `  ${line.trim()}`;
 				}
-				// Any other line inside a service gets 4 spaces (service properties)
+				// For volumes section at root level
+				else if (line.trim() === 'volumes:') {
+					isInServiceDef = false;
+					return `  ${line.trim()}`;
+				}
+				// For all properties inside a service or section
 				else {
-					// This is a property line
-					toolContent += `    ${trimmedLine}\n`;
+					return `    ${line.trim()}`;
 				}
 			});
+			toolContent = processedLines.join('\n');
 
 			// Replace variables with their values if showInterpolated is true
 			if (showInterpolated) {
