@@ -47,7 +47,6 @@ No more copy-pasting from documentation or trying to remember the correct config
 - 📋 **Copy to clipboard** - One-click to copy your generated docker-compose.yaml
 - 🔒 **Privacy focused** - No tracking in self-hosted version
 - 🚀 **Fast and lightweight** - Built with Next.js for optimal performance
-- 🧪 **Validation tests** - All service configurations are tested to ensure they work correctly
 
 ## 🚀 Quick Start
 
@@ -113,26 +112,6 @@ npm start
 yarn build
 yarn start
 ```
-
-### 🧪 Running Tests
-
-DCM includes validation tests to ensure the generated Docker Compose configurations work correctly:
-
-```bash
-# Run tests using Bun (recommended for speed)
-bun run tests/validate-compose.test.ts
-
-# Or use the npm script
-npm run test:compose
-```
-
-The tests verify that:
-- Each individual service configuration is valid
-- All services can be combined correctly
-
-Requirements:
-- Docker and Docker Compose V2 installed
-- Bun runtime (for optimal performance)
 
 ## 🧰 Supported Tools
 
