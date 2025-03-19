@@ -1,6 +1,5 @@
 "use client"
 
-import { CopyComposeModal } from "@/components/copy-compose-modal"
 import { ServiceCircles } from "@/components/magicui/avatar-circles"
 import { SearchCommand } from "@/components/search-command"
 import type { DockerSettings } from "@/components/settings-panel"
@@ -18,8 +17,22 @@ import { Button } from "@/components/ui/button"
 import type { DockerTool } from "@/lib/docker-tools"
 import { cn } from "@/lib/utils"
 import { Search } from "lucide-react"
+import dynamic from "next/dynamic"
 import posthog from "posthog-js"
 import { useEffect, useState } from "react"
+
+// Dynamically import CopyComposeModal with loading state
+const CopyComposeModal = dynamic(
+  () => import("@/components/copy-compose-modal").then(mod => ({ default: mod.CopyComposeModal })),
+  { 
+    loading: () => <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
+      <div className="animate-pulse text-center">
+        <p className="text-sm text-muted-foreground">Loading compose editor...</p>
+      </div>
+    </div>,
+    ssr: false // Disable SSR for the Monaco editor to prevent hydration issues
+  }
+)
 
 interface FloatingBarProps {
   selectedCount: number

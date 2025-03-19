@@ -438,4 +438,7 @@ version: '3.8'
 			</AlertDialogContent>
 		</AlertDialog>
 	);
-} 
+}
+
+// Add default export for dynamic import
+export default CopyComposeModal; 
