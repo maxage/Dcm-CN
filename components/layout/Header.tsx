@@ -13,25 +13,24 @@ export function Header() {
               Docker Compose Generator
             </h1>
             <p className="text-sm opacity-90 [animation-delay:150ms] motion-safe:animate-slide-in-left md:text-lg lg:text-xl">
-              Select the tools you want to include in your
-              docker-compose.yaml
+              Select the tools you want to include in your docker-compose.yaml
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
             <ContainerSubmissionForm />
-            
-            <GradientButton 
-              href="https://ko-fi.com/ajnart" 
+
+            <GradientButton
+              href="https://ko-fi.com/ajnart"
               external
-              gradientFrom="from-amber-500/20" 
+              gradientFrom="from-amber-500/20"
               gradientTo="to-orange-400/20"
             >
               <Heart fill="currentColor" />
               <span>Support me</span>
             </GradientButton>
-            
-            <GradientButton 
-              href="https://github.com/ajnart/docker-compose-selector" 
+
+            <GradientButton
+              href="https://github.com/ajnart/docker-compose-selector"
               external
             >
               <svg
@@ -50,4 +49,4 @@ export function Header() {
       </div>
     </header>
   )
-} 
+}
