@@ -39,6 +39,7 @@
     "@radix-ui/react-toggle-group": "^1.1.2",
     "@radix-ui/react-tooltip": "^1.1.8",
     "@tanstack/react-form": "^1.1.0",
+    "@wooorm/starry-night": "^3.7.0",
     "autoprefixer": "^10.4.20",
     "badge": "^1.0.3",
     "class-variance-authority": "^0.7.1",
