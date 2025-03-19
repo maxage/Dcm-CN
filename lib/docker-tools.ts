@@ -263,9 +263,7 @@ export const dockerTools: DockerTool[] = [
       - \${DATA_PATH}/portainer:/data
     environment:
       - TZ=\${TZ}
-    restart: \${RESTART_POLICY}
-volumes:
-  portainer_data:`,
+    restart: \${RESTART_POLICY}`,
   },
   {
     id: "heimdall",
