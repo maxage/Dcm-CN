@@ -18,11 +18,11 @@ interface ServiceCirclesProps {
   spacing?: string
 }
 
-export const ServiceCircles = ({ 
-  className, 
-  selectedServices, 
+export const ServiceCircles = ({
+  className,
+  selectedServices,
   onToggleServiceSelection,
-  spacing = "-space-x-4" 
+  spacing = "-space-x-4",
 }: ServiceCirclesProps) => {
   const [open, setOpen] = useState(false)
   const displayedServices = selectedServices.slice(0, 9) // Show first 9 services
@@ -30,26 +30,27 @@ export const ServiceCircles = ({
   const numRemaining = remainingServices.length
 
   return (
-    <div className={cn("flex rtl:space-x-reverse z-10", spacing, className)}>
+    <div className={cn("z-10 flex rtl:space-x-reverse", spacing, className)}>
       {displayedServices.map((service) => (
-        <div key={service.id} className="cursor-pointer group relative select-none">
-          <div className="block relative">
+        <div
+          key={service.id}
+          className="group relative cursor-pointer select-none"
+        >
+          <div className="relative block">
             <img
-              className="bg-primary-foreground border-2 border-white dark:border-gray-800 duration-200 ring-primary/50 ring-1 group-hover:ring-2 group-hover:ring-primary group-hover:scale-110 group-hover:z-10 h-10 p-0.5 rounded-full transition-all w-10"
+              className="h-10 w-10 rounded-full border-2 border-white bg-primary-foreground p-0.5 ring-1 ring-primary/50 transition-all duration-200 group-hover:z-10 group-hover:scale-110 group-hover:ring-2 group-hover:ring-primary dark:border-gray-800"
               src={service.icon || "/placeholder.svg"}
               width={40}
               height={40}
               alt={`Icon of ${service.name}`}
               onClick={() => onToggleServiceSelection?.(service.id)}
               onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
+                if (e.key === "Enter" || e.key === " ") {
                   onToggleServiceSelection?.(service.id)
                 }
               }}
-              tabIndex={0}
-              role="button"
             />
-            <div className="-translate-x-1/2 absolute bg-black/80 bottom-full dark:bg-white/80 dark:text-black group-hover:opacity-100 left-1/2 mb-2 opacity-0 pointer-events-none px-2 py-1 rounded text-white text-xs transition-opacity whitespace-nowrap">
+            <div className="-translate-x-1/2 pointer-events-none absolute bottom-full left-1/2 mb-2 whitespace-nowrap rounded bg-black/80 px-2 py-1 text-white text-xs opacity-0 transition-opacity group-hover:opacity-100 dark:bg-white/80 dark:text-black">
               {service.name}
             </div>
           </div>
@@ -61,39 +62,39 @@ export const ServiceCircles = ({
           <PopoverTrigger asChild>
             <button
               type="button"
-              className="z-10 bg-black border-2 border-white dark:border-gray-800 dark:bg-white dark:text-black duration-200 flex h-10 hover:bg-gray-600 hover:ring-2 hover:ring-primary hover:scale-110 hover:z-10 items-center justify-center rounded-full text-center text-white text-xs transition-all w-10"
+              className="z-10 flex h-10 w-10 items-center justify-center rounded-full border-2 border-white bg-black text-center text-white text-xs transition-all duration-200 hover:z-10 hover:scale-110 hover:bg-gray-600 hover:ring-2 hover:ring-primary dark:border-gray-800 dark:bg-white dark:text-black"
             >
               +{numRemaining}
             </button>
           </PopoverTrigger>
           <PopoverContent
-            className="max-h-60 overflow-y-auto p-2 w-48"
+            className="max-h-60 w-48 overflow-y-auto p-2"
             align="center"
             side="top"
           >
-            <h3 className="font-medium mb-2 text-gray-900 dark:text-gray-100 text-sm">More services</h3>
+            <h3 className="mb-2 font-medium text-gray-900 text-sm dark:text-gray-100">
+              More services
+            </h3>
             <ul className="space-y-1">
               {remainingServices.map((service) => (
                 <li
                   key={service.id}
-                  className="cursor-pointer flex gap-2 hover:bg-gray-100 dark:hover:bg-gray-700 items-center p-1 rounded select-none"
+                  className="flex cursor-pointer select-none items-center gap-2 rounded p-1 hover:bg-gray-100 dark:hover:bg-gray-700"
                   onClick={() => onToggleServiceSelection?.(service.id)}
                   onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
+                    if (e.key === "Enter" || e.key === " ") {
                       onToggleServiceSelection?.(service.id)
                     }
                   }}
-                  tabIndex={0}
-                  role="button"
                 >
                   <img
-                    className="h-6 rounded-full w-6"
+                    className="h-6 w-6 rounded-full"
                     src={service.icon || "/placeholder.svg"}
                     width={24}
                     height={24}
                     alt={`Icon of ${service.name}`}
                   />
-                  <span className="dark:text-gray-200 text-gray-800 text-xs">
+                  <span className="text-gray-800 text-xs dark:text-gray-200">
                     {service.name}
                   </span>
                 </li>
@@ -105,4 +106,3 @@ export const ServiceCircles = ({
     </div>
   )
 }
-
