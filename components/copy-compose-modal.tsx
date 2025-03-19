@@ -19,17 +19,13 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useLocalStorage } from "@/hooks/useLocalStorage"
 import { DEFAULT_SETTINGS, STORAGE_KEYS } from "@/lib/constants"
 import type { DockerTool } from "@/lib/docker-tools"
-import { setupMonaco } from "@/lib/monaco-setup"
 import { cn } from "@/lib/utils"
-import Editor, { OnMount, useMonaco } from "@monaco-editor/react"
+import Editor from "@monaco-editor/react"
 import { Check, Copy, Download, Settings as SettingsIcon } from "lucide-react"
+import type { editor } from "monaco-editor"
 import { useTheme } from "next-themes"
 import posthog from "posthog-js"
 import { useEffect, useRef, useState } from "react"
-
-// Use the Monaco type definitions from the react package
-import type Monaco from 'monaco-editor'
-type EditorType = Monaco.editor.IStandaloneCodeEditor;
 
 interface CopyComposeModalProps {
 	isOpen: boolean
@@ -49,9 +45,8 @@ export function CopyComposeModal({
 	const [activeTab, setActiveTab] = useState<string>("compose")
 	const [copied, setCopied] = useState(false)
 	const [mounted, setMounted] = useState(false)
-	const composeEditorRef = useRef<EditorType | null>(null)
-	const envEditorRef = useRef<EditorType | null>(null)
-	const monaco = useMonaco() // Use the monaco hook from @monaco-editor/react
+	const composeEditorRef = useRef<editor.IStandaloneCodeEditor | null>(null)
+	const envEditorRef = useRef<editor.IStandaloneCodeEditor | null>(null)
 	const { theme, resolvedTheme } = useTheme()
 	
 	// After mounting, we can safely access the theme
@@ -64,15 +59,39 @@ export function CopyComposeModal({
 		DEFAULT_SETTINGS
 	)
 
-	// Configure Monaco using our setupMonaco function when the instance is available
-	useEffect(() => {
-		// Only run once monaco is loaded and component is mounted
-		if (!monaco || !mounted) return;
+	// Function to configure Monaco with custom themes
+	const handleEditorWillMount = (monaco: typeof import("monaco-editor")) => {
+		// Define a theme based on Tailwind CSS
+		monaco.editor.defineTheme('tailwind-dark', {
+			base: 'vs-dark',
+			inherit: true,
+			rules: [],
+			colors: {
+				'editor.background': '#1e293b', // slate-800
+				'editor.foreground': '#e2e8f0', // slate-200
+				'editorCursor.foreground': '#38bdf8', // sky-400
+				'editor.lineHighlightBackground': '#334155', // slate-700
+				'editorLineNumber.foreground': '#94a3b8', // slate-400
+				'editor.selectionBackground': '#475569', // slate-600
+				'editor.inactiveSelectionBackground': '#334155', // slate-700
+			},
+		});
 		
-		// Use the centralized setup function for Monaco
-		setupMonaco(monaco);
-		
-	}, [monaco, mounted]);
+		monaco.editor.defineTheme('tailwind-light', {
+			base: 'vs',
+			inherit: true,
+			rules: [],
+			colors: {
+				'editor.background': '#f8fafc', // slate-50
+				'editor.foreground': '#334155', // slate-700
+				'editorCursor.foreground': '#0284c7', // sky-600
+				'editor.lineHighlightBackground': '#e2e8f0', // slate-200
+				'editorLineNumber.foreground': '#64748b', // slate-500
+				'editor.selectionBackground': '#cbd5e1', // slate-300
+				'editor.inactiveSelectionBackground': '#e2e8f0', // slate-200
+			},
+		});
+	}
 
 	// Generate the docker-compose and env file content
 	useEffect(() => {
@@ -256,8 +275,8 @@ version: '3.8'
 		});
 	};
 
-	// Function to handle editor mounting using the OnMount type from @monaco-editor/react
-	const handleComposeEditorDidMount: OnMount = (editor) => {
+	// Function to handle editor mounting
+	const handleComposeEditorDidMount = (editor: editor.IStandaloneCodeEditor) => {
 		composeEditorRef.current = editor;
 		
 		// Set the theme after mount to ensure it's correct
@@ -267,7 +286,7 @@ version: '3.8'
 		}
 	};
 
-	const handleEnvEditorDidMount: OnMount = (editor) => {
+	const handleEnvEditorDidMount = (editor: editor.IStandaloneCodeEditor) => {
 		envEditorRef.current = editor;
 		
 		// Set the theme after mount to ensure it's correct
@@ -282,8 +301,8 @@ version: '3.8'
 
 	return (
 		<AlertDialog open={isOpen} onOpenChange={onOpenChange}>
-			<AlertDialogContent className="flex flex-col max-h-[90vh] max-w-[95vw]">
-				<AlertDialogHeader className="flex flex-row items-center justify-between">
+			<AlertDialogContent className="flex max-h-[90vh] max-w-[95vw] flex-col">
+				<AlertDialogHeader className="flex items-center justify-between flex-row">
 					<div>
 						<AlertDialogTitle>Docker Compose Configuration</AlertDialogTitle>
 						<AlertDialogDescription>
@@ -291,7 +310,7 @@ version: '3.8'
 							selected service{selectedTools.length !== 1 ? "s" : ""}.
 						</AlertDialogDescription>
 					</div>
-					<div className="flex gap-4 items-center">
+					<div className="flex items-center gap-4">
 						<div className="flex items-center space-x-2">
 							<Switch
 								id="interpolate-values"
@@ -302,7 +321,7 @@ version: '3.8'
 						</div>
 						
 						<Button 
-							className="flex gap-2 items-center"
+							className="flex items-center gap-2"
 							onClick={() => setShowSettings(!showSettings)}
 							size="sm"
 							variant="outline" 
@@ -361,6 +380,7 @@ version: '3.8'
 						<div className="border flex-1 h-[calc(60vh-40px)] overflow-hidden rounded">
 							{activeTab === "compose" ? (
 								<Editor
+									beforeMount={handleEditorWillMount}
 									defaultLanguage="yaml"
 									defaultValue={composeContent}
 									height="100%"
@@ -375,7 +395,6 @@ version: '3.8'
 									}}
 									theme={currentTheme}
 									value={composeContent}
-									path="docker-compose.yaml"
 								/>
 							) : (
 								<Editor
