@@ -71,13 +71,13 @@ export function CopyComposeModal({
 			inherit: true,
 			rules: [],
 			colors: {
-				'editor.background': '#1e293b', // slate-800
-				'editor.foreground': '#e2e8f0', // slate-200
-				'editorCursor.foreground': '#38bdf8', // sky-400
-				'editor.lineHighlightBackground': '#334155', // slate-700
-				'editorLineNumber.foreground': '#94a3b8', // slate-400
-				'editor.selectionBackground': '#475569', // slate-600
-				'editor.inactiveSelectionBackground': '#334155', // slate-700
+				'editor.background': 'hsl(var(--background))',
+				'editor.foreground': 'hsl(var(--foreground))',
+				'editorCursor.foreground': 'hsl(var(--primary))',
+				'editor.lineHighlightBackground': 'hsl(var(--muted))',
+				'editorLineNumber.foreground': 'hsl(var(--muted-foreground))',
+				'editor.selectionBackground': 'hsl(var(--accent))',
+				'editor.inactiveSelectionBackground': 'hsl(var(--secondary))',
 			},
 		});
 		
@@ -86,13 +86,13 @@ export function CopyComposeModal({
 			inherit: true,
 			rules: [],
 			colors: {
-				'editor.background': '#f8fafc', // slate-50
-				'editor.foreground': '#334155', // slate-700
-				'editorCursor.foreground': '#0284c7', // sky-600
-				'editor.lineHighlightBackground': '#e2e8f0', // slate-200
-				'editorLineNumber.foreground': '#64748b', // slate-500
-				'editor.selectionBackground': '#cbd5e1', // slate-300
-				'editor.inactiveSelectionBackground': '#e2e8f0', // slate-200
+				'editor.background': 'hsl(var(--background))',
+				'editor.foreground': 'hsl(var(--foreground))',
+				'editorCursor.foreground': 'hsl(var(--primary))',
+				'editor.lineHighlightBackground': 'hsl(var(--muted))',
+				'editorLineNumber.foreground': 'hsl(var(--muted-foreground))',
+				'editor.selectionBackground': 'hsl(var(--accent))',
+				'editor.inactiveSelectionBackground': 'hsl(var(--secondary))',
 			},
 		});
 
@@ -352,8 +352,8 @@ version: '3.8'
 
 	return (
 		<AlertDialog open={isOpen} onOpenChange={onOpenChange}>
-			<AlertDialogContent className="flex flex-col max-h-[90vh] max-w-[95vw]">
-				<AlertDialogHeader className="flex flex-row items-center justify-between">
+			<AlertDialogContent className="max-h-[90vh] max-w-[95vw] flex flex-col">
+				<AlertDialogHeader className="flex items-center justify-between flex-row">
 					<div>
 						<AlertDialogTitle>Docker Compose Configuration</AlertDialogTitle>
 						<AlertDialogDescription>
@@ -361,7 +361,7 @@ version: '3.8'
 							selected service{selectedTools.length !== 1 ? "s" : ""}.
 						</AlertDialogDescription>
 					</div>
-					<div className="flex gap-4 items-center">
+					<div className="flex items-center gap-4">
 						<div className="flex items-center space-x-2">
 							<Switch
 								id="interpolate-values"
@@ -372,7 +372,7 @@ version: '3.8'
 						</div>
 						
 						<Button 
-							className="flex gap-2 items-center"
+							className="flex items-center gap-2"
 							onClick={() => setShowSettings(!showSettings)}
 							size="sm"
 							variant="outline" 
@@ -385,7 +385,7 @@ version: '3.8'
 
 				<div className={cn("grid gap-4", showSettings ? "grid-cols-[1fr_350px]" : "grid-cols-1")}>
 					<div className="flex-1 h-[60vh]">
-						<div className="flex items-center justify-between mb-2">
+						<div className="mb-2 flex items-center justify-between">
 							<Tabs className="w-full" defaultValue="compose" onValueChange={setActiveTab} value={activeTab}>
 								<TabsList>
 									<TabsTrigger value="compose">docker-compose.yaml</TabsTrigger>
@@ -428,7 +428,7 @@ version: '3.8'
 							</div>
 						</div>
 						
-						<div className="border flex-1 h-[calc(60vh-40px)] overflow-hidden rounded">
+						<div className="border flex-1 h-[calc(60vh-40px)] rounded overflow-hidden">
 							{activeTab === "compose" ? (
 								<Editor
 									beforeMount={handleEditorWillMount}
@@ -470,7 +470,7 @@ version: '3.8'
 					</div>
 
 					{showSettings && (
-						<div className="border overflow-auto p-2 rounded" style={{ maxHeight: "60vh" }}>
+						<div className="border p-2 overflow-auto rounded" style={{ maxHeight: "60vh" }}>
 							<SettingsPanel 
 								onSettingsChange={(newSettings) => setSettings(newSettings)} 
 								settings={settings}
