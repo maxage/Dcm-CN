@@ -146,15 +146,19 @@ version: '3.8'
 			// Make sure indentation is consistent throughout with service content indented 
 			// one more level than service names
 			const lines = toolContent.split('\n');
+			let currentlyInService = false;
 			const processedLines = lines.map(line => {
 				// Skip empty lines
 				if (line.trim() === '') return line;
+				
 				// If line starts with a service name or other first-level key
 				if (line.match(/^\s*[a-zA-Z0-9_-]+:/) || line.startsWith('volumes:')) {
+					currentlyInService = true;
 					return `  ${line.trim()}`;
 				} 
-				// Otherwise it's a nested property, add more indentation
-				return `    ${line.trim()}`; // Use 4 spaces total for properties (2 spaces more than service name indentation)
+				
+				// Otherwise it's a nested property under a service, add more indentation
+				return `    ${line.trim()}`; // Use 4 spaces for properties (2 spaces more than service name)
 			});
 			toolContent = processedLines.join('\n');
 
