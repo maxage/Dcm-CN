@@ -23,6 +23,7 @@ import { cn } from "@/lib/utils"
 import Editor from "@monaco-editor/react"
 import { Check, Copy, Download, Settings as SettingsIcon } from "lucide-react"
 import type { editor } from "monaco-editor"
+import * as Monaco from "monaco-editor"
 import { configureMonacoYaml } from "monaco-yaml"
 import { useTheme } from "next-themes"
 import posthog from "posthog-js"
@@ -51,6 +52,7 @@ export function CopyComposeModal({
 	const [mounted, setMounted] = useState(false)
 	const composeEditorRef = useRef<editor.IStandaloneCodeEditor | null>(null)
 	const envEditorRef = useRef<editor.IStandaloneCodeEditor | null>(null)
+	const [monaco, setMonaco] = useState<typeof Monaco | null>(null)
 	const { theme, resolvedTheme } = useTheme()
 	
 	// After mounting, we can safely access the theme
@@ -65,19 +67,22 @@ export function CopyComposeModal({
 
 	// Function to configure Monaco with YAML schema
 	const handleEditorWillMount = (monaco: typeof import("monaco-editor")) => {
+		// Store the monaco instance
+		setMonaco(monaco);
+		
 		// Define a theme based on Tailwind CSS
 		monaco.editor.defineTheme('tailwind-dark', {
 			base: 'vs-dark',
 			inherit: true,
 			rules: [],
 			colors: {
-				'editor.background': 'hsl(var(--background))',
-				'editor.foreground': 'hsl(var(--foreground))',
-				'editorCursor.foreground': 'hsl(var(--primary))',
-				'editor.lineHighlightBackground': 'hsl(var(--muted))',
-				'editorLineNumber.foreground': 'hsl(var(--muted-foreground))',
-				'editor.selectionBackground': 'hsl(var(--accent))',
-				'editor.inactiveSelectionBackground': 'hsl(var(--secondary))',
+				'editor.background': '#020817', // dark background fallback
+				'editor.foreground': '#e1e7ef', // light text fallback
+				'editorCursor.foreground': '#2563eb', // blue fallback
+				'editor.lineHighlightBackground': '#1e293b', // slate-800 fallback
+				'editorLineNumber.foreground': '#64748b', // slate-500 fallback
+				'editor.selectionBackground': '#3b82f680', // blue with opacity fallback
+				'editor.inactiveSelectionBackground': '#334155', // slate-700 fallback
 			},
 		});
 		
@@ -86,13 +91,13 @@ export function CopyComposeModal({
 			inherit: true,
 			rules: [],
 			colors: {
-				'editor.background': 'hsl(var(--background))',
-				'editor.foreground': 'hsl(var(--foreground))',
-				'editorCursor.foreground': 'hsl(var(--primary))',
-				'editor.lineHighlightBackground': 'hsl(var(--muted))',
-				'editorLineNumber.foreground': 'hsl(var(--muted-foreground))',
-				'editor.selectionBackground': 'hsl(var(--accent))',
-				'editor.inactiveSelectionBackground': 'hsl(var(--secondary))',
+				'editor.background': '#ffffff', // white fallback
+				'editor.foreground': '#0f172a', // slate-900 fallback
+				'editorCursor.foreground': '#2563eb', // blue fallback
+				'editor.lineHighlightBackground': '#f1f5f9', // slate-100 fallback
+				'editorLineNumber.foreground': '#64748b', // slate-500 fallback
+				'editor.selectionBackground': '#3b82f640', // blue with opacity fallback
+				'editor.inactiveSelectionBackground': '#e2e8f0', // slate-200 fallback
 			},
 		});
 
@@ -238,6 +243,41 @@ version: '3.8'
 	// Update editor theme when theme changes
 	useEffect(() => {
 		if (!mounted) return;
+		
+		// Redefine themes with current CSS variables
+		if (typeof monaco !== 'undefined' && monaco.editor) {
+			// Define dark theme with hardcoded colors
+			monaco.editor.defineTheme('tailwind-dark', {
+				base: 'vs-dark',
+				inherit: true,
+				rules: [],
+				colors: {
+					'editor.background': '#020817', // dark background fallback
+					'editor.foreground': '#e1e7ef', // light text fallback
+					'editorCursor.foreground': '#2563eb', // blue fallback
+					'editor.lineHighlightBackground': '#1e293b', // slate-800 fallback
+					'editorLineNumber.foreground': '#64748b', // slate-500 fallback
+					'editor.selectionBackground': '#3b82f680', // blue with opacity fallback
+					'editor.inactiveSelectionBackground': '#334155', // slate-700 fallback
+				},
+			});
+			
+			// Define light theme with hardcoded colors
+			monaco.editor.defineTheme('tailwind-light', {
+				base: 'vs',
+				inherit: true,
+				rules: [],
+				colors: {
+					'editor.background': '#ffffff', // white fallback
+					'editor.foreground': '#0f172a', // slate-900 fallback
+					'editorCursor.foreground': '#2563eb', // blue fallback
+					'editor.lineHighlightBackground': '#f1f5f9', // slate-100 fallback
+					'editorLineNumber.foreground': '#64748b', // slate-500 fallback
+					'editor.selectionBackground': '#3b82f640', // blue with opacity fallback
+					'editor.inactiveSelectionBackground': '#e2e8f0', // slate-200 fallback
+				},
+			});
+		}
 		
 		// Update the existing editors when theme changes
 		if (composeEditorRef.current) {
