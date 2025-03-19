@@ -15,12 +15,12 @@ import {
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useLocalStorage } from "@/hooks/useLocalStorage"
 import type { DockerTool } from "@/lib/docker-tools"
 import { cn } from "@/lib/utils"
 import Editor from "@monaco-editor/react"
-import { Settings as SettingsIcon } from "lucide-react"
+import { Check, Copy, Download, Settings as SettingsIcon } from "lucide-react"
 import type { editor } from "monaco-editor"
 import { useTheme } from "next-themes"
 import posthog from "posthog-js"
@@ -45,6 +45,7 @@ export function CopyComposeModal({
 	const [composeContent, setComposeContent] = useState<string>("")
 	const [envFileContent, setEnvFileContent] = useState<string>("")
 	const [activeTab, setActiveTab] = useState<string>("compose")
+	const [copied, setCopied] = useState(false)
 	const composeEditorRef = useRef<editor.IStandaloneCodeEditor | null>(null)
 	const envEditorRef = useRef<editor.IStandaloneCodeEditor | null>(null)
 	const { theme } = useTheme()
@@ -98,7 +99,9 @@ export function CopyComposeModal({
 		// Register YAML schema
 		try {
 			// Try to configure YAML schema validation
-			if (monaco.languages.hasOwnProperty('yaml') && typeof monaco.languages.yaml?.yamlDefaults === 'object') {
+			// @ts-ignore - Ignoring type errors for monaco.languages.yaml
+			if (Object.prototype.hasOwnProperty.call(monaco.languages, 'yaml') && typeof monaco.languages.yaml?.yamlDefaults === 'object') {
+				// @ts-ignore - Ignoring type errors for monaco.languages.yaml
 				const yamlDefaults = monaco.languages.yaml.yamlDefaults;
 				yamlDefaults.setDiagnosticsOptions({
 					validate: true,
@@ -236,6 +239,12 @@ version: '3.8'
 		setComposeContent(completeCompose);
 	}, [isOpen, selectedTools, settings, showInterpolated]);
 
+	// Reset copied state when changing tabs
+	useEffect(() => {
+		setCopied(false);
+	}, [activeTab]);
+
+	// Handle copy to clipboard
 	const handleCopy = () => {
 		// Get content based on active tab
 		const content = activeTab === "compose" 
@@ -246,30 +255,82 @@ version: '3.8'
 		navigator.clipboard.writeText(content)
 			.then(() => {
 				console.log(`${activeTab === "compose" ? "Docker compose" : "Environment file"} copied to clipboard`);
+				// Set copied state to show animation
+				setCopied(true);
+				
+				// Add confetti animation class to the button
+				const button = document.getElementById("copy-button");
+				if (button) {
+					button.classList.add("hover:motion-preset-confetti");
+					// Remove the class after animation completes
+					setTimeout(() => {
+						button.classList.remove("hover:motion-preset-confetti");
+					}, 1000);
+				}
+				
+				// Log analytics
 				posthog.capture("copy_compose_success", {
 					selected_tools: selectedTools.map(t => t.id),
 					settings: settings,
 					file_type: activeTab,
 				});
-				onOpenChange(false);
+				
+				// Reset copied state after 2 seconds
+				setTimeout(() => {
+					setCopied(false);
+				}, 2000);
+				
+				// Note: We don't close the modal now
 			})
 			.catch(err => {
 				console.error("Failed to copy: ", err);
 			});
-	}
+	};
+
+	// Handle file download
+	const handleDownload = () => {
+		// Get content and filename based on active tab
+		const content = activeTab === "compose" 
+			? composeEditorRef.current?.getValue() || composeContent
+			: envEditorRef.current?.getValue() || envFileContent;
+		
+		const filename = activeTab === "compose" ? "docker-compose.yaml" : ".env";
+		
+		// Create a blob and download link
+		const blob = new Blob([content], { type: 'text/plain' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = filename;
+		document.body.appendChild(a);
+		a.click();
+		
+		// Clean up
+		setTimeout(() => {
+			document.body.removeChild(a);
+			URL.revokeObjectURL(url);
+		}, 100);
+		
+		// Log analytics
+		posthog.capture("download_compose_file", {
+			selected_tools: selectedTools.map(t => t.id),
+			settings: settings,
+			file_type: activeTab,
+		});
+	};
 
 	// Function to handle editor mounting
 	const handleComposeEditorDidMount = (editor: editor.IStandaloneCodeEditor) => {
 		composeEditorRef.current = editor;
-	}
+	};
 
 	const handleEnvEditorDidMount = (editor: editor.IStandaloneCodeEditor) => {
 		envEditorRef.current = editor;
-	}
+	};
 
 	return (
 		<AlertDialog open={isOpen} onOpenChange={onOpenChange}>
-			<AlertDialogContent className="flex-col flex max-h-[90vh] max-w-[95vw]">
+			<AlertDialogContent className="flex flex-col max-h-[90vh] max-w-[95vw]">
 				<AlertDialogHeader className="flex flex-row items-center justify-between">
 					<div>
 						<AlertDialogTitle>Docker Compose Configuration</AlertDialogTitle>
@@ -278,7 +339,7 @@ version: '3.8'
 							selected service{selectedTools.length !== 1 ? "s" : ""}.
 						</AlertDialogDescription>
 					</div>
-					<div className="flex items-center gap-4">
+					<div className="flex gap-4 items-center">
 						<div className="flex items-center space-x-2">
 							<Switch
 								id="interpolate-values"
@@ -289,7 +350,7 @@ version: '3.8'
 						</div>
 						
 						<Button 
-							className="flex items-center gap-2"
+							className="flex gap-2 items-center"
 							onClick={() => setShowSettings(!showSettings)}
 							size="sm"
 							variant="outline" 
@@ -302,12 +363,51 @@ version: '3.8'
 
 				<div className={cn("grid gap-4", showSettings ? "grid-cols-[1fr_350px]" : "grid-cols-1")}>
 					<div className="flex-1 h-[60vh]">
-						<Tabs className="w-full" defaultValue="compose" onValueChange={setActiveTab} value={activeTab}>
-							<TabsList className="mb-2">
-								<TabsTrigger value="compose">docker-compose.yaml</TabsTrigger>
-								<TabsTrigger value="env">.env</TabsTrigger>
-							</TabsList>
-							<TabsContent className="border flex-1 h-[calc(60vh-40px)] overflow-hidden rounded" value="compose">
+						<div className="flex items-center justify-between mb-2">
+							<Tabs className="w-full" defaultValue="compose" onValueChange={setActiveTab} value={activeTab}>
+								<TabsList>
+									<TabsTrigger value="compose">docker-compose.yaml</TabsTrigger>
+									<TabsTrigger value="env">.env</TabsTrigger>
+								</TabsList>
+							</Tabs>
+							
+							<div className="flex gap-2">
+								<Button
+									aria-label="Download file"
+									className="ml-2 rounded-md"
+									onClick={handleDownload}
+									size="icon"
+									variant="outline"
+								>
+									<span className="sr-only">Download</span>
+									<Download className="h-4 w-4" />
+								</Button>
+								
+								<Button
+									aria-label={copied ? "Copied" : "Copy to clipboard"}
+									className="relative ml-2 rounded-md"
+									id="copy-button"
+									onClick={handleCopy}
+									size="icon"
+									variant="outline"
+								>
+									<span className="sr-only">{copied ? "Copied" : "Copy"}</span>
+									<Copy
+										className={`h-4 w-4 transition-all duration-300 ${
+											copied ? "scale-0" : "scale-100"
+										}`}
+									/>
+									<Check
+										className={`absolute inset-0 m-auto h-4 w-4 transition-all duration-300 ${
+											copied ? "scale-100" : "scale-0"
+										}`}
+									/>
+								</Button>
+							</div>
+						</div>
+						
+						<div className="border flex-1 h-[calc(60vh-40px)] overflow-hidden rounded">
+							{activeTab === "compose" ? (
 								<Editor
 									beforeMount={handleEditorWillMount}
 									defaultLanguage="yaml"
@@ -325,8 +425,7 @@ version: '3.8'
 									theme={theme === 'dark' ? 'tailwind-dark' : 'tailwind-light'}
 									value={composeContent}
 								/>
-							</TabsContent>
-							<TabsContent className="border flex-1 h-[calc(60vh-40px)] overflow-hidden rounded" value="env">
+							) : (
 								<Editor
 									defaultLanguage="ini"
 									defaultValue={envFileContent}
@@ -343,8 +442,8 @@ version: '3.8'
 									theme={theme === 'dark' ? 'tailwind-dark' : 'tailwind-light'}
 									value={envFileContent}
 								/>
-							</TabsContent>
-						</Tabs>
+							)}
+						</div>
 					</div>
 
 					{showSettings && (
@@ -360,12 +459,12 @@ version: '3.8'
 				<AlertDialogFooter className="mt-4">
 					<AlertDialogCancel>Cancel</AlertDialogCancel>
 					<AlertDialogAction
-						onClick={handleCopy}
+						onClick={onOpenChange.bind(null, false)}
 					>
-						{activeTab === "compose" ? "Copy Docker Compose" : "Copy Env File"}
+						Done
 					</AlertDialogAction>
 				</AlertDialogFooter>
 			</AlertDialogContent>
 		</AlertDialog>
-	)
+	);
 } 
