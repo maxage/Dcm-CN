@@ -154,7 +154,7 @@ version: '3.8'
 					return `  ${line.trim()}`;
 				} 
 				// Otherwise it's a nested property, add more indentation
-				return `    ${line.trim()}`; // Use 4 spaces for properties (2 spaces more than service name)
+				return `    ${line.trim()}`; // Use 4 spaces total for properties (2 spaces more than service name indentation)
 			});
 			toolContent = processedLines.join('\n');
 
@@ -438,7 +438,4 @@ version: '3.8'
 			</AlertDialogContent>
 		</AlertDialog>
 	);
-}
-
-// Add default export for dynamic import
-export default CopyComposeModal; 
+} 
