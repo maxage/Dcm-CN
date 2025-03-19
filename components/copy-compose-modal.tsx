@@ -26,6 +26,7 @@ import type { editor } from "monaco-editor"
 import { useTheme } from "next-themes"
 import posthog from "posthog-js"
 import { useEffect, useRef, useState } from "react"
+import { toast } from "sonner"
 
 interface CopyComposeModalProps {
 	isOpen: boolean
@@ -249,6 +250,12 @@ version: '3.8'
 				// Set copied state to show animation
 				setCopied(true);
 				
+				// Show toast notification
+				toast.success(`${activeTab === "compose" ? "Docker Compose" : ".env"} file copied to clipboard`, {
+					description: `${selectedTools.length} service${selectedTools.length !== 1 ? 's' : ''} configuration copied.`,
+					duration: 3000,
+				});
+				
 				// Add confetti animation class to the button
 				const button = document.getElementById("copy-button");
 				if (button) {
@@ -275,6 +282,10 @@ version: '3.8'
 			})
 			.catch(err => {
 				console.error("Failed to copy: ", err);
+				toast.error("Failed to copy to clipboard", {
+					description: err.message || "An error occurred while copying",
+					duration: 5000,
+				});
 			});
 	};
 
@@ -287,27 +298,41 @@ version: '3.8'
 		
 		const filename = activeTab === "compose" ? "docker-compose.yaml" : ".env";
 		
-		// Create a blob and download link
-		const blob = new Blob([content], { type: 'text/plain' });
-		const url = URL.createObjectURL(blob);
-		const a = document.createElement('a');
-		a.href = url;
-		a.download = filename;
-		document.body.appendChild(a);
-		a.click();
-		
-		// Clean up
-		setTimeout(() => {
-			document.body.removeChild(a);
-			URL.revokeObjectURL(url);
-		}, 100);
-		
-		// Log analytics
-		posthog.capture("download_compose_file", {
-			selected_tools: selectedTools.map(t => t.id),
-			settings: settings,
-			file_type: activeTab,
-		});
+		try {
+			// Create a blob and download link
+			const blob = new Blob([content], { type: 'text/plain' });
+			const url = URL.createObjectURL(blob);
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = filename;
+			document.body.appendChild(a);
+			a.click();
+			
+			// Show toast notification
+			toast.success(`${filename} downloaded`, {
+				description: `File has been downloaded to your computer.`,
+				duration: 3000,
+			});
+			
+			// Clean up
+			setTimeout(() => {
+				document.body.removeChild(a);
+				URL.revokeObjectURL(url);
+			}, 100);
+			
+			// Log analytics
+			posthog.capture("download_compose_file", {
+				selected_tools: selectedTools.map(t => t.id),
+				settings: settings,
+				file_type: activeTab,
+			});
+		} catch (err) {
+			console.error("Failed to download file: ", err);
+			toast.error("Failed to download file", {
+				description: err.message || "An error occurred while downloading",
+				duration: 5000,
+			});
+		}
 	};
 
 	// Function to handle editor mounting
