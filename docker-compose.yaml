@@ -1,0 +1,53 @@
+# Docker Compose Configuration
+version: '3.8'
+
+services:
+
+  # Prowlarr: A powerful indexer manager/proxy built on the arr stack. Seamlessly integrates with Sonarr, Radarr, Lidarr, and Readarr, supporting both Torrent Trackers and Usenet Indexers with centralized management.
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: ${CONTAINER_PREFIX}prowlarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+    volumes:
+      - ${CONFIG_PATH}/prowlarr:/config
+    ports:
+      - 9696:9696
+    restart: ${RESTART_POLICY}
+
+  # Readarr: A book, magazine, comics eBook and audiobook collection manager. Automatically monitors and downloads your favorite literature, handles quality upgrades, and manages your digital library.
+  readarr:
+    image: lscr.io/linuxserver/readarr:develop
+    container_name: ${CONTAINER_PREFIX}readarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+    volumes:
+      - ${CONFIG_PATH}/readarr:/config
+      - ${DATA_PATH}/books:/books
+      - ${DATA_PATH}/downloads:/downloads
+    ports:
+      - 8787:8787
+    restart: ${RESTART_POLICY}
+
+  # Lidarr: A music collection manager for Usenet and BitTorrent users. Monitors multiple RSS feeds for new tracks from your favorite artists, automatically grabbing, sorting, and renaming them.
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: ${CONTAINER_PREFIX}lidarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+    volumes:
+      - ${CONFIG_PATH}/lidarr:/config
+      - ${DATA_PATH}/music:/music
+      - ${DATA_PATH}/downloads:/downloads
+    ports:
+      - 8686:8686
+    restart: ${RESTART_POLICY}
