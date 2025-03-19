@@ -22,7 +22,6 @@ import type { DockerTool } from "@/lib/docker-tools"
 import { cn } from "@/lib/utils"
 import Editor, { OnMount, useMonaco } from "@monaco-editor/react"
 import { Check, Copy, Download, Settings as SettingsIcon } from "lucide-react"
-import { configureMonacoYaml } from "monaco-yaml"
 import { useTheme } from "next-themes"
 import posthog from "posthog-js"
 import { useEffect, useRef, useState } from "react"
@@ -36,9 +35,6 @@ interface CopyComposeModalProps {
 	onOpenChange: (open: boolean) => void
 	selectedTools: DockerTool[]
 }
-
-// Compose schema URL
-const COMPOSE_SCHEMA_URL = "https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"
 
 export function CopyComposeModal({
 	isOpen,
@@ -102,47 +98,9 @@ export function CopyComposeModal({
 				'editor.inactiveSelectionBackground': '#e2e8f0', // slate-200
 			},
 		});
-
-		// Create a model URI for the docker-compose file
-		const modelUri = monaco.Uri.parse('file:///docker-compose.yaml');
-
-		// Configure monaco-yaml
-		try {
-			// Configure yaml language support with schemas
-			configureMonacoYaml(monaco, {
-				enableSchemaRequest: true,
-				completion: true,
-				validate: true,
-				format: true,
-				hover: true,
-				schemas: [
-					{
-						// The schema applies to docker-compose files
-						fileMatch: ['*docker-compose*', '*.yml', '*.yaml', modelUri.toString()],
-						// Use the compose schema URL
-						uri: COMPOSE_SCHEMA_URL
-					}
-				]
-			});
-			
-			console.log('Monaco YAML configured successfully');
-		} catch (error) {
-			console.error("Error configuring Monaco YAML:", error);
-		}
-
-		// Create or update the model for the editor
-		if (monaco.editor.getModels().length > 0) {
-			// Find and dispose any existing models
-			monaco.editor.getModels().forEach(model => {
-				if (model.uri.toString() === modelUri.toString()) {
-					model.dispose();
-				}
-			});
-		}
-
-		// Create a new model with the content using the specific URI to match our schema
-		monaco.editor.createModel(composeContent, 'yaml', modelUri);
-	}, [monaco, mounted, composeContent]);
+		
+		console.log('Monaco themes configured successfully');
+	}, [monaco, mounted]);
 
 	// Generate the docker-compose and env file content
 	useEffect(() => {
