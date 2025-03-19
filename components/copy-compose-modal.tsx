@@ -20,14 +20,16 @@ import { useLocalStorage } from "@/hooks/useLocalStorage"
 import { DEFAULT_SETTINGS, STORAGE_KEYS } from "@/lib/constants"
 import type { DockerTool } from "@/lib/docker-tools"
 import { cn } from "@/lib/utils"
-import Editor from "@monaco-editor/react"
+import Editor, { OnMount, useMonaco } from "@monaco-editor/react"
 import { Check, Copy, Download, Settings as SettingsIcon } from "lucide-react"
-import type { editor } from "monaco-editor"
-import * as Monaco from "monaco-editor"
 import { configureMonacoYaml } from "monaco-yaml"
 import { useTheme } from "next-themes"
 import posthog from "posthog-js"
 import { useEffect, useRef, useState } from "react"
+
+// Use the Monaco type definitions from the react package
+import type Monaco from 'monaco-editor'
+type EditorType = Monaco.editor.IStandaloneCodeEditor;
 
 interface CopyComposeModalProps {
 	isOpen: boolean
@@ -50,9 +52,9 @@ export function CopyComposeModal({
 	const [activeTab, setActiveTab] = useState<string>("compose")
 	const [copied, setCopied] = useState(false)
 	const [mounted, setMounted] = useState(false)
-	const composeEditorRef = useRef<editor.IStandaloneCodeEditor | null>(null)
-	const envEditorRef = useRef<editor.IStandaloneCodeEditor | null>(null)
-	const [monaco, setMonaco] = useState<typeof Monaco | null>(null)
+	const composeEditorRef = useRef<EditorType | null>(null)
+	const envEditorRef = useRef<EditorType | null>(null)
+	const monaco = useMonaco() // Use the monaco hook from @monaco-editor/react
 	const { theme, resolvedTheme } = useTheme()
 	
 	// After mounting, we can safely access the theme
@@ -65,10 +67,10 @@ export function CopyComposeModal({
 		DEFAULT_SETTINGS
 	)
 
-	// Function to configure Monaco with YAML schema
-	const handleEditorWillMount = (monaco: typeof import("monaco-editor")) => {
-		// Store the monaco instance
-		setMonaco(monaco);
+	// Configure Monaco when the instance is available
+	useEffect(() => {
+		// Only run once monaco is loaded and component is mounted
+		if (!monaco || !mounted) return;
 		
 		// Define a theme based on Tailwind CSS
 		monaco.editor.defineTheme('tailwind-dark', {
@@ -76,13 +78,13 @@ export function CopyComposeModal({
 			inherit: true,
 			rules: [],
 			colors: {
-				'editor.background': '#020817', // dark background fallback
-				'editor.foreground': '#e1e7ef', // light text fallback
-				'editorCursor.foreground': '#2563eb', // blue fallback
-				'editor.lineHighlightBackground': '#1e293b', // slate-800 fallback
-				'editorLineNumber.foreground': '#64748b', // slate-500 fallback
-				'editor.selectionBackground': '#3b82f680', // blue with opacity fallback
-				'editor.inactiveSelectionBackground': '#334155', // slate-700 fallback
+				'editor.background': '#1e293b', // slate-800
+				'editor.foreground': '#e2e8f0', // slate-200
+				'editorCursor.foreground': '#38bdf8', // sky-400
+				'editor.lineHighlightBackground': '#334155', // slate-700
+				'editorLineNumber.foreground': '#94a3b8', // slate-400
+				'editor.selectionBackground': '#475569', // slate-600
+				'editor.inactiveSelectionBackground': '#334155', // slate-700
 			},
 		});
 		
@@ -91,17 +93,17 @@ export function CopyComposeModal({
 			inherit: true,
 			rules: [],
 			colors: {
-				'editor.background': '#ffffff', // white fallback
-				'editor.foreground': '#0f172a', // slate-900 fallback
-				'editorCursor.foreground': '#2563eb', // blue fallback
-				'editor.lineHighlightBackground': '#f1f5f9', // slate-100 fallback
-				'editorLineNumber.foreground': '#64748b', // slate-500 fallback
-				'editor.selectionBackground': '#3b82f640', // blue with opacity fallback
-				'editor.inactiveSelectionBackground': '#e2e8f0', // slate-200 fallback
+				'editor.background': '#f8fafc', // slate-50
+				'editor.foreground': '#334155', // slate-700
+				'editorCursor.foreground': '#0284c7', // sky-600
+				'editor.lineHighlightBackground': '#e2e8f0', // slate-200
+				'editorLineNumber.foreground': '#64748b', // slate-500
+				'editor.selectionBackground': '#cbd5e1', // slate-300
+				'editor.inactiveSelectionBackground': '#e2e8f0', // slate-200
 			},
 		});
 
-		// Create a model URI for the docker-compose file to help with schema association
+		// Create a model URI for the docker-compose file
 		const modelUri = monaco.Uri.parse('file:///docker-compose.yaml');
 
 		// Configure monaco-yaml
@@ -123,9 +125,6 @@ export function CopyComposeModal({
 				]
 			});
 			
-			// The monaco-editor/react package handles worker setup internally,
-			// we don't need to set up MonacoEnvironment manually
-			
 			console.log('Monaco YAML configured successfully');
 		} catch (error) {
 			console.error("Error configuring Monaco YAML:", error);
@@ -143,11 +142,7 @@ export function CopyComposeModal({
 
 		// Create a new model with the content using the specific URI to match our schema
 		monaco.editor.createModel(composeContent, 'yaml', modelUri);
-
-		return {
-			modelUri: modelUri
-		};
-	}
+	}, [monaco, mounted, composeContent]);
 
 	// Generate the docker-compose and env file content
 	useEffect(() => {
@@ -244,41 +239,6 @@ version: '3.8'
 	useEffect(() => {
 		if (!mounted) return;
 		
-		// Redefine themes with current CSS variables
-		if (typeof monaco !== 'undefined' && monaco.editor) {
-			// Define dark theme with hardcoded colors
-			monaco.editor.defineTheme('tailwind-dark', {
-				base: 'vs-dark',
-				inherit: true,
-				rules: [],
-				colors: {
-					'editor.background': '#020817', // dark background fallback
-					'editor.foreground': '#e1e7ef', // light text fallback
-					'editorCursor.foreground': '#2563eb', // blue fallback
-					'editor.lineHighlightBackground': '#1e293b', // slate-800 fallback
-					'editorLineNumber.foreground': '#64748b', // slate-500 fallback
-					'editor.selectionBackground': '#3b82f680', // blue with opacity fallback
-					'editor.inactiveSelectionBackground': '#334155', // slate-700 fallback
-				},
-			});
-			
-			// Define light theme with hardcoded colors
-			monaco.editor.defineTheme('tailwind-light', {
-				base: 'vs',
-				inherit: true,
-				rules: [],
-				colors: {
-					'editor.background': '#ffffff', // white fallback
-					'editor.foreground': '#0f172a', // slate-900 fallback
-					'editorCursor.foreground': '#2563eb', // blue fallback
-					'editor.lineHighlightBackground': '#f1f5f9', // slate-100 fallback
-					'editorLineNumber.foreground': '#64748b', // slate-500 fallback
-					'editor.selectionBackground': '#3b82f640', // blue with opacity fallback
-					'editor.inactiveSelectionBackground': '#e2e8f0', // slate-200 fallback
-				},
-			});
-		}
-		
 		// Update the existing editors when theme changes
 		if (composeEditorRef.current) {
 			const currentTheme = resolvedTheme === 'dark' ? 'tailwind-dark' : 'tailwind-light';
@@ -366,8 +326,8 @@ version: '3.8'
 		});
 	};
 
-	// Function to handle editor mounting
-	const handleComposeEditorDidMount = (editor: editor.IStandaloneCodeEditor) => {
+	// Function to handle editor mounting using the OnMount type from @monaco-editor/react
+	const handleComposeEditorDidMount: OnMount = (editor) => {
 		composeEditorRef.current = editor;
 		
 		// Set the theme after mount to ensure it's correct
@@ -377,7 +337,7 @@ version: '3.8'
 		}
 	};
 
-	const handleEnvEditorDidMount = (editor: editor.IStandaloneCodeEditor) => {
+	const handleEnvEditorDidMount: OnMount = (editor) => {
 		envEditorRef.current = editor;
 		
 		// Set the theme after mount to ensure it's correct
@@ -392,8 +352,8 @@ version: '3.8'
 
 	return (
 		<AlertDialog open={isOpen} onOpenChange={onOpenChange}>
-			<AlertDialogContent className="max-h-[90vh] max-w-[95vw] flex flex-col">
-				<AlertDialogHeader className="flex items-center justify-between flex-row">
+			<AlertDialogContent className="flex flex-col max-h-[90vh] max-w-[95vw]">
+				<AlertDialogHeader className="flex flex-row items-center justify-between">
 					<div>
 						<AlertDialogTitle>Docker Compose Configuration</AlertDialogTitle>
 						<AlertDialogDescription>
@@ -401,7 +361,7 @@ version: '3.8'
 							selected service{selectedTools.length !== 1 ? "s" : ""}.
 						</AlertDialogDescription>
 					</div>
-					<div className="flex items-center gap-4">
+					<div className="flex gap-4 items-center">
 						<div className="flex items-center space-x-2">
 							<Switch
 								id="interpolate-values"
@@ -412,7 +372,7 @@ version: '3.8'
 						</div>
 						
 						<Button 
-							className="flex items-center gap-2"
+							className="flex gap-2 items-center"
 							onClick={() => setShowSettings(!showSettings)}
 							size="sm"
 							variant="outline" 
@@ -425,7 +385,7 @@ version: '3.8'
 
 				<div className={cn("grid gap-4", showSettings ? "grid-cols-[1fr_350px]" : "grid-cols-1")}>
 					<div className="flex-1 h-[60vh]">
-						<div className="mb-2 flex items-center justify-between">
+						<div className="flex items-center justify-between mb-2">
 							<Tabs className="w-full" defaultValue="compose" onValueChange={setActiveTab} value={activeTab}>
 								<TabsList>
 									<TabsTrigger value="compose">docker-compose.yaml</TabsTrigger>
@@ -468,10 +428,9 @@ version: '3.8'
 							</div>
 						</div>
 						
-						<div className="border flex-1 h-[calc(60vh-40px)] rounded overflow-hidden">
+						<div className="border flex-1 h-[calc(60vh-40px)] overflow-hidden rounded">
 							{activeTab === "compose" ? (
 								<Editor
-									beforeMount={handleEditorWillMount}
 									defaultLanguage="yaml"
 									defaultValue={composeContent}
 									height="100%"
@@ -510,7 +469,7 @@ version: '3.8'
 					</div>
 
 					{showSettings && (
-						<div className="border p-2 overflow-auto rounded" style={{ maxHeight: "60vh" }}>
+						<div className="border overflow-auto p-2 rounded" style={{ maxHeight: "60vh" }}>
 							<SettingsPanel 
 								onSettingsChange={(newSettings) => setSettings(newSettings)} 
 								settings={settings}
