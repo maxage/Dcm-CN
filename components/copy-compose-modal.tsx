@@ -103,6 +103,9 @@ export function CopyComposeModal({
 			},
 		});
 
+		// Create a model URI for the docker-compose file to help with schema association
+		const modelUri = monaco.Uri.parse('file:///docker-compose.yaml');
+
 		// Configure monaco-yaml
 		try {
 			// Configure yaml language support with schemas
@@ -115,27 +118,37 @@ export function CopyComposeModal({
 				schemas: [
 					{
 						// The schema applies to docker-compose files
-						fileMatch: ['*docker-compose*', '*.yml', '*.yaml'],
+						fileMatch: ['*docker-compose*', '*.yml', '*.yaml', modelUri.toString()],
 						// Use the compose schema URL
 						uri: COMPOSE_SCHEMA_URL
 					}
 				]
 			});
 			
-			// Set up a basic environment for Monaco Editor
-			window.MonacoEnvironment = {
-				getWorkerUrl: function(moduleId, label) {
-					if (label === 'yaml') {
-						return '/yaml.worker.js';
-					}
-					return '/editor.worker.js';
-				}
-			};
+			// The monaco-editor/react package handles worker setup internally,
+			// we don't need to set up MonacoEnvironment manually
 			
 			console.log('Monaco YAML configured successfully');
 		} catch (error) {
 			console.error("Error configuring Monaco YAML:", error);
 		}
+
+		// Create or update the model for the editor
+		if (monaco.editor.getModels().length > 0) {
+			// Find and dispose any existing models
+			monaco.editor.getModels().forEach(model => {
+				if (model.uri.toString() === modelUri.toString()) {
+					model.dispose();
+				}
+			});
+		}
+
+		// Create a new model with the content using the specific URI to match our schema
+		monaco.editor.createModel(composeContent, 'yaml', modelUri);
+
+		return {
+			modelUri: modelUri
+		};
 	}
 
 	// Generate the docker-compose and env file content
@@ -440,6 +453,7 @@ version: '3.8'
 									}}
 									theme={currentTheme}
 									value={composeContent}
+									path="docker-compose.yaml"
 								/>
 							) : (
 								<Editor
