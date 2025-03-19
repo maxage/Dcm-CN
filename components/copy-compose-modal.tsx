@@ -1,6 +1,7 @@
 "use client"
 
-import SettingsPanel, { DockerSettings } from "@/components/settings-panel"
+import type { DockerSettings } from "@/components/settings-panel"
+import SettingsPanel from "@/components/settings-panel"
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -15,17 +16,21 @@ import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { useLocalStorage } from "@/hooks/useLocalStorage"
-import { DockerTool } from "@/lib/docker-tools"
+import type { DockerTool } from "@/lib/docker-tools"
 import { cn } from "@/lib/utils"
+import Editor, { useMonaco } from "@monaco-editor/react"
 import { Settings as SettingsIcon } from "lucide-react"
 import posthog from "posthog-js"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 interface CopyComposeModalProps {
 	isOpen: boolean
 	onOpenChange: (open: boolean) => void
 	selectedTools: DockerTool[]
 }
+
+// Compose schema URL
+const COMPOSE_SCHEMA_URL = "https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"
 
 export function CopyComposeModal({
 	isOpen,
@@ -35,6 +40,9 @@ export function CopyComposeModal({
 	const [showInterpolated, setShowInterpolated] = useState(false)
 	const [showSettings, setShowSettings] = useState(false)
 	const [composeContent, setComposeContent] = useState<string>("")
+	const monaco = useMonaco()
+	const editorRef = useRef<any>(null)
+	
 	const { value: settings, setValue: setSettings } = useLocalStorage<DockerSettings>("docker-settings", {
 		configPath: "/config",
 		dataPath: "/data",
@@ -47,6 +55,25 @@ export function CopyComposeModal({
 		useTraefik: false,
 		containerNamePrefix: "docker-",
 	})
+
+	// Configure Monaco Editor with the YAML schema
+	useEffect(() => {
+		if (monaco) {
+			// Configure Monaco YAML schema
+			const yamlDefaults = monaco.languages.yaml.yamlDefaults
+			if (yamlDefaults) {
+				yamlDefaults.setDiagnosticsOptions({
+					validate: true,
+					schemas: [
+						{
+							uri: COMPOSE_SCHEMA_URL,
+							fileMatch: ['*'],
+						},
+					],
+				})
+			}
+		}
+	}, [monaco])
 
 	// Generate the docker-compose content
 	useEffect(() => {
@@ -144,8 +171,11 @@ x-common: &common-settings
 	}, [isOpen, selectedTools, settings, showInterpolated])
 
 	const handleCopy = () => {
+		// Get the current value from the editor
+		const editorContent = editorRef.current?.getValue() || composeContent
+		
 		// Copy the compose content to clipboard
-		navigator.clipboard.writeText(composeContent)
+		navigator.clipboard.writeText(editorContent)
 			.then(() => {
 				console.log("Docker compose copied to clipboard")
 				posthog.capture("copy_compose_success", {
@@ -157,6 +187,11 @@ x-common: &common-settings
 			.catch(err => {
 				console.error("Failed to copy: ", err)
 			})
+	}
+
+	// Function to handle editor mounting
+	const handleEditorDidMount = (editor: any) => {
+		editorRef.current = editor
 	}
 
 	return (
@@ -193,13 +228,22 @@ x-common: &common-settings
 				</AlertDialogHeader>
 
 				<div className={cn("grid gap-4", showSettings ? "grid-cols-[1fr_350px]" : "grid-cols-1")}>
-					<div className="flex-1 overflow-auto">
-						<pre
-							className="bg-muted border font-mono overflow-auto p-4 rounded syntax-highlighted text-sm"
-							style={{ maxHeight: "60vh" }}
-						>
-							{composeContent}
-						</pre>
+					<div className="flex-1 h-[60vh] overflow-hidden border rounded">
+						<Editor
+							height="100%"
+							defaultLanguage="yaml"
+							theme="vs-dark"
+							value={composeContent}
+							options={{
+								minimap: { enabled: false },
+								scrollBeyondLastLine: false,
+								fontSize: 13,
+								wordWrap: "on",
+								readOnly: false,
+								automaticLayout: true,
+							}}
+							onMount={handleEditorDidMount}
+						/>
 					</div>
 
 					{showSettings && (
