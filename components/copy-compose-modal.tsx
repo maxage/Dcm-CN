@@ -21,11 +21,11 @@ import { DEFAULT_SETTINGS, STORAGE_KEYS } from "@/lib/constants"
 import type { DockerTool } from "@/lib/docker-tools"
 import { cn } from "@/lib/utils"
 import Editor from "@monaco-editor/react"
-import { Check, Copy, Docker ,Download, File, Settings as SettingsIcon } from "lucide-react"
+import { Check, Copy, Docker ,Download, File } from "lucide-react"
 import type { editor } from "monaco-editor"
 import { useTheme } from "next-themes"
 import posthog from "posthog-js"
-import { useEffect, useRef, useState } from "react"
+import { Suspense, lazy, memo, useEffect, useRef, useState } from "react"
 import { siDocker } from "simple-icons"
 import { toast } from "sonner"
 
@@ -35,13 +35,61 @@ interface CopyComposeModalProps {
 	selectedTools: DockerTool[]
 }
 
+// Memoized Editor components to prevent unnecessary re-renders
+const ComposeEditor = memo(({ content, onMount, beforeMount, theme }: {
+	content: string;
+	onMount: (editor: editor.IStandaloneCodeEditor) => void;
+	beforeMount?: (monaco: typeof import("monaco-editor")) => void;
+	theme: string;
+}) => (
+	<Editor
+		defaultLanguage="yaml"
+		defaultValue={content}
+		height="100%"
+		onMount={onMount}
+		beforeMount={beforeMount}
+		options={{
+			automaticLayout: true,
+			fontSize: 13,
+			minimap: { enabled: false },
+			readOnly: false,
+			scrollBeyondLastLine: false,
+			wordWrap: "on",
+		}}
+		theme={theme}
+		value={content}
+	/>
+));
+
+const EnvEditor = memo(({ content, onMount, theme }: {
+	content: string;
+	onMount: (editor: editor.IStandaloneCodeEditor) => void;
+	theme: string;
+}) => (
+	<Editor
+		defaultLanguage="ini"
+		defaultValue={content}
+		height="100%"
+		onMount={onMount}
+		options={{
+			automaticLayout: true,
+			fontSize: 13,
+			minimap: { enabled: false },
+			readOnly: false,
+			scrollBeyondLastLine: false,
+			wordWrap: "on",
+		}}
+		theme={theme}
+		value={content}
+	/>
+));
+
 export function CopyComposeModal({
 	isOpen,
 	onOpenChange,
 	selectedTools,
 }: CopyComposeModalProps) {
 	const [showInterpolated, setShowInterpolated] = useState(false)
-	const [showSettings, setShowSettings] = useState(false)
 	const [composeContent, setComposeContent] = useState<string>("")
 	const [envFileContent, setEnvFileContent] = useState<string>("")
 	const [activeTab, setActiveTab] = useState<string>("compose")
@@ -400,118 +448,65 @@ version: '3.8'
 									docker-compose.yaml
 								</TabsTrigger>
 								<TabsTrigger value="env"><File className="h-4 w-4 mr-2 text-primary-foreground" />.env</TabsTrigger>
-								<TabsTrigger value="settings" className="gap-2">
-									<SettingsIcon className="h-4 w-4" />
-									Settings
-								</TabsTrigger>
 							</TabsList>
 						</Tabs>
 						
-						{activeTab !== 'settings' && (
-							<div className="flex gap-2">
-								<Button
-									aria-label="Download file"
-									className="ml-2 rounded-md"
-									onClick={handleDownload}
-									size="icon"
-									variant="outline"
-								>
-									<span className="sr-only">Download</span>
-									<Download className="h-4 w-4" />
-								</Button>
-								
-								<Button
-									aria-label={copied ? "Copied" : "Copy to clipboard"}
-									className="relative ml-2 rounded-md"
-									id="copy-button"
-									onClick={handleCopy}
-									size="icon"
-									variant="outline"
-								>
-									<span className="sr-only">{copied ? "Copied" : "Copy"}</span>
-									<Copy
-										className={`h-4 w-4 transition-all duration-300 ${
-											copied ? "scale-0" : "scale-100"
-										}`}
-									/>
-									<Check
-										className={`absolute inset-0 m-auto h-4 w-4 transition-all duration-300 ${
-											copied ? "scale-100" : "scale-0"
-										}`}
-									/>
-								</Button>
-							</div>
-						)}
+						<div className="flex gap-2">
+							<Button
+								aria-label="Download file"
+								className="ml-2 rounded-md"
+								onClick={handleDownload}
+								size="icon"
+								variant="outline"
+							>
+								<span className="sr-only">Download</span>
+								<Download className="h-4 w-4" />
+							</Button>
+							
+							<Button
+								aria-label={copied ? "Copied" : "Copy to clipboard"}
+								className="relative ml-2 rounded-md"
+								id="copy-button"
+								onClick={handleCopy}
+								size="icon"
+								variant="outline"
+							>
+								<span className="sr-only">{copied ? "Copied" : "Copy"}</span>
+								<Copy
+									className={`h-4 w-4 transition-all duration-300 ${
+										copied ? "scale-0" : "scale-100"
+									}`}
+								/>
+								<Check
+									className={`absolute inset-0 m-auto h-4 w-4 transition-all duration-300 ${
+										copied ? "scale-100" : "scale-0"
+									}`}
+								/>
+							</Button>
+						</div>
 					</div>
 					
 					<div className="border flex-1 h-[calc(70vh-40px)] overflow-hidden rounded">
-						{activeTab === "compose" ? (
-							<Editor
-								beforeMount={handleEditorWillMount}
-								defaultLanguage="yaml"
-								defaultValue={composeContent}
-								height="100%"
+						{activeTab === "compose" && (
+							<ComposeEditor
+								content={composeContent}
 								onMount={handleComposeEditorDidMount}
-								options={{
-									automaticLayout: true,
-									fontSize: 13,
-									minimap: { enabled: false },
-									readOnly: false,
-									scrollBeyondLastLine: false,
-									wordWrap: "on",
-								}}
+								beforeMount={handleEditorWillMount}
 								theme={currentTheme}
-								value={composeContent}
 							/>
-						) : activeTab === "env" ? (
-							<Editor
-								defaultLanguage="ini"
-								defaultValue={envFileContent}
-								height="100%"
+						)}
+						{activeTab === "env" && (
+							<EnvEditor
+								content={envFileContent}
 								onMount={handleEnvEditorDidMount}
-								options={{
-									automaticLayout: true,
-									fontSize: 13,
-									minimap: { enabled: false },
-									readOnly: false,
-									scrollBeyondLastLine: false,
-									wordWrap: "on",
-								}}
 								theme={currentTheme}
-								value={envFileContent}
 							/>
-						) : (
-							<div className="h-full overflow-auto p-4">
-								<div className="mb-4">
-									<h3 className="text-lg font-medium">Docker Settings</h3>
-									<p className="text-sm text-muted-foreground">
-										These settings affect the generated Docker Compose file.
-									</p>
-								</div>
-								<SettingsPanel 
-									onSettingsChange={(newSettings) => setSettings(newSettings)} 
-									settings={settings}
-									isEmbedded={true}
-								/>
-							</div>
 						)}
 					</div>
 				</div>
 
 				<AlertDialogFooter className="mt-4">
 					<AlertDialogCancel>Cancel</AlertDialogCancel>
-					<Button
-						id="copy-button"
-						onClick={handleCopy}
-						type="button"
-					>
-						{copied ? (
-							<Check className="h-4 w-4" />
-						) : (
-							<Copy className="h-4 w-4" />
-						)}
-						<span className="ml-2">{copied ? "Copied!" : "Copy"}</span>
-					</Button>
 					<AlertDialogAction
 						onClick={onOpenChange.bind(null, false)}
 					>
