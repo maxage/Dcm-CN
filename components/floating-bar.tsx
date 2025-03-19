@@ -23,15 +23,13 @@ import { useEffect, useState } from "react"
 
 // Dynamically import CopyComposeModal with loading state
 const CopyComposeModal = dynamic(
-  () => import("@/components/copy-compose-modal").then(mod => ({ default: mod.CopyComposeModal })),
-  { 
-    loading: () => <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
-      <div className="animate-pulse text-center">
-        <p className="text-sm text-muted-foreground">Loading compose editor...</p>
-      </div>
-    </div>,
-    ssr: false // Disable SSR for the Monaco editor to prevent hydration issues
-  }
+  () =>
+    import("@/components/copy-compose-modal").then((mod) => ({
+      default: mod.CopyComposeModal,
+    })),
+  {
+    ssr: false, // Disable SSR for the Monaco editor to prevent hydration issues
+  },
 )
 
 interface FloatingBarProps {
@@ -189,7 +187,7 @@ export default function FloatingBar({
 
                   {selectedCount > 0 && (
                     <div className="mt-2 flex max-w-[600px] flex-wrap gap-1.5">
-                      <ServiceCircles 
+                      <ServiceCircles
                         selectedServices={selectedToolObjects}
                         spacing="-space-x-2 sm:-space-x-4"
                         onToggleServiceSelection={onToggleToolSelection}
