@@ -406,7 +406,7 @@ NETWORK_MODE=${settings.networkMode}
     } catch (err) {
       console.error("Failed to download file: ", err)
       toast.error("Failed to download file", {
-        description: err.message || "An error occurred while downloading",
+        description: err instanceof Error ? err.message : "An error occurred while downloading",
         duration: 5000,
       })
     }
