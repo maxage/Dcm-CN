@@ -134,32 +134,63 @@ version: '3.8'
 		// Add each selected tool
 		selectedTools.forEach((tool) => {
 			if (!tool.composeContent) return;
-
+			// Add a blank line before each service
+			servicesSection += `
+`;
 			// Add a comment with the tool description
 			servicesSection += `  # ${tool.name}: ${tool.description}
 `;
 			// Process the compose content - properly indent everything
 			let toolContent = tool.composeContent
 				.replace(/^services:\s*/gm, "") // Remove the services: line
-				.replace(/^\s{2}(\S)/gm, "  $1"); // Ensure consistent indentation for first level
 				
-			// Make sure indentation is consistent throughout with service content indented 
-			// one more level than service names
+			// Create a more robust indentation system for nested YAML
 			const lines = toolContent.split('\n');
-			let currentlyInService = false;
-			const processedLines = lines.map(line => {
+			let currentIndentLevel = 0;
+			
+			const processedLines = lines.map((line, index) => {
 				// Skip empty lines
 				if (line.trim() === '') return line;
 				
-				// If line starts with a service name or other first-level key
-				if (line.match(/^\s*[a-zA-Z0-9_-]+:/) || line.startsWith('volumes:')) {
-					currentlyInService = true;
-					return `  ${line.trim()}`;
-				} 
+				const trimmedLine = line.trim();
+				const isServiceLine = index === 0 || lines[index - 1].trim() === '';
 				
-				// Otherwise it's a nested property under a service, add more indentation
-				return `    ${line.trim()}`; // Use 4 spaces for properties (2 spaces more than service name)
+				// Reset indent level for service lines
+				if (isServiceLine) {
+					currentIndentLevel = 0;
+					return `  ${trimmedLine}`;  // 2 spaces for service name
+				}
+				
+				// Determine if this line defines a new block (ends with colon)
+				const definesBlock = trimmedLine.endsWith(':') && !trimmedLine.includes(': ');
+				
+				// Check if previous line defined a block (which would make this line deeper)
+				const prevLine = index > 0 ? lines[index - 1].trim() : '';
+				const prevDefinesBlock = prevLine.endsWith(':') && !prevLine.includes(': ');
+				
+				// Increase indent level if previous line defined a block
+				if (prevDefinesBlock) {
+					currentIndentLevel++;
+				}
+				// Detect decrease in indentation by checking original indentation
+				else if (!isServiceLine && index > 0) {
+					const originalIndent = line.match(/^\s*/)?.[0].length || 0;
+					const prevOriginalIndent = lines[index - 1].match(/^\s*/)?.[0].length || 0;
+					
+					// If current line has less original indentation than previous line,
+					// we need to decrease our indentation level
+					if (originalIndent < prevOriginalIndent) {
+						// Calculate how many levels to go back based on the difference
+						const levels = Math.floor((prevOriginalIndent - originalIndent) / 2);
+						currentIndentLevel = Math.max(0, currentIndentLevel - levels);
+					}
+				}
+				
+				// Calculate spaces for the current indent level (base of 2 + 2 per level)
+				const spaces = 2 + (currentIndentLevel * 2);
+				return `${' '.repeat(spaces)}${trimmedLine}`;
 			});
+			
 			toolContent = processedLines.join('\n');
 
 			// Replace variables with their values if showInterpolated is true
