@@ -19,6 +19,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useLocalStorage } from "@/hooks/useLocalStorage"
 import { DEFAULT_SETTINGS, STORAGE_KEYS } from "@/lib/constants"
 import type { DockerTool } from "@/lib/docker-tools"
+import { setupMonaco } from "@/lib/monaco-setup"
 import { cn } from "@/lib/utils"
 import Editor, { OnMount, useMonaco } from "@monaco-editor/react"
 import { Check, Copy, Download, Settings as SettingsIcon } from "lucide-react"
@@ -63,43 +64,14 @@ export function CopyComposeModal({
 		DEFAULT_SETTINGS
 	)
 
-	// Configure Monaco when the instance is available
+	// Configure Monaco using our setupMonaco function when the instance is available
 	useEffect(() => {
 		// Only run once monaco is loaded and component is mounted
 		if (!monaco || !mounted) return;
 		
-		// Define a theme based on Tailwind CSS
-		monaco.editor.defineTheme('tailwind-dark', {
-			base: 'vs-dark',
-			inherit: true,
-			rules: [],
-			colors: {
-				'editor.background': '#1e293b', // slate-800
-				'editor.foreground': '#e2e8f0', // slate-200
-				'editorCursor.foreground': '#38bdf8', // sky-400
-				'editor.lineHighlightBackground': '#334155', // slate-700
-				'editorLineNumber.foreground': '#94a3b8', // slate-400
-				'editor.selectionBackground': '#475569', // slate-600
-				'editor.inactiveSelectionBackground': '#334155', // slate-700
-			},
-		});
+		// Use the centralized setup function for Monaco
+		setupMonaco(monaco);
 		
-		monaco.editor.defineTheme('tailwind-light', {
-			base: 'vs',
-			inherit: true,
-			rules: [],
-			colors: {
-				'editor.background': '#f8fafc', // slate-50
-				'editor.foreground': '#334155', // slate-700
-				'editorCursor.foreground': '#0284c7', // sky-600
-				'editor.lineHighlightBackground': '#e2e8f0', // slate-200
-				'editorLineNumber.foreground': '#64748b', // slate-500
-				'editor.selectionBackground': '#cbd5e1', // slate-300
-				'editor.inactiveSelectionBackground': '#e2e8f0', // slate-200
-			},
-		});
-		
-		console.log('Monaco themes configured successfully');
 	}, [monaco, mounted]);
 
 	// Generate the docker-compose and env file content
