@@ -18,8 +18,9 @@ import { Switch } from "@/components/ui/switch"
 import { useLocalStorage } from "@/hooks/useLocalStorage"
 import type { DockerTool } from "@/lib/docker-tools"
 import { cn } from "@/lib/utils"
-import Editor, { useMonaco } from "@monaco-editor/react"
+import Editor from "@monaco-editor/react"
 import { Settings as SettingsIcon } from "lucide-react"
+import type { editor } from "monaco-editor"
 import posthog from "posthog-js"
 import { useEffect, useRef, useState } from "react"
 
@@ -40,8 +41,7 @@ export function CopyComposeModal({
 	const [showInterpolated, setShowInterpolated] = useState(false)
 	const [showSettings, setShowSettings] = useState(false)
 	const [composeContent, setComposeContent] = useState<string>("")
-	const monaco = useMonaco()
-	const editorRef = useRef<any>(null)
+	const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null)
 	
 	const { value: settings, setValue: setSettings } = useLocalStorage<DockerSettings>("docker-settings", {
 		configPath: "/config",
@@ -56,24 +56,35 @@ export function CopyComposeModal({
 		containerNamePrefix: "docker-",
 	})
 
-	// Configure Monaco Editor with the YAML schema
-	useEffect(() => {
-		if (monaco) {
-			// Configure Monaco YAML schema
-			const yamlDefaults = monaco.languages.yaml.yamlDefaults
-			if (yamlDefaults) {
-				yamlDefaults.setDiagnosticsOptions({
-					validate: true,
-					schemas: [
-						{
-							uri: COMPOSE_SCHEMA_URL,
-							fileMatch: ['*'],
-						},
-					],
-				})
-			}
+	// Function to configure Monaco with YAML schema
+	const handleEditorWillMount = (monaco: typeof import("monaco-editor")) => {
+		// Make sure yaml schema validation is set up
+		try {
+			// Register the schema
+			monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+				validate: true,
+				schemas: [
+					{
+						uri: COMPOSE_SCHEMA_URL,
+						fileMatch: ["*docker-compose*", "*.yml", "*.yaml"],
+						schema: {
+							type: "object",
+							required: ["services"],
+							properties: {
+								version: { type: "string" },
+								services: {
+									type: "object",
+									additionalProperties: true
+								}
+							}
+						}
+					}
+				]
+			});
+		} catch (error) {
+			console.error("Error configuring Monaco YAML schema:", error);
 		}
-	}, [monaco])
+	}
 
 	// Generate the docker-compose content
 	useEffect(() => {
@@ -190,7 +201,7 @@ x-common: &common-settings
 	}
 
 	// Function to handle editor mounting
-	const handleEditorDidMount = (editor: any) => {
+	const handleEditorDidMount = (editor: editor.IStandaloneCodeEditor) => {
 		editorRef.current = editor
 	}
 
@@ -228,21 +239,23 @@ x-common: &common-settings
 				</AlertDialogHeader>
 
 				<div className={cn("grid gap-4", showSettings ? "grid-cols-[1fr_350px]" : "grid-cols-1")}>
-					<div className="flex-1 h-[60vh] overflow-hidden border rounded">
+					<div className="border flex-1 h-[60vh] overflow-hidden rounded">
 						<Editor
 							height="100%"
 							defaultLanguage="yaml"
-							theme="vs-dark"
+							defaultValue={composeContent}
 							value={composeContent}
-							options={{
-								minimap: { enabled: false },
-								scrollBeyondLastLine: false,
-								fontSize: 13,
-								wordWrap: "on",
-								readOnly: false,
-								automaticLayout: true,
-							}}
+							theme="vs-dark"
+							beforeMount={handleEditorWillMount}
 							onMount={handleEditorDidMount}
+							options={{
+								automaticLayout: true,
+								fontSize: 13,
+								minimap: { enabled: false },
+								readOnly: false,
+								scrollBeyondLastLine: false,
+								wordWrap: "on",
+							}}
 						/>
 					</div>
 
