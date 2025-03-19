@@ -361,7 +361,7 @@ version: '3.8'
 
 	return (
 		<AlertDialog open={isOpen} onOpenChange={onOpenChange}>
-			<AlertDialogContent className="flex max-h-[90vh] max-w-[95vw] flex-col">
+			<AlertDialogContent className="flex max-h-[90vh] flex-col">
 				<AlertDialogHeader className="flex items-center justify-between flex-row">
 					<div>
 						<AlertDialogTitle>Docker Compose Configuration</AlertDialogTitle>
@@ -392,16 +392,20 @@ version: '3.8'
 					</div>
 				</AlertDialogHeader>
 
-				<div className={cn("grid gap-4", showSettings ? "grid-cols-[1fr_350px]" : "grid-cols-1")}>
-					<div className="flex-1 h-[60vh]">
-						<div className="flex items-center justify-between mb-2">
-							<Tabs className="w-full" defaultValue="compose" onValueChange={setActiveTab} value={activeTab}>
-								<TabsList>
-									<TabsTrigger value="compose">docker-compose.yaml</TabsTrigger>
-									<TabsTrigger value="env">.env</TabsTrigger>
-								</TabsList>
-							</Tabs>
-							
+				<div className="flex-1">
+					<div className="flex items-center justify-between mb-2">
+						<Tabs className="w-full" defaultValue="compose" onValueChange={setActiveTab} value={activeTab}>
+							<TabsList>
+								<TabsTrigger value="compose">docker-compose.yaml</TabsTrigger>
+								<TabsTrigger value="env">.env</TabsTrigger>
+								<TabsTrigger value="settings" className="gap-2">
+									<SettingsIcon className="h-4 w-4" />
+									Settings
+								</TabsTrigger>
+							</TabsList>
+						</Tabs>
+						
+						{activeTab !== 'settings' && (
 							<div className="flex gap-2">
 								<Button
 									aria-label="Download file"
@@ -435,63 +439,61 @@ version: '3.8'
 									/>
 								</Button>
 							</div>
-						</div>
-						
-						<div className="border flex-1 h-[calc(60vh-40px)] overflow-hidden rounded">
-							{activeTab === "compose" ? (
-								<Editor
-									beforeMount={handleEditorWillMount}
-									defaultLanguage="yaml"
-									defaultValue={composeContent}
-									height="100%"
-									onMount={handleComposeEditorDidMount}
-									options={{
-										automaticLayout: true,
-										fontSize: 13,
-										minimap: { enabled: false },
-										readOnly: false,
-										scrollBeyondLastLine: false,
-										wordWrap: "on",
-									}}
-									theme={currentTheme}
-									value={composeContent}
-								/>
-							) : (
-								<Editor
-									defaultLanguage="ini"
-									defaultValue={envFileContent}
-									height="100%"
-									onMount={handleEnvEditorDidMount}
-									options={{
-										automaticLayout: true,
-										fontSize: 13,
-										minimap: { enabled: false },
-										readOnly: false,
-										scrollBeyondLastLine: false,
-										wordWrap: "on",
-									}}
-									theme={currentTheme}
-									value={envFileContent}
-								/>
-							)}
-						</div>
+						)}
 					</div>
-
-					{showSettings && (
-						<div className="border overflow-auto p-4 rounded" style={{ maxHeight: "60vh" }}>
-							<div className="mb-2">
-								<h3 className="text-lg font-medium">Docker Settings</h3>
-								<p className="text-sm text-muted-foreground">
-									These settings affect the generated Docker Compose file.
-								</p>
-							</div>
-							<SettingsPanel 
-								onSettingsChange={(newSettings) => setSettings(newSettings)} 
-								settings={settings}
-								isEmbedded={true}
+					
+					<div className="border flex-1 h-[calc(60vh-40px)] overflow-hidden rounded">
+						{activeTab === "compose" ? (
+							<Editor
+								beforeMount={handleEditorWillMount}
+								defaultLanguage="yaml"
+								defaultValue={composeContent}
+								height="100%"
+								onMount={handleComposeEditorDidMount}
+								options={{
+									automaticLayout: true,
+									fontSize: 13,
+									minimap: { enabled: false },
+									readOnly: false,
+									scrollBeyondLastLine: false,
+									wordWrap: "on",
+								}}
+								theme={currentTheme}
+								value={composeContent}
 							/>
-						</div>
-					)}
+						) : activeTab === "env" ? (
+							<Editor
+								defaultLanguage="ini"
+								defaultValue={envFileContent}
+								height="100%"
+								onMount={handleEnvEditorDidMount}
+								options={{
+									automaticLayout: true,
+									fontSize: 13,
+									minimap: { enabled: false },
+									readOnly: false,
+									scrollBeyondLastLine: false,
+									wordWrap: "on",
+								}}
+								theme={currentTheme}
+								value={envFileContent}
+							/>
+						) : (
+							<div className="h-full overflow-auto p-4">
+								<div className="mb-4">
+									<h3 className="text-lg font-medium">Docker Settings</h3>
+									<p className="text-sm text-muted-foreground">
+										These settings affect the generated Docker Compose file.
+									</p>
+								</div>
+								<SettingsPanel 
+									onSettingsChange={(newSettings) => setSettings(newSettings)} 
+									settings={settings}
+									isEmbedded={true}
+								/>
+							</div>
+						)}
+					</div>
 				</div>
 
 				<AlertDialogFooter className="mt-4">
