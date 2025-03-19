@@ -59,7 +59,7 @@ export default function DockerToolsClient({
 
   // Get the DockerTool objects for selected tools
   const selectedToolObjects = selectedTools
-    .map(id => dockerTools.find(tool => tool.id === id))
+    .map((id) => dockerTools.find((tool) => tool.id === id))
     .filter((tool): tool is DockerTool => tool !== undefined)
 
   return (
