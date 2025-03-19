@@ -16,6 +16,8 @@ import { useState } from "react"
 interface SettingsPanelProps {
   settings: DockerSettings
   onSettingsChange: (settings: DockerSettings) => void
+  isEmbedded?: boolean
+  className?: string
 }
 
 export interface DockerSettings {
@@ -34,6 +36,8 @@ export interface DockerSettings {
 export default function SettingsPanel({
   settings,
   onSettingsChange,
+  isEmbedded = false,
+  className = "",
 }: SettingsPanelProps) {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -42,6 +46,37 @@ export default function SettingsPanel({
       ...settings,
       [key]: value,
     })
+  }
+
+  const SettingsContent = () => (
+    <div className="grid gap-6 pt-4">
+      <VolumePathsSection
+        settings={settings}
+        onSettingsChange={handleChange}
+      />
+
+      <Separator className="[animation-delay:100ms] motion-safe:animate-fade-in" />
+
+      <EnvironmentVariablesSection
+        settings={settings}
+        onSettingsChange={handleChange}
+      />
+
+      <Separator className="[animation-delay:500ms] motion-safe:animate-fade-in" />
+
+      <ContainerSettingsSection
+        settings={settings}
+        onSettingsChange={handleChange}
+      />
+    </div>
+  )
+
+  if (isEmbedded) {
+    return (
+      <div className={className}>
+        <SettingsContent />
+      </div>
+    )
   }
 
   return (
@@ -70,26 +105,7 @@ export default function SettingsPanel({
 
         <CollapsibleContent className="motion-safe:animate-slide-down">
           <CardContent className="p-4 pt-0">
-            <div className="grid gap-6 pt-4">
-              <VolumePathsSection
-                settings={settings}
-                onSettingsChange={handleChange}
-              />
-
-              <Separator className="[animation-delay:100ms] motion-safe:animate-fade-in" />
-
-              <EnvironmentVariablesSection
-                settings={settings}
-                onSettingsChange={handleChange}
-              />
-
-              <Separator className="[animation-delay:500ms] motion-safe:animate-fade-in" />
-
-              <ContainerSettingsSection
-                settings={settings}
-                onSettingsChange={handleChange}
-              />
-            </div>
+            <SettingsContent />
           </CardContent>
         </CollapsibleContent>
       </Collapsible>

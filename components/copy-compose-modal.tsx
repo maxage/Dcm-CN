@@ -478,10 +478,17 @@ version: '3.8'
 					</div>
 
 					{showSettings && (
-						<div className="border overflow-auto p-2 rounded" style={{ maxHeight: "60vh" }}>
+						<div className="border overflow-auto p-4 rounded" style={{ maxHeight: "60vh" }}>
+							<div className="mb-2">
+								<h3 className="text-lg font-medium">Docker Settings</h3>
+								<p className="text-sm text-muted-foreground">
+									These settings affect the generated Docker Compose file.
+								</p>
+							</div>
 							<SettingsPanel 
 								onSettingsChange={(newSettings) => setSettings(newSettings)} 
 								settings={settings}
+								isEmbedded={true}
 							/>
 						</div>
 					)}
