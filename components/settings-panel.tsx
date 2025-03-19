@@ -50,10 +50,7 @@ export default function SettingsPanel({
 
   const SettingsContent = () => (
     <div className="grid gap-6 pt-4">
-      <VolumePathsSection
-        settings={settings}
-        onSettingsChange={handleChange}
-      />
+      <VolumePathsSection settings={settings} onSettingsChange={handleChange} />
 
       <Separator className="[animation-delay:100ms] motion-safe:animate-fade-in" />
 
