@@ -22,6 +22,7 @@ import { cn } from "@/lib/utils"
 import Editor from "@monaco-editor/react"
 import { Check, Copy, Download, Settings as SettingsIcon } from "lucide-react"
 import type { editor } from "monaco-editor"
+import { configureMonacoYaml } from "monaco-yaml"
 import { useTheme } from "next-themes"
 import posthog from "posthog-js"
 import { useEffect, useRef, useState } from "react"
@@ -102,60 +103,38 @@ export function CopyComposeModal({
 			},
 		});
 
-		// Register YAML schema
+		// Configure monaco-yaml
 		try {
-			// Try to configure YAML schema validation
-			// @ts-ignore - Ignoring type errors for monaco.languages.yaml
-			if (Object.prototype.hasOwnProperty.call(monaco.languages, 'yaml') && typeof monaco.languages.yaml?.yamlDefaults === 'object') {
-				// @ts-ignore - Ignoring type errors for monaco.languages.yaml
-				const yamlDefaults = monaco.languages.yaml.yamlDefaults;
-				yamlDefaults.setDiagnosticsOptions({
-					validate: true,
-					enableSchemaRequest: true,
-					hover: true,
-					completion: true,
-					schemas: [
-						{
-							uri: COMPOSE_SCHEMA_URL,
-							fileMatch: ['*'],
-							schema: {
-								$schema: "http://json-schema.org/draft-07/schema#",
-								type: "object",
-								required: ["services"],
-								properties: {
-									version: { type: "string" },
-									services: {
-										type: "object",
-										additionalProperties: true
-									}
-								}
-							}
-						}
-					]
-				});
-			} else {
-				// Fallback to JSON schema validation
-				monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
-					validate: true,
-					schemas: [{
-						uri: COMPOSE_SCHEMA_URL,
-						fileMatch: ["*docker-compose*", "*.yml", "*.yaml"],
-						schema: {
-							type: "object",
-							required: ["services"],
-							properties: {
-								version: { type: "string" },
-								services: {
-									type: "object",
-									additionalProperties: true
-								}
-							}
-						}
-					}]
-				});
-			}
+			// Configure yaml language support with schemas
+			configureMonacoYaml(monaco, {
+				enableSchemaRequest: true,
+				completion: true,
+				validate: true,
+				format: true,
+				hover: true,
+				schemas: [
+					{
+						// The schema applies to docker-compose files
+						fileMatch: ['*docker-compose*', '*.yml', '*.yaml'],
+						// Use the compose schema URL
+						uri: COMPOSE_SCHEMA_URL
+					}
+				]
+			});
+			
+			// Set up a basic environment for Monaco Editor
+			window.MonacoEnvironment = {
+				getWorkerUrl: function(moduleId, label) {
+					if (label === 'yaml') {
+						return '/yaml.worker.js';
+					}
+					return '/editor.worker.js';
+				}
+			};
+			
+			console.log('Monaco YAML configured successfully');
 		} catch (error) {
-			console.error("Error configuring Monaco YAML schema:", error);
+			console.error("Error configuring Monaco YAML:", error);
 		}
 	}
 
@@ -212,26 +191,15 @@ version: '3.8'
 			// Make sure indentation is consistent throughout with service content indented 
 			// one more level than service names
 			const lines = toolContent.split('\n');
-			let isInServiceDef = false;
 			const processedLines = lines.map(line => {
 				// Skip empty lines
 				if (line.trim() === '') return line;
-				
-				// Check if this is a service definition line (service_name:)
-				// This catches lines that contain only a name followed by a colon with no other properties
-				if (line.trim().match(/^[a-zA-Z0-9_-]+:$/)) {
-					isInServiceDef = true;
+				// If line starts with a service name or other first-level key
+				if (line.match(/^\s*[a-zA-Z0-9_-]+:/) || line.startsWith('volumes:')) {
 					return `  ${line.trim()}`;
-				}
-				// For volumes section at root level
-				else if (line.trim() === 'volumes:') {
-					isInServiceDef = false;
-					return `  ${line.trim()}`;
-				}
-				// For all properties inside a service or section
-				else {
-					return `    ${line.trim()}`;
-				}
+				} 
+				// Otherwise it's a nested property, add more indentation
+				return `    ${line.trim()}`; // Use 4 spaces for properties (2 spaces more than service name)
 			});
 			toolContent = processedLines.join('\n');
 
