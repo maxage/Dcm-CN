@@ -1,5 +1,6 @@
 "use client"
 
+import { ServiceCircles } from "@/components/magicui/avatar-circles"
 import { SearchCommand } from "@/components/search-command"
 import type { DockerSettings } from "@/components/settings-panel"
 import {
@@ -12,13 +13,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
+import type { DockerTool } from "@/lib/docker-tools"
 import { cn } from "@/lib/utils"
 import { Search } from "lucide-react"
 import posthog from "posthog-js"
@@ -32,6 +28,7 @@ interface FloatingBarProps {
   onReset?: () => void
   onToggleToolSelection: (toolId: string) => void
   scrollPosition?: number
+  selectedToolObjects: DockerTool[]
 }
 
 export default function FloatingBar({
@@ -42,6 +39,7 @@ export default function FloatingBar({
   onReset,
   onToggleToolSelection,
   scrollPosition = 200,
+  selectedToolObjects,
 }: FloatingBarProps) {
   const [isResetDialogOpen, setIsResetDialogOpen] = useState(false)
   const [isCopyDialogOpen, setIsCopyDialogOpen] = useState(false)
@@ -138,7 +136,7 @@ export default function FloatingBar({
                 <AlertDialogTitle>Copy Docker Compose</AlertDialogTitle>
                 <AlertDialogDescription>
                   Generate and copy docker-compose.yaml for {selectedCount}{" "}
-                  selected tool{selectedCount !== 1 ? "s" : ""}.
+                  selected service{selectedCount !== 1 ? "s" : ""}.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
@@ -190,49 +188,19 @@ export default function FloatingBar({
                 <div className="flex flex-col">
                   <div className="flex items-center gap-2">
                     <span className="font-medium text-lg">
-                      {selectedCount} tool{selectedCount !== 1 ? "s" : ""}{" "}
+                      {selectedCount} service{selectedCount !== 1 ? "s" : ""}{" "}
                       selected
                     </span>
                   </div>
 
                   {selectedCount > 0 && (
                     <div className="mt-2 flex max-w-[600px] flex-wrap gap-1.5">
-                      {selectedTools.slice(0, 4).map((tool, index) => (
-                        <Badge
-                          key={tool}
-                          variant="outline"
-                          className="h-5 bg-primary/5 py-0 text-xs hover:bg-primary/10"
-                          style={{ animationDelay: `${index * 50}ms` }}
-                        >
-                          {tool}
-                        </Badge>
-                      ))}
-
-                      {selectedTools.length > 4 && (
-                        <Popover>
-                          <PopoverTrigger asChild>
-                            <Badge
-                              variant="outline"
-                              className="h-5 cursor-pointer bg-primary/5 py-0 text-xs hover:bg-primary/10"
-                              style={{ animationDelay: `${4 * 50}ms` }}
-                            >
-                              +{selectedTools.length - 4} others
-                            </Badge>
-                          </PopoverTrigger>
-                          <PopoverContent className="max-h-[300px] w-auto overflow-y-auto p-0">
-                            <div className="flex flex-col gap-1 p-2">
-                              {selectedTools.slice(4).map((tool) => (
-                                <div
-                                  key={tool}
-                                  className="rounded-sm px-2 py-1 text-sm hover:bg-muted"
-                                >
-                                  {tool}
-                                </div>
-                              ))}
-                            </div>
-                          </PopoverContent>
-                        </Popover>
-                      )}
+                      <ServiceCircles 
+                        selectedServices={selectedToolObjects}
+                        spacing="-space-x-2 sm:-space-x-4"
+                        onToggleServiceSelection={onToggleToolSelection}
+                        className="mt-1"
+                      />
                     </div>
                   )}
                 </div>

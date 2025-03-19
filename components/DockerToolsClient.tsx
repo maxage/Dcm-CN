@@ -69,6 +69,11 @@ export default function DockerToolsClient({
     clearSettings()
   }
 
+  // Get the DockerTool objects for selected tools
+  const selectedToolObjects = selectedTools
+    .map(id => dockerTools.find(tool => tool.id === id))
+    .filter((tool): tool is DockerTool => tool !== undefined)
+
   return (
     <>
       <div className="[animation-delay:300ms] motion-safe:animate-slide-down">
@@ -81,6 +86,7 @@ export default function DockerToolsClient({
           (id) => dockerTools.find((tool) => tool.id === id)?.name || "",
         )}
         selectedToolIds={selectedTools}
+        selectedToolObjects={selectedToolObjects}
         settings={settings}
         onReset={handleReset}
         onToggleToolSelection={toggleToolSelection}
