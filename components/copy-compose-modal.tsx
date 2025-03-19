@@ -231,7 +231,12 @@ version: '3.8'
 					// Output service name with 2 spaces indentation
 					toolContent += `  ${trimmedLine}\n`;
 				} 
-				// Any line inside a service gets 4 spaces (service properties)
+				// Line starts with a dash (-) means it's a list item and needs additional indentation
+				else if (trimmedLine.startsWith('-')) {
+					// This is a list item under a property, indent with 6 spaces
+					toolContent += `      ${trimmedLine}\n`;
+				}
+				// Any other line inside a service gets 4 spaces (service properties)
 				else {
 					// This is a property line
 					toolContent += `    ${trimmedLine}\n`;
