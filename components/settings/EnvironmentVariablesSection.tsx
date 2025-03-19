@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Fragment } from "react"
 
 interface EnvironmentVariablesSectionProps {
   settings: DockerSettings
@@ -150,14 +151,14 @@ export function EnvironmentVariablesSection({
             </SelectTrigger>
             <SelectContent className="max-h-[300px]">
               {Object.entries(timezoneData).map(([region, timezones]) => (
-                <>
+                <Fragment key={region}>
                   {region !== "UTC" && <SelectItem key={`region-${region}`} value={`region-${region}`} disabled className="font-semibold">{region}</SelectItem>}
                   {timezones.map((timezone) => (
                     <SelectItem key={timezone} value={timezone}>
                       {timezone}
                     </SelectItem>
                   ))}
-                </>
+                </Fragment>
               ))}
             </SelectContent>
           </Select>
