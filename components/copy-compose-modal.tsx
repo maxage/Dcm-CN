@@ -19,7 +19,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useLocalStorage } from "@/hooks/useLocalStorage"
 import { DEFAULT_SETTINGS, STORAGE_KEYS } from "@/lib/constants"
 import type { DockerTool } from "@/lib/docker-tools"
-import { cn } from "@/lib/utils"
+import { cn, getTailwindHsl } from "@/lib/utils"
 import Editor from "@monaco-editor/react"
 import { Check, Copy, Download, Settings as SettingsIcon } from "lucide-react"
 import type { editor } from "monaco-editor"
@@ -67,13 +67,13 @@ export function CopyComposeModal({
 			inherit: true,
 			rules: [],
 			colors: {
-				'editor.background': '#1e293b', // slate-800
-				'editor.foreground': '#e2e8f0', // slate-200
-				'editorCursor.foreground': '#38bdf8', // sky-400
-				'editor.lineHighlightBackground': '#334155', // slate-700
-				'editorLineNumber.foreground': '#94a3b8', // slate-400
-				'editor.selectionBackground': '#475569', // slate-600
-				'editor.inactiveSelectionBackground': '#334155', // slate-700
+				'editor.background': getTailwindHsl('background'),
+				'editor.foreground': getTailwindHsl('foreground'),
+				'editorCursor.foreground': getTailwindHsl('primary'),
+				'editor.lineHighlightBackground': getTailwindHsl('muted'),
+				'editorLineNumber.foreground': getTailwindHsl('muted-foreground'),
+				'editor.selectionBackground': getTailwindHsl('secondary'),
+				'editor.inactiveSelectionBackground': getTailwindHsl('accent'),
 			},
 		});
 		
@@ -82,13 +82,13 @@ export function CopyComposeModal({
 			inherit: true,
 			rules: [],
 			colors: {
-				'editor.background': '#f8fafc', // slate-50
-				'editor.foreground': '#334155', // slate-700
-				'editorCursor.foreground': '#0284c7', // sky-600
-				'editor.lineHighlightBackground': '#e2e8f0', // slate-200
-				'editorLineNumber.foreground': '#64748b', // slate-500
-				'editor.selectionBackground': '#cbd5e1', // slate-300
-				'editor.inactiveSelectionBackground': '#e2e8f0', // slate-200
+				'editor.background': getTailwindHsl('background'),
+				'editor.foreground': getTailwindHsl('foreground'),
+				'editorCursor.foreground': getTailwindHsl('primary'),
+				'editor.lineHighlightBackground': getTailwindHsl('muted'),
+				'editorLineNumber.foreground': getTailwindHsl('muted-foreground'),
+				'editor.selectionBackground': getTailwindHsl('secondary'),
+				'editor.inactiveSelectionBackground': getTailwindHsl('accent'),
 			},
 		});
 	}
@@ -301,8 +301,8 @@ version: '3.8'
 
 	return (
 		<AlertDialog open={isOpen} onOpenChange={onOpenChange}>
-			<AlertDialogContent className="flex max-h-[90vh] max-w-[95vw] flex-col">
-				<AlertDialogHeader className="flex items-center justify-between flex-row">
+			<AlertDialogContent className="flex flex-col max-h-[90vh] max-w-[95vw]">
+				<AlertDialogHeader className="flex flex-row items-center justify-between">
 					<div>
 						<AlertDialogTitle>Docker Compose Configuration</AlertDialogTitle>
 						<AlertDialogDescription>
@@ -333,8 +333,8 @@ version: '3.8'
 				</AlertDialogHeader>
 
 				<div className={cn("grid gap-4", showSettings ? "grid-cols-[1fr_350px]" : "grid-cols-1")}>
-					<div className="flex-1 h-[60vh]">
-						<div className="flex items-center justify-between mb-2">
+					<div className="h-[60vh] flex-1">
+						<div className="mb-2 flex items-center justify-between">
 							<Tabs className="w-full" defaultValue="compose" onValueChange={setActiveTab} value={activeTab}>
 								<TabsList>
 									<TabsTrigger value="compose">docker-compose.yaml</TabsTrigger>
@@ -377,7 +377,7 @@ version: '3.8'
 							</div>
 						</div>
 						
-						<div className="border flex-1 h-[calc(60vh-40px)] overflow-hidden rounded">
+						<div className="border rounded h-[calc(60vh-40px)] flex-1 overflow-hidden">
 							{activeTab === "compose" ? (
 								<Editor
 									beforeMount={handleEditorWillMount}
