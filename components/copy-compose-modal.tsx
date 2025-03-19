@@ -17,6 +17,7 @@ import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useLocalStorage } from "@/hooks/useLocalStorage"
+import { DEFAULT_SETTINGS, STORAGE_KEYS } from "@/lib/constants"
 import type { DockerTool } from "@/lib/docker-tools"
 import { cn } from "@/lib/utils"
 import Editor from "@monaco-editor/react"
@@ -57,18 +58,10 @@ export function CopyComposeModal({
 		setMounted(true)
 	}, [])
 	
-	const { value: settings, setValue: setSettings } = useLocalStorage<DockerSettings>("docker-settings", {
-		configPath: "/config",
-		dataPath: "/data",
-		timezone: "UTC",
-		puid: "1000",
-		pgid: "1000",
-		umask: "022",
-		restartPolicy: "unless-stopped",
-		networkMode: "bridge",
-		useTraefik: false,
-		containerNamePrefix: "docker-",
-	})
+	const { value: settings, setValue: setSettings } = useLocalStorage<DockerSettings>(
+		STORAGE_KEYS.SETTINGS, 
+		DEFAULT_SETTINGS
+	)
 
 	// Function to configure Monaco with YAML schema
 	const handleEditorWillMount = (monaco: typeof import("monaco-editor")) => {

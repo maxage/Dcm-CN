@@ -4,22 +4,10 @@ import ToolGrid from "@/components/ToolGrid"
 import FloatingBar from "@/components/floating-bar"
 import SettingsPanel, { type DockerSettings } from "@/components/settings-panel"
 import { useLocalStorage } from "@/hooks/useLocalStorage"
+import { DEFAULT_SETTINGS, STORAGE_KEYS } from "@/lib/constants"
 import type { DockerTool } from "@/lib/docker-tools"
 import { useForm } from "@tanstack/react-form"
 import posthog from "posthog-js"
-
-const DEFAULT_SETTINGS: DockerSettings = {
-  configPath: "/opt/appdata/config",
-  dataPath: "/opt/appdata/data",
-  timezone: "UTC",
-  puid: "1000",
-  pgid: "1000",
-  umask: "022",
-  restartPolicy: "unless-stopped",
-  networkMode: "bridge",
-  useTraefik: false,
-  containerNamePrefix: "docker_",
-}
 
 interface DockerToolsClientProps {
   dockerTools: DockerTool[]
@@ -32,13 +20,13 @@ export default function DockerToolsClient({
     value: selectedTools,
     setValue: setSelectedTools,
     removeValue: clearSelectedTools,
-  } = useLocalStorage<string[]>("dockerComposeSelectedTools", [])
+  } = useLocalStorage<string[]>(STORAGE_KEYS.SELECTED_TOOLS, [])
 
   const {
     value: settings,
     setValue: setSettings,
     removeValue: clearSettings,
-  } = useLocalStorage<DockerSettings>("dockerComposeSettings", DEFAULT_SETTINGS)
+  } = useLocalStorage<DockerSettings>(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS)
 
   const form = useForm({
     defaultValues: {
