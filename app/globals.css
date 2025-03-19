@@ -155,3 +155,68 @@
   );
   background-size: 40px 40px;
 }
+
+/* Syntax highlighting styles for starry-night */
+.syntax-highlighted {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  tab-size: 2;
+}
+
+/* Comment */
+.syntax--comment {
+  color: #6a737d;
+}
+
+/* Keyword & Operator */
+.syntax--keyword,
+.syntax--operator {
+  color: #d73a49;
+}
+
+/* String */
+.syntax--string {
+  color: #032f62;
+}
+
+/* Variable */
+.syntax--variable,
+.syntax--property {
+  color: #005cc5;
+}
+
+/* Function */
+.syntax--function {
+  color: #6f42c1;
+}
+
+/* Constant */
+.syntax--constant {
+  color: #0366d6;
+}
+
+/* Dark mode syntax highlighting */
+.dark .syntax--comment {
+  color: #8b949e;
+}
+
+.dark .syntax--keyword,
+.dark .syntax--operator {
+  color: #ff7b72;
+}
+
+.dark .syntax--string {
+  color: #a5d6ff;
+}
+
+.dark .syntax--variable,
+.dark .syntax--property {
+  color: #79c0ff;
+}
+
+.dark .syntax--function {
+  color: #d2a8ff;
+}
+
+.dark .syntax--constant {
+  color: #79c0ff;
+}

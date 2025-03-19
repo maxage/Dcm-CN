@@ -1,5 +1,6 @@
 "use client"
 
+import { CopyComposeModal } from "@/components/copy-compose-modal"
 import { ServiceCircles } from "@/components/magicui/avatar-circles"
 import { SearchCommand } from "@/components/search-command"
 import type { DockerSettings } from "@/components/settings-panel"
@@ -75,11 +76,6 @@ export default function FloatingBar({
     setIsResetDialogOpen(false)
   }
 
-  const handleCopy = () => {
-    console.log("Copy docker-compose.yaml with:", { selectedTools, settings })
-    setIsCopyDialogOpen(false)
-  }
-
   // Prevent rendering client-interactive elements during SSR
   const triggerSearchShortcut = (e: React.MouseEvent) => {
     if (!isMounted) return
@@ -127,34 +123,19 @@ export default function FloatingBar({
             </AlertDialogContent>
           </AlertDialog>
 
-          <AlertDialog
-            open={isCopyDialogOpen}
-            onOpenChange={setIsCopyDialogOpen}
-          >
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Copy Docker Compose</AlertDialogTitle>
-                <AlertDialogDescription>
-                  Generate and copy docker-compose.yaml for {selectedCount}{" "}
-                  selected service{selectedCount !== 1 ? "s" : ""}.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction
-                  onClick={() => {
-                    posthog.capture("copy_compose_clicked", {
-                      selected_tools: selectedTools,
-                      settings: settings,
-                    })
-                    handleCopy()
-                  }}
-                >
-                  Copy to Clipboard
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+          <CopyComposeModal
+            isOpen={isCopyDialogOpen}
+            onOpenChange={(open) => {
+              if (open) {
+                posthog.capture("copy_compose_opened", {
+                  selected_tools: selectedTools,
+                  settings: settings,
+                })
+              }
+              setIsCopyDialogOpen(open)
+            }}
+            selectedTools={selectedToolObjects}
+          />
         </>
       )}
 
