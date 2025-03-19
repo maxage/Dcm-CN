@@ -220,7 +220,7 @@ version: '3.8'
 					return `  ${line.trim()}`;
 				} 
 				// Otherwise it's a nested property, add more indentation
-				return `  ${line.trim()}`;
+				return `    ${line.trim()}`; // Use 4 spaces for properties (2 spaces more than service name)
 			});
 			toolContent = processedLines.join('\n');
 
