@@ -46,9 +46,15 @@ export function CopyComposeModal({
 	const [envFileContent, setEnvFileContent] = useState<string>("")
 	const [activeTab, setActiveTab] = useState<string>("compose")
 	const [copied, setCopied] = useState(false)
+	const [mounted, setMounted] = useState(false)
 	const composeEditorRef = useRef<editor.IStandaloneCodeEditor | null>(null)
 	const envEditorRef = useRef<editor.IStandaloneCodeEditor | null>(null)
-	const { theme } = useTheme()
+	const { theme, resolvedTheme } = useTheme()
+	
+	// After mounting, we can safely access the theme
+	useEffect(() => {
+		setMounted(true)
+	}, [])
 	
 	const { value: settings, setValue: setSettings } = useLocalStorage<DockerSettings>("docker-settings", {
 		configPath: "/config",
@@ -243,6 +249,22 @@ version: '3.8'
 	useEffect(() => {
 		setCopied(false);
 	}, [activeTab]);
+	
+	// Update editor theme when theme changes
+	useEffect(() => {
+		if (!mounted) return;
+		
+		// Update the existing editors when theme changes
+		if (composeEditorRef.current) {
+			const currentTheme = resolvedTheme === 'dark' ? 'tailwind-dark' : 'tailwind-light';
+			composeEditorRef.current.updateOptions({ theme: currentTheme });
+		}
+		
+		if (envEditorRef.current) {
+			const currentTheme = resolvedTheme === 'dark' ? 'tailwind-dark' : 'tailwind-light';
+			envEditorRef.current.updateOptions({ theme: currentTheme });
+		}
+	}, [resolvedTheme, mounted]);
 
 	// Handle copy to clipboard
 	const handleCopy = () => {
@@ -322,11 +344,26 @@ version: '3.8'
 	// Function to handle editor mounting
 	const handleComposeEditorDidMount = (editor: editor.IStandaloneCodeEditor) => {
 		composeEditorRef.current = editor;
+		
+		// Set the theme after mount to ensure it's correct
+		if (mounted) {
+			const currentTheme = resolvedTheme === 'dark' ? 'tailwind-dark' : 'tailwind-light';
+			editor.updateOptions({ theme: currentTheme });
+		}
 	};
 
 	const handleEnvEditorDidMount = (editor: editor.IStandaloneCodeEditor) => {
 		envEditorRef.current = editor;
+		
+		// Set the theme after mount to ensure it's correct
+		if (mounted) {
+			const currentTheme = resolvedTheme === 'dark' ? 'tailwind-dark' : 'tailwind-light';
+			editor.updateOptions({ theme: currentTheme });
+		}
 	};
+	
+	// Get the current theme for editors
+	const currentTheme = !mounted ? 'vs' : resolvedTheme === 'dark' ? 'tailwind-dark' : 'tailwind-light';
 
 	return (
 		<AlertDialog open={isOpen} onOpenChange={onOpenChange}>
@@ -422,7 +459,7 @@ version: '3.8'
 										scrollBeyondLastLine: false,
 										wordWrap: "on",
 									}}
-									theme={theme === 'dark' ? 'tailwind-dark' : 'tailwind-light'}
+									theme={currentTheme}
 									value={composeContent}
 								/>
 							) : (
@@ -439,7 +476,7 @@ version: '3.8'
 										scrollBeyondLastLine: false,
 										wordWrap: "on",
 									}}
-									theme={theme === 'dark' ? 'tailwind-dark' : 'tailwind-light'}
+									theme={currentTheme}
 									value={envFileContent}
 								/>
 							)}
