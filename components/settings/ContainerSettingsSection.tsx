@@ -86,23 +86,6 @@ export function ContainerSettingsSection({
           </p>
         </div>
       </div>
-      <div className="mt-4 flex items-center gap-2">
-        <Label htmlFor="useTraefik" className="cursor-pointer">
-          <div className="flex items-center gap-2">
-            <Switch
-              id="useTraefik"
-              checked={settings.useTraefik}
-              onCheckedChange={(checked) =>
-                onSettingsChange("useTraefik", checked)
-              }
-            />
-            <span>Use Traefik for reverse proxy</span>
-          </div>
-        </Label>
-        <p className="text-muted-foreground text-xs">
-          Generate Traefik labels for containers with web interfaces
-        </p>
-      </div>
     </div>
   )
 } 
