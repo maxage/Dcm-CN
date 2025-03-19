@@ -1,6 +1,6 @@
 "use client"
 
-import { DockerSettings } from "@/components/settings-panel"
+import SettingsPanel, { DockerSettings } from "@/components/settings-panel"
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -11,10 +11,13 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { useLocalStorage } from "@/hooks/useLocalStorage"
 import { DockerTool } from "@/lib/docker-tools"
+import { cn } from "@/lib/utils"
+import { Settings as SettingsIcon } from "lucide-react"
 import posthog from "posthog-js"
 import { useEffect, useState } from "react"
 
@@ -30,8 +33,9 @@ export function CopyComposeModal({
 	selectedTools,
 }: CopyComposeModalProps) {
 	const [showInterpolated, setShowInterpolated] = useState(false)
+	const [showSettings, setShowSettings] = useState(false)
 	const [composeContent, setComposeContent] = useState<string>("")
-	const { value: settings } = useLocalStorage<DockerSettings>("docker-settings", {
+	const { value: settings, setValue: setSettings } = useLocalStorage<DockerSettings>("docker-settings", {
 		configPath: "/config",
 		dataPath: "/data",
 		timezone: "UTC",
@@ -49,10 +53,31 @@ export function CopyComposeModal({
 		if (!isOpen) return
 		
 		// Create variables section
-		let variablesSection = `# Docker Compose Environment Variables
+		const variablesSection = `# Docker Compose Environment Variables
 version: '3.8'
 
 # Environment Variables
+# These can be overridden by creating a .env file with the same variables
+
+# User/Group Identifiers
+# These help avoid permission issues between host and container
+PUID=${settings.puid}
+PGID=${settings.pgid}
+UMASK=${settings.umask}
+
+# Container name prefix
+CONTAINER_PREFIX=${settings.containerNamePrefix}
+
+# Paths for persistent data
+CONFIG_PATH=${settings.configPath}
+DATA_PATH=${settings.dataPath}
+
+# Container settings
+TZ=${settings.timezone}
+RESTART_POLICY=${settings.restartPolicy}
+NETWORK_MODE=${settings.networkMode}
+
+# Docker Compose definitions
 x-environment: &default-tz
   TZ: \${TZ:-${settings.timezone}}
 
@@ -68,8 +93,7 @@ x-common: &common-settings
 `
 
 		// Generate services section
-		let servicesSection = `
-services:
+		let servicesSection = `services:
 `
 
 		// Add each selected tool
@@ -77,13 +101,26 @@ services:
 			if (!tool.composeContent) return
 
 			// Add a comment with the tool description
-			servicesSection += `
-  # ${tool.name}: ${tool.description}
+			servicesSection += `  # ${tool.name}: ${tool.description}
 `
-			// Process the compose content
+			// Process the compose content - properly indent everything
 			let toolContent = tool.composeContent
-				.replace(/services:\s+/g, "") // Remove the services: line
-				.replace(/^\s{2}/gm, "  ") // Adjust indentation
+				.replace(/^services:\s*/gm, "") // Remove the services: line
+				.replace(/^\s{2}(\S)/gm, "  $1") // Ensure consistent indentation for first level
+				
+			// Make sure indentation is consistent throughout
+			const lines = toolContent.split('\n')
+			const processedLines = lines.map(line => {
+				// Skip empty lines
+				if (line.trim() === '') return line
+				// If line starts with a service name or other first-level key
+				if (line.match(/^\s*[a-zA-Z0-9_-]+:/) || line.startsWith('volumes:')) {
+					return `  ${line.trim()}`
+				} 
+				// Otherwise it's a nested property, add more indentation
+				return `    ${line.trim()}`
+			})
+			toolContent = processedLines.join('\n')
 
 			// Replace variables with their values if showInterpolated is true
 			if (showInterpolated) {
@@ -97,9 +134,9 @@ services:
 					.replace(/\$\{RESTART_POLICY\}/g, settings.restartPolicy)
 					.replace(/\$\{NETWORK_MODE\}/g, settings.networkMode)
 					.replace(/\$\{CONTAINER_PREFIX\}/g, settings.containerNamePrefix)
-			}
+				}
 
-			servicesSection += toolContent + "\n"
+			servicesSection += `${toolContent}\n`
 		})
 
 		const completeCompose = variablesSection + servicesSection
@@ -124,33 +161,55 @@ services:
 
 	return (
 		<AlertDialog open={isOpen} onOpenChange={onOpenChange}>
-			<AlertDialogContent className="max-w-4xl max-h-[90vh] flex flex-col">
-				<AlertDialogHeader>
-					<AlertDialogTitle>Docker Compose Configuration</AlertDialogTitle>
-					<AlertDialogDescription>
-						Generated docker-compose.yaml for {selectedTools.length}{" "}
-						selected service{selectedTools.length !== 1 ? "s" : ""}.
-					</AlertDialogDescription>
+			<AlertDialogContent className="flex max-h-[90vh] max-w-[95vw] flex-col">
+				<AlertDialogHeader className="flex flex-row items-center justify-between">
+					<div>
+						<AlertDialogTitle>Docker Compose Configuration</AlertDialogTitle>
+						<AlertDialogDescription>
+							Generated docker-compose.yaml for {selectedTools.length}{" "}
+							selected service{selectedTools.length !== 1 ? "s" : ""}.
+						</AlertDialogDescription>
+					</div>
+					<div className="flex items-center gap-4">
+						<div className="flex items-center space-x-2">
+							<Switch
+								id="interpolate-values"
+								checked={showInterpolated}
+								onCheckedChange={setShowInterpolated}
+							/>
+							<Label htmlFor="interpolate-values">Show interpolated values</Label>
+						</div>
+						
+						<Button 
+							variant="outline" 
+							size="sm"
+							onClick={() => setShowSettings(!showSettings)}
+							className="flex items-center gap-2"
+						>
+							<SettingsIcon className="h-4 w-4" />
+							{showSettings ? "Hide Settings" : "Show Settings"}
+						</Button>
+					</div>
 				</AlertDialogHeader>
 
-				<div className="flex items-center space-x-2 mb-2">
-					<Switch
-						id="interpolate-values"
-						checked={showInterpolated}
-						onCheckedChange={setShowInterpolated}
-					/>
-					<Label htmlFor="interpolate-values">Show interpolated values</Label>
-				</div>
-
-				<div className="flex-1 overflow-auto">
-					<div className="relative">
+				<div className={cn("grid gap-4", showSettings ? "grid-cols-[1fr_350px]" : "grid-cols-1")}>
+					<div className="flex-1 overflow-auto">
 						<pre
-							className="p-4 border rounded bg-muted overflow-auto text-sm font-mono syntax-highlighted"
+							className="bg-muted border font-mono overflow-auto p-4 rounded syntax-highlighted text-sm"
 							style={{ maxHeight: "60vh" }}
 						>
 							{composeContent}
 						</pre>
 					</div>
+
+					{showSettings && (
+						<div className="border overflow-auto p-2 rounded" style={{ maxHeight: "60vh" }}>
+							<SettingsPanel 
+								settings={settings}
+								onSettingsChange={(newSettings) => setSettings(newSettings)} 
+							/>
+						</div>
+					)}
 				</div>
 
 				<AlertDialogFooter className="mt-4">
