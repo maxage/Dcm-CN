@@ -21,11 +21,12 @@ import { DEFAULT_SETTINGS, STORAGE_KEYS } from "@/lib/constants"
 import type { DockerTool } from "@/lib/docker-tools"
 import { cn } from "@/lib/utils"
 import Editor from "@monaco-editor/react"
-import { Check, Copy, Download, Settings as SettingsIcon } from "lucide-react"
+import { Check, Copy, Docker ,Download, File, Settings as SettingsIcon } from "lucide-react"
 import type { editor } from "monaco-editor"
 import { useTheme } from "next-themes"
 import posthog from "posthog-js"
 import { useEffect, useRef, useState } from "react"
+import { siDocker } from "simple-icons"
 import { toast } from "sonner"
 
 interface CopyComposeModalProps {
@@ -361,7 +362,7 @@ version: '3.8'
 
 	return (
 		<AlertDialog open={isOpen} onOpenChange={onOpenChange}>
-			<AlertDialogContent className="flex max-h-[90vh] flex-col">
+			<AlertDialogContent className="flex h-[90vh] max-w-[95vw] flex-col">
 				<AlertDialogHeader className="flex items-center justify-between flex-row">
 					<div>
 						<AlertDialogTitle>Docker Compose Configuration</AlertDialogTitle>
@@ -379,16 +380,6 @@ version: '3.8'
 							/>
 							<Label htmlFor="interpolate-values">Show interpolated values</Label>
 						</div>
-						
-						<Button 
-							className="flex items-center gap-2"
-							onClick={() => setShowSettings(!showSettings)}
-							size="sm"
-							variant="outline" 
-						>
-							<SettingsIcon className="h-4 w-4" />
-							{showSettings ? "Hide Settings" : "Show Settings"}
-						</Button>
 					</div>
 				</AlertDialogHeader>
 
@@ -396,8 +387,19 @@ version: '3.8'
 					<div className="flex items-center justify-between mb-2">
 						<Tabs className="w-full" defaultValue="compose" onValueChange={setActiveTab} value={activeTab}>
 							<TabsList>
-								<TabsTrigger value="compose">docker-compose.yaml</TabsTrigger>
-								<TabsTrigger value="env">.env</TabsTrigger>
+								<TabsTrigger value="compose">
+									<svg
+                aria-label="GitHub"
+                role="img"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4 mr-2 fill-current"
+              >
+                <path d={siDocker.path} />
+              </svg>
+									docker-compose.yaml
+								</TabsTrigger>
+								<TabsTrigger value="env"><File className="h-4 w-4 mr-2 text-primary-foreground" />.env</TabsTrigger>
 								<TabsTrigger value="settings" className="gap-2">
 									<SettingsIcon className="h-4 w-4" />
 									Settings
@@ -442,7 +444,7 @@ version: '3.8'
 						)}
 					</div>
 					
-					<div className="border flex-1 h-[calc(60vh-40px)] overflow-hidden rounded">
+					<div className="border flex-1 h-[calc(70vh-40px)] overflow-hidden rounded">
 						{activeTab === "compose" ? (
 							<Editor
 								beforeMount={handleEditorWillMount}
@@ -498,6 +500,18 @@ version: '3.8'
 
 				<AlertDialogFooter className="mt-4">
 					<AlertDialogCancel>Cancel</AlertDialogCancel>
+					<Button
+						id="copy-button"
+						onClick={handleCopy}
+						type="button"
+					>
+						{copied ? (
+							<Check className="h-4 w-4" />
+						) : (
+							<Copy className="h-4 w-4" />
+						)}
+						<span className="ml-2">{copied ? "Copied!" : "Copy"}</span>
+					</Button>
 					<AlertDialogAction
 						onClick={onOpenChange.bind(null, false)}
 					>
