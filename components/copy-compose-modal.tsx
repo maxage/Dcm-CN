@@ -301,8 +301,8 @@ version: '3.8'
 
 	return (
 		<AlertDialog open={isOpen} onOpenChange={onOpenChange}>
-			<AlertDialogContent className="flex flex-col max-h-[90vh] max-w-[95vw]">
-				<AlertDialogHeader className="flex flex-row items-center justify-between">
+			<AlertDialogContent className="flex max-h-[90vh] max-w-[95vw] flex-col">
+				<AlertDialogHeader className="flex items-center justify-between flex-row">
 					<div>
 						<AlertDialogTitle>Docker Compose Configuration</AlertDialogTitle>
 						<AlertDialogDescription>
@@ -333,8 +333,8 @@ version: '3.8'
 				</AlertDialogHeader>
 
 				<div className={cn("grid gap-4", showSettings ? "grid-cols-[1fr_350px]" : "grid-cols-1")}>
-					<div className="h-[60vh] flex-1">
-						<div className="mb-2 flex items-center justify-between">
+					<div className="flex-1 h-[60vh]">
+						<div className="flex items-center justify-between mb-2">
 							<Tabs className="w-full" defaultValue="compose" onValueChange={setActiveTab} value={activeTab}>
 								<TabsList>
 									<TabsTrigger value="compose">docker-compose.yaml</TabsTrigger>
@@ -377,7 +377,7 @@ version: '3.8'
 							</div>
 						</div>
 						
-						<div className="border rounded h-[calc(60vh-40px)] flex-1 overflow-hidden">
+						<div className="border flex-1 h-[calc(60vh-40px)] overflow-hidden rounded">
 							{activeTab === "compose" ? (
 								<Editor
 									beforeMount={handleEditorWillMount}
@@ -418,7 +418,7 @@ version: '3.8'
 					</div>
 
 					{showSettings && (
-						<div className="border overflow-auto p-2 rounded" style={{ maxHeight: "60vh" }}>
+						<div className="border overflow-auto rounded p-2" style={{ maxHeight: "60vh" }}>
 							<SettingsPanel 
 								onSettingsChange={(newSettings) => setSettings(newSettings)} 
 								settings={settings}

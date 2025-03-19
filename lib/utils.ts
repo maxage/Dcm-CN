@@ -27,16 +27,37 @@ export function getCssVar(variable: string, defaultValue: string = ''): string {
  * @param opacity - Opacity value (0-100)
  * @returns HSL color string
  */
-export function getTailwindHsl(colorVar: string, opacity: number = 100): string {
+export function getTailwindHsl(colorVar: string, opacity = 100) {
   if (typeof window === 'undefined') return ''
   
   const value = getCssVar(colorVar)
   if (!value) return ''
   
-  // If the value is already in HSL format
-  if (value.includes('hsl')) return value
+  // If the value is already in HSL format, convert it to the comma-separated format
+  if (value.includes('hsl')) {
+    // Extract the values and return in comma-separated format
+    const matches = value.match(/hsla?\(([^)]+)\)/)
+    if (matches && matches[1]) {
+      const parts = matches[1].split(' ')
+      return `hsla(${parts.join(', ')}, ${opacity/100})`
+    }
+    return value
+  }
 
   // Handle Tailwind format "210 40% 96.1%"
-  // Convert to HSL with opacity
-  return `hsla(${value}, ${opacity/100})`
+  // Convert to HSL with opacity using comma-separated format
+  try {
+    // Split by spaces and get the hue, saturation, and lightness parts
+    const parts = value.split(' ')
+    
+    if (parts.length >= 3) {
+      // For Tailwind format, combine the parts with commas
+      return `hsla(${parts[0]}, ${parts[1]}, ${parts[2]}, ${opacity/100})`
+    }
+  } catch (error) {
+    console.error('Error parsing HSL color:', error)
+  }
+  
+  // Fallback to a safe neutral color
+  return opacity < 100 ? `rgba(128, 128, 128, ${opacity/100})` : '#808080'
 }
