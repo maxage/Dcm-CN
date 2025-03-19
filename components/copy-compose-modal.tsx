@@ -205,24 +205,38 @@ version: '3.8'
 			servicesSection += `  # ${tool.name}: ${tool.description}
 `;
 			// Process the compose content - properly indent everything
-			let toolContent = tool.composeContent
-				.replace(/^services:\s*/gm, "") // Remove the services: line
-				.replace(/^\s{2}(\S)/gm, "  $1"); // Ensure consistent indentation for first level
+			let toolContent = "";
+			const serviceLines = tool.composeContent
+				.replace(/^services:\s*/gm, "")  // Remove the services: line
+				.trim()
+				.split('\n');
+
+			// Process lines with proper indentation
+			let currentIndentLevel = 0;
+
+			// Process each line
+			serviceLines.forEach((line) => {
+				if (line.trim() === '') {
+					// Keep empty lines as is
+					toolContent += '\n';
+					return;
+				}
+
+				const trimmedLine = line.trim();
 				
-			// Make sure indentation is consistent throughout with service content indented 
-			// one more level than service names
-			const lines = toolContent.split('\n');
-			const processedLines = lines.map(line => {
-				// Skip empty lines
-				if (line.trim() === '') return line;
-				// If line starts with a service name or other first-level key
-				if (line.match(/^\s*[a-zA-Z0-9_-]+:/) || line.startsWith('volumes:')) {
-					return `  ${line.trim()}`;
+				// Detect service definitions by looking for lines with just a name and colon
+				if (trimmedLine.match(/^[a-zA-Z0-9_-]+:$/) && !line.trim().startsWith('-')) {
+					// This is a service name - reset indentation level for a new service
+					currentIndentLevel = 0;
+					// Output service name with 2 spaces indentation
+					toolContent += `  ${trimmedLine}\n`;
 				} 
-				// Otherwise it's a nested property, add more indentation
-				return `    ${line.trim()}`; // Use 4 spaces for properties (2 spaces more than service name)
+				// Any line inside a service gets 4 spaces (service properties)
+				else {
+					// This is a property line
+					toolContent += `    ${trimmedLine}\n`;
+				}
 			});
-			toolContent = processedLines.join('\n');
 
 			// Replace variables with their values if showInterpolated is true
 			if (showInterpolated) {
