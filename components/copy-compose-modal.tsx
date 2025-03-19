@@ -19,7 +19,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useLocalStorage } from "@/hooks/useLocalStorage"
 import { DEFAULT_SETTINGS, STORAGE_KEYS } from "@/lib/constants"
 import type { DockerTool } from "@/lib/docker-tools"
-import { cn, getTailwindHsl } from "@/lib/utils"
+import { cn } from "@/lib/utils"
 import Editor from "@monaco-editor/react"
 import { Check, Copy, Download, Settings as SettingsIcon } from "lucide-react"
 import type { editor } from "monaco-editor"
@@ -67,13 +67,13 @@ export function CopyComposeModal({
 			inherit: true,
 			rules: [],
 			colors: {
-				'editor.background': getTailwindHsl('background'),
-				'editor.foreground': getTailwindHsl('foreground'),
-				'editorCursor.foreground': getTailwindHsl('primary'),
-				'editor.lineHighlightBackground': getTailwindHsl('muted'),
-				'editorLineNumber.foreground': getTailwindHsl('muted-foreground'),
-				'editor.selectionBackground': getTailwindHsl('secondary'),
-				'editor.inactiveSelectionBackground': getTailwindHsl('accent'),
+				'editor.background': '#1e293b', // slate-800
+				'editor.foreground': '#e2e8f0', // slate-200
+				'editorCursor.foreground': '#38bdf8', // sky-400
+				'editor.lineHighlightBackground': '#334155', // slate-700
+				'editorLineNumber.foreground': '#94a3b8', // slate-400
+				'editor.selectionBackground': '#475569', // slate-600
+				'editor.inactiveSelectionBackground': '#334155', // slate-700
 			},
 		});
 		
@@ -82,13 +82,13 @@ export function CopyComposeModal({
 			inherit: true,
 			rules: [],
 			colors: {
-				'editor.background': getTailwindHsl('background'),
-				'editor.foreground': getTailwindHsl('foreground'),
-				'editorCursor.foreground': getTailwindHsl('primary'),
-				'editor.lineHighlightBackground': getTailwindHsl('muted'),
-				'editorLineNumber.foreground': getTailwindHsl('muted-foreground'),
-				'editor.selectionBackground': getTailwindHsl('secondary'),
-				'editor.inactiveSelectionBackground': getTailwindHsl('accent'),
+				'editor.background': '#f8fafc', // slate-50
+				'editor.foreground': '#334155', // slate-700
+				'editorCursor.foreground': '#0284c7', // sky-600
+				'editor.lineHighlightBackground': '#e2e8f0', // slate-200
+				'editorLineNumber.foreground': '#64748b', // slate-500
+				'editor.selectionBackground': '#cbd5e1', // slate-300
+				'editor.inactiveSelectionBackground': '#e2e8f0', // slate-200
 			},
 		});
 	}
@@ -418,7 +418,7 @@ version: '3.8'
 					</div>
 
 					{showSettings && (
-						<div className="border overflow-auto rounded p-2" style={{ maxHeight: "60vh" }}>
+						<div className="border overflow-auto p-2 rounded" style={{ maxHeight: "60vh" }}>
 							<SettingsPanel 
 								onSettingsChange={(newSettings) => setSettings(newSettings)} 
 								settings={settings}
