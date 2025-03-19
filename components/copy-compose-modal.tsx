@@ -98,8 +98,8 @@ export function CopyComposeModal({
 		// Register YAML schema
 		try {
 			// Try to configure YAML schema validation
-			const yamlDefaults = monaco.languages.yaml?.yamlDefaults;
-			if (yamlDefaults) {
+			if (monaco.languages.hasOwnProperty('yaml') && typeof monaco.languages.yaml?.yamlDefaults === 'object') {
+				const yamlDefaults = monaco.languages.yaml.yamlDefaults;
 				yamlDefaults.setDiagnosticsOptions({
 					validate: true,
 					enableSchemaRequest: true,
@@ -178,23 +178,10 @@ NETWORK_MODE=${settings.networkMode}
 `;
 		setEnvFileContent(envFileContent);
 		
-		// Create docker-compose without environment variables section
+		// Create docker-compose without environment variables section and YAML anchors
 		const composeHeader = `# Docker Compose Configuration
 version: '3.8'
 
-# Common settings using YAML anchors
-x-environment: &default-tz
-  TZ: \${TZ:-${settings.timezone}}
-
-x-user: &default-user
-  PUID: \${PUID:-${settings.puid}}
-  PGID: \${PGID:-${settings.pgid}}
-  UMASK: \${UMASK:-${settings.umask}}
-
-# Common settings
-x-common: &common-settings
-  restart: \${RESTART_POLICY:-${settings.restartPolicy}}
-  
 `;
 
 		// Generate services section
@@ -213,7 +200,8 @@ x-common: &common-settings
 				.replace(/^services:\s*/gm, "") // Remove the services: line
 				.replace(/^\s{2}(\S)/gm, "  $1"); // Ensure consistent indentation for first level
 				
-			// Make sure indentation is consistent throughout
+			// Make sure indentation is consistent throughout with service content indented 
+			// one more level than service names
 			const lines = toolContent.split('\n');
 			const processedLines = lines.map(line => {
 				// Skip empty lines
@@ -281,7 +269,7 @@ x-common: &common-settings
 
 	return (
 		<AlertDialog open={isOpen} onOpenChange={onOpenChange}>
-			<AlertDialogContent className="flex flex-col max-h-[90vh] max-w-[95vw]">
+			<AlertDialogContent className="flex-col flex max-h-[90vh] max-w-[95vw]">
 				<AlertDialogHeader className="flex flex-row items-center justify-between">
 					<div>
 						<AlertDialogTitle>Docker Compose Configuration</AlertDialogTitle>
@@ -290,7 +278,7 @@ x-common: &common-settings
 							selected service{selectedTools.length !== 1 ? "s" : ""}.
 						</AlertDialogDescription>
 					</div>
-					<div className="flex gap-4 items-center">
+					<div className="flex items-center gap-4">
 						<div className="flex items-center space-x-2">
 							<Switch
 								id="interpolate-values"
@@ -301,7 +289,7 @@ x-common: &common-settings
 						</div>
 						
 						<Button 
-							className="flex gap-2 items-center"
+							className="flex items-center gap-2"
 							onClick={() => setShowSettings(!showSettings)}
 							size="sm"
 							variant="outline" 
@@ -314,13 +302,14 @@ x-common: &common-settings
 
 				<div className={cn("grid gap-4", showSettings ? "grid-cols-[1fr_350px]" : "grid-cols-1")}>
 					<div className="flex-1 h-[60vh]">
-						<Tabs defaultValue="compose" value={activeTab} onValueChange={setActiveTab} className="w-full">
+						<Tabs className="w-full" defaultValue="compose" onValueChange={setActiveTab} value={activeTab}>
 							<TabsList className="mb-2">
 								<TabsTrigger value="compose">docker-compose.yaml</TabsTrigger>
 								<TabsTrigger value="env">.env</TabsTrigger>
 							</TabsList>
 							<TabsContent className="border flex-1 h-[calc(60vh-40px)] overflow-hidden rounded" value="compose">
 								<Editor
+									beforeMount={handleEditorWillMount}
 									defaultLanguage="yaml"
 									defaultValue={composeContent}
 									height="100%"
@@ -335,7 +324,6 @@ x-common: &common-settings
 									}}
 									theme={theme === 'dark' ? 'tailwind-dark' : 'tailwind-light'}
 									value={composeContent}
-									beforeMount={handleEditorWillMount}
 								/>
 							</TabsContent>
 							<TabsContent className="border flex-1 h-[calc(60vh-40px)] overflow-hidden rounded" value="env">
@@ -362,8 +350,8 @@ x-common: &common-settings
 					{showSettings && (
 						<div className="border overflow-auto p-2 rounded" style={{ maxHeight: "60vh" }}>
 							<SettingsPanel 
-								settings={settings}
 								onSettingsChange={(newSettings) => setSettings(newSettings)} 
+								settings={settings}
 							/>
 						</div>
 					)}
