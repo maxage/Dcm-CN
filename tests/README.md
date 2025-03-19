@@ -11,7 +11,13 @@ The tests perform the following validations:
 
 ## Running the Tests
 
-To run the tests, you need Docker installed on your system. Then run:
+To run the tests, you need Docker installed on your system. The recommended way to run the tests is with Bun:
+
+```bash
+bun run tests/validate-compose.test.ts
+```
+
+You can also use the npm/pnpm script:
 
 ```bash
 pnpm test:compose
@@ -23,17 +29,11 @@ or
 npm run test:compose
 ```
 
-or directly with Bun:
-
-```bash
-bun run tests/validate-compose.test.ts
-```
-
 ## Test Requirements
 
 - Docker must be installed and running on your system
 - Docker Compose V2 must be available (comes with Docker Desktop or can be installed separately)
-- Bun for running the tests (faster than ts-node)
+- Bun for running the tests (provides much faster execution than ts-node)
 
 ## Test Results
 
