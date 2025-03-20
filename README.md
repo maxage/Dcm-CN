@@ -35,11 +35,15 @@
 
 ## 📋 About
 
+> [!NOTE]
 > 🌟 **Community-Driven Project**: DCM started as a simple tool but aims to become the go-to resource for Docker Compose configurations, powered by the community. We believe everyone has their favorite self-hosted tools, and we'd love for you to share yours! Whether you're using a popular application or a hidden gem, your contribution helps others discover and easily deploy great software.
 
 DCM (Docker Compose Maker) is a simple yet powerful tool that helps you create `docker-compose.yaml` files for your self-hosted applications. Select from a curated list of popular containers and generate a ready-to-use configuration file with just a few clicks.
 
 No more copy-pasting from documentation or trying to remember the correct configuration options - this tool makes it easy to set up your Docker environment.
+
+> [!TIP]
+> Most containers come pre-configured with best practices and sensible defaults, saving you hours of documentation reading and configuration tweaking.
 
 > 💡 **Share Your Stack**: Using a great tool that's not listed here? We'd love to include it! Check out our [contribution guide](CONTRIBUTING.md) to help others discover and use your favorite containers.
 
@@ -55,13 +59,59 @@ No more copy-pasting from documentation or trying to remember the correct config
 - 🔒 **Privacy focused** - No tracking in self-hosted version
 - 🚀 **Fast and lightweight** - Built with Next.js for optimal performance
 
+## 🔧 How to Use DCM
+
+Using Docker Compose Maker is simple and intuitive:
+
+1. **Select containers** - Browse the curated list of self-hosted applications and click to select the ones you want to include
+2. **Configure settings** - Adjust environment variables, paths, and other common settings
+3. **Generate your configuration** - Click "Copy Compose" to view and customize your docker-compose.yaml
+4. **Deploy your stack** - Use one of the following methods to deploy your containers:
+
+> [!IMPORTANT]
+> All containers are configured to use environment variables like `${PUID}`, `${PGID}`, and `${TZ}`. Make sure to set these in your deployment to avoid permission issues.
+
+### Deployment Options
+
+Once you have your docker-compose configuration, you have several ways to deploy it:
+
+#### Copy & Paste
+Simply copy the generated docker-compose.yaml and .env content, save them locally, and run `docker-compose up -d` to start your containers.
+
+#### Download Files
+Download the generated docker-compose.yaml and .env files directly from the interface, then use them with your preferred Docker management tool.
+
+> [!NOTE]
+> The downloaded .env file contains all the environment variables referenced in your docker-compose.yaml. Keep both files in the same directory when deploying.
+
+#### Portainer Stacks
+If you're already using [Portainer](https://github.com/portainer/portainer) to manage your Docker environment, you can easily deploy your configuration as a stack:
+
+1. Navigate to your Portainer dashboard and select **Stacks** from the sidebar
+2. Click **Add stack**
+3. Give your stack a name
+4. Select **Web editor** and paste the generated docker-compose content
+5. (Optional) Add the environment variables from the .env file
+6. Click **Deploy the stack**
+
+> [!CAUTION]
+> When using Portainer Stacks, you'll need to manually add the environment variables or upload the .env file, as Portainer doesn't automatically read the .env file in all configurations.
+
+Using Portainer provides a user-friendly web interface to manage, update, and monitor your containers without needing command-line tools.
+
+#### Other Docker Management Tools
+The generated compose file works with any tool that supports docker-compose syntax, such as Docker Desktop, Rancher, Yacht, or command-line tools.
+
 ## 🚀 Quick Start
+
+If you want to try DCM for yourself, there are several ways to get started:
 
 ### 🌐 Use the Online Version
 
 Visit [compose.ajnart.dev](https://compose.ajnart.dev) to use the tool immediately without installation.
 
-> **Note**: The online version includes analytics for usage tracking, while the self-hosted version does not.
+> [!NOTE]
+> The online version includes analytics for usage tracking, while the self-hosted version does not.
 
 ### 🐳 Run with Docker
 
@@ -72,6 +122,9 @@ docker run -p 3000:3000 ghcr.io/ajnart/dcm
 ```
 
 Then visit `http://localhost:3000` in your browser.
+
+> [!TIP]
+> For persistence across container restarts, you may want to add a volume mount: `-v dcm-data:/app/data`
 
 The Docker image is available for multiple platforms:
 - linux/amd64
@@ -113,6 +166,9 @@ First install [Bun](https://bun.sh/) if you haven't already, then run:
 ```bash
 bun install
 ```
+
+> [!WARNING]
+> Using npm instead of Bun may result in longer installation times and potential compatibility issues. We strongly recommend using Bun for development.
 
 3. Build and start:
 ```bash
