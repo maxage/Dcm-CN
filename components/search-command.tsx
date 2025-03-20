@@ -48,9 +48,15 @@ export function SearchCommand({
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Open dialog with Cmd+K or Ctrl+K
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault()
         setOpen((open) => !open)
+      }
+      
+      // Close dialog with Escape key (additional to the built-in behavior)
+      if (e.key === "Escape" && open) {
+        setOpen(false)
       }
     }
 
@@ -65,7 +71,7 @@ export function SearchCommand({
       document.removeEventListener("keydown", handleKeyDown)
       document.removeEventListener("triggerCommandK", handleCustomTrigger)
     }
-  }, [])
+  }, [open])
 
   const handleToolSelect = (toolId: string) => {
     const tool = tools.find((t) => t.id === toolId)
