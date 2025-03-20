@@ -9,10 +9,10 @@ interface ActionButtonsProps {
   copied: boolean
 }
 
-export default function ActionButtons({ 
-  onCopy, 
-  onDownload, 
-  copied 
+export default function ActionButtons({
+  onCopy,
+  onDownload,
+  copied,
 }: ActionButtonsProps) {
   return (
     <div className="flex gap-2">
@@ -49,4 +49,4 @@ export default function ActionButtons({
       </Button>
     </div>
   )
-} 
+}

@@ -11,22 +11,32 @@ import type { DockerTool } from "@/lib/docker-tools"
 import { useSettings } from "@/lib/settings-context"
 
 import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-import { ComposeEditor, EnvEditor, configureMonacoThemes } from "@/components/editors/MonacoEditor"
-import { copyToClipboard, downloadFile } from "@/lib/docker-compose/file-operations"
-import { generateComposeContent, generateEnvFileContent } from "@/lib/docker-compose/generators"
+import {
+  ComposeEditor,
+  EnvEditor,
+  configureMonacoThemes,
+} from "@/components/editors/MonacoEditor"
+import {
+  copyToClipboard,
+  downloadFile,
+} from "@/lib/docker-compose/file-operations"
+import {
+  generateComposeContent,
+  generateEnvFileContent,
+} from "@/lib/docker-compose/generators"
 import ActionButtons from "./ActionButtons"
 import PortConflictsAlert from "./PortConflictsAlert"
 
@@ -51,10 +61,10 @@ export function CopyComposeModal({
     fixed: number
     conflicts: string[]
   } | null>(null)
-  
+
   const composeEditorRef = useRef<editor.IStandaloneCodeEditor | null>(null)
   const envEditorRef = useRef<editor.IStandaloneCodeEditor | null>(null)
-  
+
   const { theme, resolvedTheme } = useTheme()
   const { settings } = useSettings()
 
@@ -71,9 +81,9 @@ export function CopyComposeModal({
     const { content, portConflicts } = generateComposeContent(
       selectedTools,
       settings,
-      showInterpolated
+      showInterpolated,
     )
-    
+
     setComposeContent(content)
     setPortConflicts(portConflicts)
   }, [isOpen, selectedTools, settings, showInterpolated])
@@ -105,12 +115,12 @@ export function CopyComposeModal({
         : envEditorRef.current?.getValue() || envFileContent
 
     const success = await copyToClipboard(
-      content, 
-      activeTab as "compose" | "env", 
-      selectedTools, 
-      settings
+      content,
+      activeTab as "compose" | "env",
+      selectedTools,
+      settings,
     )
-    
+
     if (success) {
       setCopied(true)
 
@@ -135,14 +145,16 @@ export function CopyComposeModal({
         : envEditorRef.current?.getValue() || envFileContent
 
     downloadFile(
-      content, 
-      activeTab as "compose" | "env", 
-      selectedTools, 
-      settings
+      content,
+      activeTab as "compose" | "env",
+      selectedTools,
+      settings,
     )
   }
 
-  const handleComposeEditorDidMount = (editor: editor.IStandaloneCodeEditor) => {
+  const handleComposeEditorDidMount = (
+    editor: editor.IStandaloneCodeEditor,
+  ) => {
     composeEditorRef.current = editor
 
     if (mounted) {
@@ -196,7 +208,9 @@ export function CopyComposeModal({
         <div className="flex-1">
           <EmbeddedSettings />
 
-          {portConflicts && <PortConflictsAlert portConflicts={portConflicts} />}
+          {portConflicts && (
+            <PortConflictsAlert portConflicts={portConflicts} />
+          )}
 
           <div className="mb-2 flex items-center justify-between">
             <Tabs
@@ -225,7 +239,7 @@ export function CopyComposeModal({
               </TabsList>
             </Tabs>
 
-            <ActionButtons 
+            <ActionButtons
               onCopy={handleCopy}
               onDownload={handleDownload}
               copied={copied}
@@ -260,4 +274,4 @@ export function CopyComposeModal({
       </AlertDialogContent>
     </AlertDialog>
   )
-} 
+}
