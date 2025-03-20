@@ -1,10 +1,11 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import type { DockerTool } from "@/lib/docker-tools";
 import type { Template } from "@/lib/templates";
 import { getToolsFromTemplate } from "@/lib/templates";
 import { cn } from "@/lib/utils";
+import { CheckCircle, PlusCircle } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -48,7 +49,7 @@ export function TemplateCard({ template, allTools, onSelectTemplate, isSelected 
   return (
     <Card 
       className={cn(
-        "group relative h-full w-full cursor-pointer select-none overflow-hidden transition-all duration-300",
+        "group relative flex h-full w-full flex-col cursor-pointer select-none overflow-hidden transition-all duration-300",
         isSelected ? "bg-secondary" : "hover:border-muted-foreground/20",
         "hover:motion-safe:scale-105 hover:shadow-md"
       )}
@@ -88,7 +89,8 @@ export function TemplateCard({ template, allTools, onSelectTemplate, isSelected 
           {template.description}
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-3 pb-2">
+      
+      <CardContent className="flex-1 space-y-3 pb-4">
         <div className="text-sm">
           <span className="font-semibold">{templateTools.length}</span> tools included
           {unavailableTools > 0 && (
@@ -128,22 +130,44 @@ export function TemplateCard({ template, allTools, onSelectTemplate, isSelected 
           )}
         </div>
       </CardContent>
-      <CardFooter>
+      
+      <div 
+        className={cn(
+          "mt-auto flex items-center justify-center p-3 border-t transition-colors duration-200",
+          isSelected ? "bg-secondary/50 border-primary/30" : "bg-muted/30 border-muted group-hover:bg-muted/50"
+        )}
+        onClick={(e) => e.stopPropagation()}
+      >
         <Button 
           variant={isSelected ? "outline" : "default"} 
           className={cn(
-            "w-full transition-transform",
-            !loading && "motion-safe:hover:scale-105"
+            "w-full transition-transform gap-2 font-medium",
+            !loading && !isSelected && "motion-safe:hover:scale-105"
           )}
           onClick={(e) => {
             e.stopPropagation();
-            handleSelectTemplate();
+            if (!isSelected) handleSelectTemplate();
           }}
           disabled={loading || templateTools.length === 0}
         >
-          {loading ? "Adding..." : isSelected ? "Selected" : "Use Template"}
+          {loading ? (
+            <span className="flex items-center gap-2">
+              <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+              Adding...
+            </span>
+          ) : isSelected ? (
+            <>
+              <CheckCircle size={16} className="text-green-500" />
+              Template Selected
+            </>
+          ) : (
+            <>
+              <PlusCircle size={16} />
+              Use Template
+            </>
+          )}
         </Button>
-      </CardFooter>
+      </div>
     </Card>
   );
 } 
