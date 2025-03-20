@@ -41,6 +41,7 @@ interface FloatingBarProps {
   onToggleToolSelection: (toolId: string) => void
   scrollPosition?: number
   selectedToolObjects: DockerTool[]
+  generateShareableUrl: () => string
 }
 
 export default function FloatingBar({
@@ -51,6 +52,7 @@ export default function FloatingBar({
   onToggleToolSelection,
   scrollPosition = 200,
   selectedToolObjects,
+  generateShareableUrl,
 }: FloatingBarProps) {
   const [isResetDialogOpen, setIsResetDialogOpen] = useState(false)
   const [isCopyDialogOpen, setIsCopyDialogOpen] = useState(false)
@@ -90,14 +92,15 @@ export default function FloatingBar({
   const handleShare = async () => {
     if (selectedCount === 0) return
     
-    const currentUrl = window.location.href
+    // Generate the shareable URL with encoded tool selection
+    const shareableUrl = generateShareableUrl()
     
     // Show animation state
     setIsSharing(true)
     
     // Use clipboard API
     try {
-      await navigator.clipboard.writeText(currentUrl)
+      await navigator.clipboard.writeText(shareableUrl)
       
       toast.success("URL copied to clipboard!", {
         description: "Share this link to show your selected services",
@@ -105,7 +108,7 @@ export default function FloatingBar({
       
       posthog.capture("share_selection_clipboard", {
         selected_tools: selectedTools,
-        url: currentUrl,
+        url: shareableUrl,
       })
     } catch (err) {
       toast.error("Failed to copy URL", {

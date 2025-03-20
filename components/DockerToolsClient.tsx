@@ -38,7 +38,7 @@ function encodeToolIds(selectedIds: string[], allTools: DockerTool[]): string {
   const bytes = new Uint8Array(binaryString.length / 8)
   for (let i = 0; i < binaryString.length; i += 8) {
     const byte = binaryString.substr(i, 8)
-    bytes[i / 8] = parseInt(byte, 2)
+    bytes[i / 8] = Number.parseInt(byte, 2)
   }
   
   // Convert to base64 and make URL safe
@@ -85,41 +85,32 @@ export default function DockerToolsClient({
   const searchParams = useSearchParams()
   
   const {
-    value: storedTools,
-    setValue: setStoredTools,
-    removeValue: clearStoredTools,
+    value: selectedTools,
+    setValue: setSelectedTools,
+    removeValue: clearSelectedTools,
   } = useLocalStorage<string[]>(STORAGE_KEYS.SELECTED_TOOLS, [])
 
-  // Get tools from URL search params if they exist
+  // Check for encoded tools in the URL on initial load
   const toolsParam = searchParams.get('t')
   
-  // If URL param exists, decode it, otherwise use localStorage
-  const selectedTools = toolsParam 
-    ? decodeToolIds(toolsParam, dockerTools)
-    : storedTools
-
-  // Update URL with selected tools
-  const updateUrlParams = useCallback((toolIds: string[]) => {
-    const params = new URLSearchParams(searchParams.toString())
-    
-    if (toolIds.length > 0) {
-      // Use a shorter parameter name ('t' instead of 'tools')
-      // and encode the IDs to save space
-      params.set('t', encodeToolIds(toolIds, dockerTools))
-    } else {
-      params.delete('t')
-    }
-    
-    const newUrl = `${window.location.pathname}${params.toString() ? `?${params.toString()}` : ''}`
-    router.push(newUrl)
-  }, [router, searchParams, dockerTools])
-
-  // Sync localStorage with URL params on initial load
+  // Load from URL parameter if present (only on initial page load)
   useEffect(() => {
-    if (toolsParam && selectedTools.join(',') !== storedTools.join(',')) {
-      setStoredTools(selectedTools)
+    if (toolsParam) {
+      const decodedTools = decodeToolIds(toolsParam, dockerTools)
+      if (decodedTools.length > 0) {
+        setSelectedTools(decodedTools)
+      }
     }
-  }, [toolsParam, selectedTools, storedTools, setStoredTools])
+  }, [toolsParam, dockerTools, setSelectedTools])
+
+  // Generate a shareable URL with the current selection
+  const generateShareableUrl = useCallback(() => {
+    if (selectedTools.length === 0) return window.location.href
+    
+    const baseUrl = window.location.href.split('?')[0]
+    const encoded = encodeToolIds(selectedTools, dockerTools)
+    return `${baseUrl}?t=${encoded}`
+  }, [selectedTools, dockerTools])
 
   const toggleToolSelection = (toolId: string) => {
     const tool = dockerTools.find((t) => t.id === toolId)
@@ -129,18 +120,15 @@ export default function DockerToolsClient({
 
     posthog.capture("tool_selected", { tool_id: toolId })
     
-    const newSelectedTools = selectedTools.includes(toolId)
-      ? selectedTools.filter((id) => id !== toolId)
-      : [...selectedTools, toolId]
-    
-    // Update both URL and localStorage
-    updateUrlParams(newSelectedTools)
-    setStoredTools(newSelectedTools)
+    setSelectedTools((prev) =>
+      prev.includes(toolId)
+        ? prev.filter((id) => id !== toolId)
+        : [...prev, toolId]
+    )
   }
 
   const handleReset = () => {
-    clearStoredTools()
-    updateUrlParams([])
+    clearSelectedTools()
   }
 
   // Get the DockerTool objects for selected tools
@@ -163,6 +151,7 @@ export default function DockerToolsClient({
         selectedToolObjects={selectedToolObjects}
         onReset={handleReset}
         onToggleToolSelection={toggleToolSelection}
+        generateShareableUrl={generateShareableUrl}
       />
 
       <ToolGrid
