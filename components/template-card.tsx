@@ -5,7 +5,7 @@ import type { DockerTool } from "@/lib/docker-tools";
 import type { Template } from "@/lib/templates";
 import { getToolsFromTemplate } from "@/lib/templates";
 import { cn } from "@/lib/utils";
-import { CheckCircle, PlusCircle } from "lucide-react";
+import { CheckCircle, Package, PlusCircle } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -19,8 +19,11 @@ interface TemplateCardProps {
 
 export function TemplateCard({ template, allTools, onSelectTemplate, isSelected = false }: TemplateCardProps) {
   const [loading, setLoading] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
 
   const handleSelectTemplate = () => {
+    if (isSelected) return;
+    
     setLoading(true);
     try {
       const templateTools = getToolsFromTemplate(template, allTools);
@@ -50,63 +53,89 @@ export function TemplateCard({ template, allTools, onSelectTemplate, isSelected 
     <Card 
       className={cn(
         "group relative flex h-full w-full flex-col cursor-pointer select-none overflow-hidden transition-all duration-300",
-        isSelected ? "bg-secondary" : "hover:border-muted-foreground/20",
-        "hover:motion-safe:scale-105 hover:shadow-md"
+        isSelected 
+          ? "bg-secondary border-primary" 
+          : "hover:border-muted-foreground/20 border-border",
+        "hover:motion-safe:scale-[1.03] hover:shadow-md"
       )}
       onClick={handleSelectTemplate}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
     >
       <div 
         className={cn(
           "h-1 w-full transition-colors duration-300",
-          isSelected ? "bg-primary" : "bg-transparent group-hover:bg-primary/30"
+          isSelected 
+            ? "bg-primary" 
+            : isHovering 
+              ? "bg-primary/30" 
+              : "bg-transparent"
         )}
       />
       
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            {template.icon && (
+            {template.icon ? (
               <div className={cn(
-                "relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-md transition-all duration-300",
-                isSelected ? "bg-primary/40" : "bg-primary/10 group-hover:bg-primary/20"
+                "relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-md transition-all duration-300",
+                isSelected 
+                  ? "bg-primary/40 text-primary-foreground" 
+                  : "bg-primary/10 text-primary group-hover:bg-primary/20"
               )}>
                 <Image 
                   src={template.icon}
                   alt={template.name}
-                  width={32}
-                  height={32}
-                  className="object-contain p-0.5"
+                  width={40}
+                  height={40}
+                  className="object-contain p-1.5"
                 />
               </div>
+            ) : (
+              <div className={cn(
+                "relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-md transition-all duration-300",
+                isSelected 
+                  ? "bg-primary/40 text-primary-foreground" 
+                  : "bg-primary/10 text-primary group-hover:bg-primary/20"
+              )}>
+                <Package size={20} />
+              </div>
             )}
-            <CardTitle className="text-lg">{template.name}</CardTitle>
-          </div>
-          <div className="rounded-md bg-secondary px-2 py-1 text-xs text-secondary-foreground">
-            {template.category}
+            <div>
+              <CardTitle className="text-lg leading-tight">{template.name}</CardTitle>
+              <div className="rounded-md bg-secondary px-2 py-0.5 text-xs text-secondary-foreground inline-block mt-1">
+                {template.category}
+              </div>
+            </div>
           </div>
         </div>
-        <CardDescription className="h-10 line-clamp-2">
+        <CardDescription className="h-10 line-clamp-2 mt-2">
           {template.description}
         </CardDescription>
       </CardHeader>
       
       <CardContent className="flex-1 space-y-3 pb-4">
-        <div className="text-sm">
-          <span className="font-semibold">{templateTools.length}</span> tools included
+        <div className="text-sm flex items-center gap-2">
+          <Badge variant="secondary" className="font-normal">
+            {templateTools.length} tools included
+          </Badge>
           {unavailableTools > 0 && (
-            <span className="ml-1 text-muted-foreground">
+            <span className="text-xs text-muted-foreground">
               ({unavailableTools} unavailable)
             </span>
           )}
         </div>
         
         {/* Preview of the included tools */}
-        <div className="flex flex-wrap gap-1">
+        <div className="flex flex-wrap gap-1.5">
           {previewTools.map((tool) => (
             <Badge 
               key={tool.id}
               variant="outline" 
-              className="rounded-md px-1 py-0.5 text-xs font-normal transition-all duration-300"
+              className={cn(
+                "rounded-md px-1.5 py-0.5 text-xs font-normal transition-all duration-300",
+                isSelected ? "bg-secondary/80" : "group-hover:bg-background/80"
+              )}
             >
               {tool.icon && (
                 <Image 
@@ -114,7 +143,7 @@ export function TemplateCard({ template, allTools, onSelectTemplate, isSelected 
                   alt={tool.name} 
                   width={12} 
                   height={12} 
-                  className="mr-1 object-contain"
+                  className="mr-1.5 object-contain"
                 />
               )}
               {tool.name}
@@ -123,7 +152,7 @@ export function TemplateCard({ template, allTools, onSelectTemplate, isSelected 
           {templateTools.length > 4 && (
             <Badge 
               variant="outline" 
-              className="rounded-md bg-muted px-1 py-0.5 text-xs font-normal"
+              className="rounded-md bg-muted/80 px-1.5 py-0.5 text-xs font-normal"
             >
               +{templateTools.length - 4} more
             </Badge>
@@ -134,21 +163,23 @@ export function TemplateCard({ template, allTools, onSelectTemplate, isSelected 
       <div 
         className={cn(
           "mt-auto flex items-center justify-center p-3 border-t transition-colors duration-200",
-          isSelected ? "bg-secondary/50 border-primary/30" : "bg-muted/30 border-muted group-hover:bg-muted/50"
+          isSelected 
+            ? "bg-secondary/70 border-primary/30" 
+            : "bg-muted/20 border-muted group-hover:bg-muted/40"
         )}
         onClick={(e) => e.stopPropagation()}
       >
         <Button 
           variant={isSelected ? "outline" : "default"} 
           className={cn(
-            "w-full transition-transform gap-2 font-medium",
+            "w-full transition-all gap-2 font-medium",
             !loading && !isSelected && "motion-safe:hover:scale-105"
           )}
           onClick={(e) => {
             e.stopPropagation();
             if (!isSelected) handleSelectTemplate();
           }}
-          disabled={loading || templateTools.length === 0}
+          disabled={loading || templateTools.length === 0 || isSelected}
         >
           {loading ? (
             <span className="flex items-center gap-2">
