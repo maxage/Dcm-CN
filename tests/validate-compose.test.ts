@@ -3,7 +3,7 @@ import { promises as fs } from 'node:fs'
 import path from 'node:path'
 import { DEFAULT_SETTINGS } from '../lib/constants'
 import type { DockerTool } from '../lib/docker-tools'
-import { dockerTools } from '../lib/docker-tools'
+import { tools } from '../tools'
 
 // Test summary
 const testResults = {
@@ -17,7 +17,7 @@ async function main() {
     console.log("Starting Docker Compose validation tests...\n")
     
     // Filter out unsupported tools
-    const supportedTools = dockerTools.filter(tool => !tool.isUnsupported)
+    const supportedTools = tools.filter(tool => !tool.isUnsupported)
     console.log(`Found ${supportedTools.length} supported Docker tools`)
     
     // Test 1: Test each service individually

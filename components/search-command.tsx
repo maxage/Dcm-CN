@@ -9,7 +9,7 @@ import {
   CommandList,
 } from "@/components/ui/command"
 import { DialogTitle } from "@/components/ui/dialog"
-import { dockerTools } from "@/lib/docker-tools"
+import { tools } from "@/tools"
 import { Check, X } from "lucide-react"
 import { useEffect, useState } from "react"
 
@@ -25,7 +25,7 @@ export function SearchCommand({
   const [open, setOpen] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
 
-  const filteredTools = dockerTools.filter((tool) =>
+  const filteredTools = tools.filter((tool) =>
     tool.name.toLowerCase().includes(searchTerm.toLowerCase()),
   )
 
@@ -51,7 +51,7 @@ export function SearchCommand({
   }, [])
 
   const handleToolSelect = (toolId: string) => {
-    const tool = dockerTools.find((t) => t.id === toolId)
+    const tool = tools.find((t) => t.id === toolId)
     if (tool && !tool.isUnsupported) {
       onToggleToolSelection(toolId)
     }

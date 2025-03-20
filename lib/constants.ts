@@ -9,7 +9,6 @@ export const DEFAULT_SETTINGS: DockerSettings = {
   umask: "022",
   restartPolicy: "unless-stopped",
   networkMode: "bridge",
-  useTraefik: false,
   containerNamePrefix: "docker_",
 }
 

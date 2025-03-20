@@ -33,12 +33,12 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import { dockerTools } from "@/lib/docker-tools"
+import { tools } from "@/tools"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { DialogDescription } from "@radix-ui/react-dialog"
 import { ExternalLink, Github, HelpCircle, PlusCircle, X } from "lucide-react"
 import { useState } from "react"
-import { useForm } from "@tanstack/react-form"
+import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { GradientButton } from "./ui/gradient-button"
 
@@ -56,7 +56,7 @@ const CATEGORIES = [
 
 // Collect all unique tags from existing tools
 const ALL_TAGS = Array.from(
-  new Set(dockerTools.flatMap((tool) => tool.tags)),
+  new Set(tools.flatMap((tool) => tool.tags)),
 ).sort()
 
 const formSchema = z.object({
@@ -65,7 +65,7 @@ const formSchema = z.object({
   description: z.string().min(1, "Description is required"),
   category: z.string().min(1, "Category is required"),
   tags: z.array(z.string()).min(1, "At least one tag is required"),
-  githubUrl: z.string().url().optional().or(z.literal("")),
+  githubUrl: z.string().url().or(z.literal("")),
   containerData: z.string().min(1, "Container definition is required"),
 })
 
@@ -84,7 +84,7 @@ export function ContainerSubmissionForm() {
       description: "",
       category: "Media",
       tags: ["TV", "PVR", "Monitoring"],
-      githubUrl: "",
+      githubUrl: "https://github.com/sonarr",
       containerData: `services:
   sonarr:
     container_name: sonarr
