@@ -10,7 +10,7 @@ import { SettingsProvider } from "@/lib/settings-context"
 import { decodeShareUrl } from "@/lib/url-utils"
 import { useRouter, useSearchParams } from "next/navigation"
 import posthog from "posthog-js"
-import { useCallback, useEffect } from "react"
+import { useEffect, useRef } from "react"
 
 interface DockerToolsClientProps {
   dockerTools: DockerTool[]
@@ -21,6 +21,7 @@ export default function DockerToolsClient({
 }: DockerToolsClientProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const processedShareRef = useRef(false)
   
   const {
     value: storedTools,
@@ -28,44 +29,25 @@ export default function DockerToolsClient({
     removeValue: clearStoredTools,
   } = useLocalStorage<string[]>(STORAGE_KEYS.SELECTED_TOOLS, [])
 
-  // Get tools from URL search params
-  const toolsFromParams = searchParams.get('tools')
+  // Get tools from share parameter if available
   const shareParam = searchParams.get('share')
   
   // Determine which tool IDs to use, prioritizing share parameter
   const selectedTools = shareParam
     ? decodeShareUrl(shareParam)
-    : toolsFromParams
-      ? toolsFromParams.split(',').filter(id => dockerTools.some(tool => tool.id === id))
-      : storedTools
+    : storedTools
 
-  // Update URL with selected tools (only when toolsFromParams is set)
-  const updateUrlParams = useCallback((toolIds: string[]) => {
-    if (!searchParams.has('share')) { // Don't update URL if a share is being viewed
-      const params = new URLSearchParams(searchParams.toString())
-      
-      if (toolIds.length > 0) {
-        params.set('tools', toolIds.join(','))
-      } else {
-        params.delete('tools')
-      }
-      
-      // Remove the share parameter if it exists
-      if (params.has('share')) {
-        params.delete('share')
-      }
-      
-      const newUrl = `${window.location.pathname}${params.toString() ? `?${params.toString()}` : ''}`
-      router.push(newUrl)
-    }
-  }, [router, searchParams])
-
-  // Sync localStorage with URL params on initial load
+  // Process share parameter only once
   useEffect(() => {
-    if ((toolsFromParams || shareParam) && selectedTools.join(',') !== storedTools.join(',')) {
-      setStoredTools(selectedTools)
+    if (shareParam && !processedShareRef.current) {
+      processedShareRef.current = true
+      const decodedTools = decodeShareUrl(shareParam)
+      setStoredTools(decodedTools)
+      
+      // Redirect to root URL after loading from share
+      router.push('/')
     }
-  }, [toolsFromParams, shareParam, storedTools, selectedTools, setStoredTools])
+  }, [shareParam, setStoredTools, router])
 
   const toggleToolSelection = (toolId: string) => {
     const tool = dockerTools.find((t) => t.id === toolId)
@@ -75,34 +57,16 @@ export default function DockerToolsClient({
 
     posthog.capture("tool_selected", { tool_id: toolId })
     
-    // Clear share parameter if present when modifying selection
-    if (searchParams.has('share')) {
-      const params = new URLSearchParams(searchParams.toString())
-      params.delete('share')
-      const newUrl = `${window.location.pathname}${params.toString() ? `?${params.toString()}` : ''}`
-      router.push(newUrl)
-    }
-    
     const newSelectedTools = selectedTools.includes(toolId)
       ? selectedTools.filter((id) => id !== toolId)
       : [...selectedTools, toolId]
     
-    // Update both URL and localStorage
-    updateUrlParams(newSelectedTools)
+    // Update localStorage only
     setStoredTools(newSelectedTools)
   }
 
   const handleReset = () => {
     clearStoredTools()
-    updateUrlParams([])
-    
-    // Clear share parameter if present
-    if (searchParams.has('share')) {
-      const params = new URLSearchParams(searchParams.toString())
-      params.delete('share')
-      const newUrl = `${window.location.pathname}${params.toString() ? `?${params.toString()}` : ''}`
-      router.push(newUrl)
-    }
   }
 
   // Get the DockerTool objects for selected tools
