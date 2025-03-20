@@ -2,27 +2,23 @@
 # <img src="./public/favicon.png" width="30" height="30" alt="DCM Logo"> DCM - Docker Compose Maker
 
 <p align="center">
-<img src="https://img.shields.io/github/stars/ajnart/docker-compose-selector?label=%E2%AD%90%20Stars&style=flat-square?branch=master&kill_cache=1%22">
-<a href="https://docker-compose-selector.vercel.app">
+<img src="https://img.shields.io/github/stars/ajnart/docker-compose-maker?label=%E2%AD%90%20Stars&style=flat-square?branch=master&kill_cache=1%22">
+<a href="https://docker-compose-maker.vercel.app">
   <img alt="Live Demo" src="https://img.shields.io/badge/🌐_Live_Demo-Visit_Site-blue">
 </a>
-<a href="https://github.com/ajnart/docker-compose-selector/actions">
-  <img title="CI Status" src="https://github.com/ajnart/docker-compose-selector/actions/workflows/docker.yml/badge.svg" alt="CI Status">
+<a href="https://github.com/ajnart/docker-compose-maker/actions">
+  <img title="CI Status" src="https://github.com/ajnart/docker-compose-maker/actions/workflows/docker.yml/badge.svg" alt="CI Status">
 </a>
 </p>
 
 <!-- Links -->
 <p align="center">
-  <a href="https://docker-compose-selector.vercel.app">
+  <a href="https://compose.ajnart.dev">
     <strong>Live Demo 🚀</strong>
   </a>
   •
   <a href="#-quick-start">
     <strong>Install 💻</strong>
-  </a>
-  •
-  <a href="https://github.com/ajnart/docker-compose-selector">
-    <strong>GitHub 📂</strong>
   </a>
   •
   <a href="#-features">
@@ -52,7 +48,7 @@ No more copy-pasting from documentation or trying to remember the correct config
 
 ### 🌐 Use the Online Version
 
-Visit [docker-compose-selector.vercel.app](https://docker-compose-selector.vercel.app) to use the tool immediately without installation.
+Visit [compose.ajnart.dev](https://compose.ajnart.dev) to use the tool immediately without installation.
 
 > **Note**: The online version includes analytics for usage tracking, while the self-hosted version does not.
 
@@ -91,12 +87,15 @@ docker-compose up -d
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/ajnart/docker-compose-selector.git
-cd docker-compose-selector
+git clone https://github.com/ajnart/docker-compose-maker.git
+cd docker-compose-maker
 ```
 
 2. Install dependencies:
 ```bash
+# We recommend using Bun (https://bun.sh/) for faster installation and development
+bun install
+# or
 npm install
 # or
 yarn install
@@ -106,9 +105,13 @@ pnpm install
 
 3. Build and start:
 ```bash
+# With Bun (recommended)
+bun run build
+bun start
+# or with npm
 npm run build
 npm start
-# or
+# or with yarn
 yarn build
 yarn start
 ```
@@ -129,6 +132,21 @@ DCM includes configuration for many popular self-hosted applications, including:
 - 🔄 **Maintenance**: [Watchtower](https://github.com/containrrr/watchtower)
 
 Each tool includes a detailed description, GitHub star count, and pre-configured docker-compose settings.
+
+## 🧪 Testing
+
+DCM uses [Bun](https://bun.sh/) for testing. To run the tests:
+
+```bash
+# Run all tests
+bun test
+
+# Run Docker Compose validation tests
+bun test:compose
+
+# Run container schema validation tests
+bun test:containers
+```
 
 ## 🖼️ Screenshots
 

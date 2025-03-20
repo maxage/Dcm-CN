@@ -8,7 +8,7 @@ The project organizes container definitions in the `tools/` directory. Each file
 
 ### File Structure
 
-The `tools/` directory contains the following files:
+The `tools/` directory contains the following files (as of 2025-03-20):
 
 - `automation.ts` - Home automation and related containers
 - `database.ts` - Database containers (MySQL, PostgreSQL, etc.)
@@ -125,6 +125,20 @@ After adding your container definition:
 1. Run the application locally to verify it appears correctly.
 2. Test generating a docker-compose file with your container.
 3. Verify the generated docker-compose file works correctly when deployed.
+4. Run the automated tests to ensure your container passes validation:
+
+```bash
+# Test your container's Docker Compose validation
+bun test:compose
+
+# Test your container passes the schema validation
+bun test:containers
+```
+
+All tests should pass before submitting a pull request. The tests validate:
+- That your Docker Compose template is syntactically valid
+- That proper environment variables are used
+- That the container definition follows the required schema
 
 ## Submitting Your Changes
 
