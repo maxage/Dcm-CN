@@ -52,6 +52,10 @@ export default function DockerToolsClient({
     )
   }
 
+  const handleSettingsChange = (newSettings: DockerSettings) => {
+    setSettings(newSettings)
+  }
+
   const handleReset = () => {
     clearSelectedTools()
     clearSettings()
@@ -65,7 +69,7 @@ export default function DockerToolsClient({
   return (
     <>
       <div className="[animation-delay:300ms] motion-safe:animate-slide-down">
-        <SettingsPanel settings={settings} onSettingsChange={setSettings} />
+        <SettingsPanel settings={settings} onSettingsChange={handleSettingsChange} />
       </div>
 
       <FloatingBar

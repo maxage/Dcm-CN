@@ -11,7 +11,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
 import { Separator } from "@/components/ui/separator"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 interface SettingsPanelProps {
   settings: DockerSettings
@@ -40,31 +40,70 @@ export default function SettingsPanel({
   className = "",
 }: SettingsPanelProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const [localSettings, setLocalSettings] = useState({ ...settings })
+  const [hasChanges, setHasChanges] = useState(false)
+
+  // Update local settings when prop settings change
+  useEffect(() => {
+    setLocalSettings(settings)
+  }, [settings])
 
   const handleChange = (key: keyof DockerSettings, value: string | boolean) => {
-    onSettingsChange({
-      ...settings,
-      [key]: value,
+    setLocalSettings(prev => {
+      const newSettings = {
+        ...prev,
+        [key]: value,
+      }
+      setHasChanges(JSON.stringify(newSettings) !== JSON.stringify(settings))
+      return newSettings
     })
+  }
+
+  const handleSave = () => {
+    onSettingsChange(localSettings)
+    setHasChanges(false)
+  }
+
+  const handleCancel = () => {
+    setLocalSettings({ ...settings })
+    setHasChanges(false)
   }
 
   const SettingsContent = () => (
     <div className="grid gap-6 pt-4">
-      <VolumePathsSection settings={settings} onSettingsChange={handleChange} />
+      <VolumePathsSection settings={localSettings} onSettingsChange={handleChange} />
 
       <Separator className="[animation-delay:100ms] motion-safe:animate-fade-in" />
 
       <EnvironmentVariablesSection
-        settings={settings}
+        settings={localSettings}
         onSettingsChange={handleChange}
       />
 
       <Separator className="[animation-delay:500ms] motion-safe:animate-fade-in" />
 
       <ContainerSettingsSection
-        settings={settings}
+        settings={localSettings}
         onSettingsChange={handleChange}
       />
+
+      {hasChanges && (
+        <div className="flex justify-end gap-2 [animation-delay:600ms] motion-safe:animate-fade-in">
+          <Button
+            variant="outline"
+            onClick={handleCancel}
+            className="motion-safe:transition-all motion-safe:duration-300 motion-safe:hover:scale-105"
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleSave}
+            className="motion-safe:transition-all motion-safe:duration-300 motion-safe:hover:scale-105"
+          >
+            Save Changes
+          </Button>
+        </div>
+      )}
     </div>
   )
 

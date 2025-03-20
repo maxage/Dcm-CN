@@ -28,28 +28,33 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
     }
   }, [key])
 
-  // Save to localStorage whenever the value changes (after initial mount)
-  useEffect(() => {
-    if (typeof window === "undefined" || !hasMounted.current) return
+  // Save to localStorage explicitly rather than on every state change
+  const saveToStorage = useCallback((value: T) => {
+    if (typeof window === "undefined") return
 
     try {
-      localStorage.setItem(key, JSON.stringify(storedValue))
+      localStorage.setItem(key, JSON.stringify(value))
     } catch (error) {
       console.error(`Error saving ${key} to localStorage:`, error)
     }
-  }, [key, storedValue])
+  }, [key])
 
   const setValue = useCallback(
-    (value: T | ((val: T) => T)) => {
+    (value: T | ((val: T) => T), saveImmediately = true) => {
       try {
         const valueToStore =
           value instanceof Function ? value(storedValue) : value
         setStoredValue(valueToStore)
+        
+        // Only save to localStorage if explicitly requested
+        if (saveImmediately) {
+          saveToStorage(valueToStore)
+        }
       } catch (error) {
         console.error(`Error setting ${key} in localStorage:`, error)
       }
     },
-    [key, storedValue],
+    [key, storedValue, saveToStorage],
   )
 
   const removeValue = useCallback(() => {
@@ -63,5 +68,10 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
     }
   }, [key, initialValue])
 
-  return { value: storedValue, setValue, removeValue }
+  return { 
+    value: storedValue, 
+    setValue, 
+    saveToStorage,
+    removeValue 
+  }
 }
