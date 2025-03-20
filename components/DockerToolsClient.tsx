@@ -22,7 +22,7 @@ export default function DockerToolsClient({
   const router = useRouter()
   const searchParams = useSearchParams()
   const processedShareRef = useRef(false)
-  
+
   const {
     value: storedTools,
     setValue: setStoredTools,
@@ -30,12 +30,10 @@ export default function DockerToolsClient({
   } = useLocalStorage<string[]>(STORAGE_KEYS.SELECTED_TOOLS, [])
 
   // Get tools from share parameter if available
-  const shareParam = searchParams.get('share')
-  
+  const shareParam = searchParams.get("share")
+
   // Determine which tool IDs to use, prioritizing share parameter
-  const selectedTools = shareParam
-    ? decodeShareUrl(shareParam)
-    : storedTools
+  const selectedTools = shareParam ? decodeShareUrl(shareParam) : storedTools
 
   // Process share parameter only once
   useEffect(() => {
@@ -43,9 +41,9 @@ export default function DockerToolsClient({
       processedShareRef.current = true
       const decodedTools = decodeShareUrl(shareParam)
       setStoredTools(decodedTools)
-      
+
       // Redirect to root URL after loading from share
-      router.push('/')
+      router.push("/")
     }
   }, [shareParam, setStoredTools, router])
 
@@ -56,11 +54,11 @@ export default function DockerToolsClient({
     }
 
     posthog.capture("tool_selected", { tool_id: toolId })
-    
+
     const newSelectedTools = selectedTools.includes(toolId)
       ? selectedTools.filter((id) => id !== toolId)
       : [...selectedTools, toolId]
-    
+
     // Update localStorage only
     setStoredTools(newSelectedTools)
   }

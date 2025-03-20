@@ -90,21 +90,21 @@ export default function FloatingBar({
 
   const handleShare = async () => {
     if (selectedCount === 0) return
-    
+
     // Generate encoded share URL
     const shareUrl = generateShareUrl(selectedToolIds)
-    
+
     // Show animation state
     setIsSharing(true)
-    
+
     // Use clipboard API
     try {
       await navigator.clipboard.writeText(shareUrl)
-      
+
       toast.success("Share URL copied to clipboard!", {
         description: "Share this link to show your selected services",
       })
-      
+
       posthog.capture("share_selection_clipboard", {
         selected_tools: selectedTools,
         url: shareUrl,
@@ -114,7 +114,7 @@ export default function FloatingBar({
         description: "Please try again or copy manually",
       })
     }
-    
+
     // Reset animation state
     setTimeout(() => setIsSharing(false), 1000)
   }
@@ -252,7 +252,9 @@ export default function FloatingBar({
                     disabled={selectedCount === 0}
                     className={cn(
                       "flex items-center gap-2 transition-transform",
-                      isSharing ? "motion-preset-pulse" : "motion-safe:hover:scale-105"
+                      isSharing
+                        ? "motion-preset-pulse"
+                        : "motion-safe:hover:scale-105",
                     )}
                     onClick={handleShare}
                   >
