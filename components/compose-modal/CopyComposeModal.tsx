@@ -41,7 +41,6 @@ export function CopyComposeModal({
   onOpenChange,
   selectedTools,
 }: CopyComposeModalProps) {
-  // State
   const [showInterpolated, setShowInterpolated] = useState(false)
   const [composeContent, setComposeContent] = useState<string>("")
   const [envFileContent, setEnvFileContent] = useState<string>("")
@@ -53,28 +52,22 @@ export function CopyComposeModal({
     conflicts: string[]
   } | null>(null)
   
-  // Refs
   const composeEditorRef = useRef<editor.IStandaloneCodeEditor | null>(null)
   const envEditorRef = useRef<editor.IStandaloneCodeEditor | null>(null)
   
-  // Hooks
   const { theme, resolvedTheme } = useTheme()
   const { settings } = useSettings()
 
-  // After mounting, we can safely access the theme
   useEffect(() => {
     setMounted(true)
   }, [])
 
-  // Generate the docker-compose and env file content
   useEffect(() => {
     if (!isOpen) return
 
-    // Create environment variables file
     const envContent = generateEnvFileContent(settings)
     setEnvFileContent(envContent)
 
-    // Create docker-compose file
     const { content, portConflicts } = generateComposeContent(
       selectedTools,
       settings,
@@ -85,16 +78,13 @@ export function CopyComposeModal({
     setPortConflicts(portConflicts)
   }, [isOpen, selectedTools, settings, showInterpolated])
 
-  // Reset copied state when changing tabs
   useEffect(() => {
     setCopied(false)
   }, [activeTab])
 
-  // Update editor theme when theme changes
   useEffect(() => {
     if (!mounted) return
 
-    // Update the existing editors when theme changes
     if (composeEditorRef.current) {
       const currentTheme =
         resolvedTheme === "dark" ? "tailwind-dark" : "tailwind-light"
@@ -108,15 +98,12 @@ export function CopyComposeModal({
     }
   }, [resolvedTheme, mounted])
 
-  // Handle copy to clipboard
   const handleCopy = async () => {
-    // Get content based on active tab
     const content =
       activeTab === "compose"
         ? composeEditorRef.current?.getValue() || composeContent
         : envEditorRef.current?.getValue() || envFileContent
 
-    // Copy content to clipboard
     const success = await copyToClipboard(
       content, 
       activeTab as "compose" | "env", 
@@ -125,29 +112,23 @@ export function CopyComposeModal({
     )
     
     if (success) {
-      // Set copied state to show animation
       setCopied(true)
 
-      // Add confetti animation class to the button
       const button = document.getElementById("copy-button")
       if (button) {
         button.classList.add("hover:motion-preset-confetti")
-        // Remove the class after animation completes
         setTimeout(() => {
           button.classList.remove("hover:motion-preset-confetti")
         }, 1000)
       }
 
-      // Reset copied state after 2 seconds
       setTimeout(() => {
         setCopied(false)
       }, 2000)
     }
   }
 
-  // Handle file download
   const handleDownload = () => {
-    // Get content based on active tab
     const content =
       activeTab === "compose"
         ? composeEditorRef.current?.getValue() || composeContent
@@ -161,11 +142,9 @@ export function CopyComposeModal({
     )
   }
 
-  // Function to handle editor mounting
   const handleComposeEditorDidMount = (editor: editor.IStandaloneCodeEditor) => {
     composeEditorRef.current = editor
 
-    // Set the theme after mount to ensure it's correct
     if (mounted) {
       const currentTheme =
         resolvedTheme === "dark" ? "tailwind-dark" : "tailwind-light"
@@ -176,7 +155,6 @@ export function CopyComposeModal({
   const handleEnvEditorDidMount = (editor: editor.IStandaloneCodeEditor) => {
     envEditorRef.current = editor
 
-    // Set the theme after mount to ensure it's correct
     if (mounted) {
       const currentTheme =
         resolvedTheme === "dark" ? "tailwind-dark" : "tailwind-light"
@@ -184,7 +162,6 @@ export function CopyComposeModal({
     }
   }
 
-  // Get the current theme for editors
   const currentTheme = !mounted
     ? "vs"
     : resolvedTheme === "dark"
