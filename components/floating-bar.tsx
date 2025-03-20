@@ -94,6 +94,14 @@ export default function FloatingBar({
     
     try {
       await navigator.clipboard.writeText(currentUrl)
+      
+      // Create a temporary element for animation feedback
+      const button = document.getElementById('share-button')
+      if (button) {
+        button.classList.add('animate-pulse')
+        setTimeout(() => button.classList.remove('animate-pulse'), 1000)
+      }
+      
       toast({
         title: "URL copied to clipboard!",
         description: "Share this link to show your selected services",
@@ -245,6 +253,7 @@ export default function FloatingBar({
                     disabled={selectedCount === 0}
                     className="flex items-center gap-2 transition-transform motion-safe:hover:scale-105"
                     onClick={handleShare}
+                    id="share-button"
                   >
                     <Share2 className="h-3.5 w-3.5" />
                     <span>Share</span>
