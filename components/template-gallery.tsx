@@ -2,17 +2,26 @@ import { TemplateCard } from "@/components/template-card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { DockerTool } from "@/lib/docker-tools";
+import type { Template } from "@/lib/templates";
 import { templates } from "@/lib/templates";
-import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import { Search } from "lucide-react";
 import { useMemo, useState } from "react";
 
 interface TemplateGalleryProps {
   allTools: DockerTool[];
-  onSelectTemplate: (tools: DockerTool[]) => void;
+  onSelectTemplate: (tools: DockerTool[], template: Template) => void;
+  onUnselectTemplate?: (toolIds: string[], templateId: string) => void;
   selectedTools: DockerTool[];
+  selectedTemplateIds?: string[];
 }
 
-export function TemplateGallery({ allTools, onSelectTemplate, selectedTools }: TemplateGalleryProps) {
+export function TemplateGallery({ 
+  allTools, 
+  onSelectTemplate, 
+  onUnselectTemplate,
+  selectedTools,
+  selectedTemplateIds = [],
+}: TemplateGalleryProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>("all");
 
@@ -39,12 +48,6 @@ export function TemplateGallery({ allTools, onSelectTemplate, selectedTools }: T
     });
   }, [searchQuery, activeCategory]);
 
-  // Check if template is selected (all tools in template are in selected tools)
-  const isTemplateSelected = (templateTools: string[]) => {
-    const selectedToolIds = selectedTools.map((tool) => tool.id);
-    return templateTools.every((toolId) => selectedToolIds.includes(toolId));
-  };
-
   return (
     <div className="space-y-6">
       <div className="flex flex-col space-y-2">
@@ -56,7 +59,7 @@ export function TemplateGallery({ allTools, onSelectTemplate, selectedTools }: T
 
       <div className="space-y-6">
         <div className="relative max-w-md">
-          <MagnifyingGlassIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             placeholder="Search templates..."
             value={searchQuery}
@@ -80,14 +83,17 @@ export function TemplateGallery({ allTools, onSelectTemplate, selectedTools }: T
 
           <TabsContent value={activeCategory} className="mt-0">
             {filteredTemplates.length > 0 ? (
-              <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {filteredTemplates.map((template) => (
                   <TemplateCard
                     key={template.id}
                     template={template}
                     allTools={allTools}
-                    onSelectTemplate={onSelectTemplate}
-                    isSelected={isTemplateSelected(template.tools)}
+                    onSelectTemplate={(tools) => onSelectTemplate(tools, template)}
+                    onUnselectTemplate={onUnselectTemplate ? 
+                      (toolIds) => onUnselectTemplate(toolIds, template.id) : 
+                      undefined}
+                    isSelected={selectedTemplateIds.includes(template.id)}
                   />
                 ))}
               </div>
