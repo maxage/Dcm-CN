@@ -57,10 +57,10 @@ export const automation: DockerTool[] = [
     id: "lidarr",
     name: "Lidarr",
     description:
-      "A music collection manager for Usenet and BitTorrent users. Monitors multiple RSS feeds for new tracks from your favorite artists, automatically grabbing, sorting, and renaming them.",
+      "A music collection manager for Usenet and BitTorrent users. It can monitor multiple RSS feeds for new albums from your favorite artists and will interface with clients and indexers to grab, sort, and rename them.",
     category: "Media",
     tags: ["Music", "PVR", "Automation"],
-    githubUrl: "https://github.com/lidarr/Lidarr",
+    githubUrl: "https://github.com/Lidarr/Lidarr",
     icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/lidarr.svg",
     composeContent: `services:
   lidarr:
@@ -83,9 +83,9 @@ export const automation: DockerTool[] = [
     id: "readarr",
     name: "Readarr",
     description:
-      "A book, magazine, comics eBook and audiobook collection manager. Automatically monitors and downloads your favorite literature, handles quality upgrades, and manages your digital library.",
+      "Book collection manager for Usenet and BitTorrent users. It integrates with clients such as SABnzbd, NZBGet, QBittorrent, and Deluge.",
     category: "Media",
-    tags: ["Books", "eBooks", "Automation"],
+    tags: ["Books", "PVR", "Automation"],
     githubUrl: "https://github.com/Readarr/Readarr",
     icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/readarr.svg",
     composeContent: `services:
@@ -184,9 +184,9 @@ export const automation: DockerTool[] = [
     id: "bazarr",
     name: "Bazarr",
     description:
-      "Companion application to Sonarr and Radarr that manages and downloads subtitles.",
+      "A companion application to Sonarr and Radarr that manages and downloads subtitles.",
     category: "Media",
-    tags: ["Subtitles", "Automation", "Media"],
+    tags: ["Subtitles", "Media", "Automation"],
     githubUrl: "https://github.com/morpheus65535/bazarr",
     icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/bazarr.svg",
     composeContent: `services:
@@ -200,7 +200,8 @@ export const automation: DockerTool[] = [
       - UMASK=\${UMASK}
     volumes:
       - \${CONFIG_PATH}/bazarr:/config
-      - \${DATA_PATH}/media:/data/media
+      - \${DATA_PATH}/tv:/data/tv
+      - \${DATA_PATH}/movies:/data/movies
     ports:
       - 6767:6767
     restart: \${RESTART_POLICY}`,
@@ -259,33 +260,6 @@ export const automation: DockerTool[] = [
     restart: \${RESTART_POLICY}`,
   },
   {
-    id: "doplarr",
-    name: "Doplarr",
-    description:
-      "An app that automatically sends requests to Sonarr/Radarr based on discord messages.",
-    category: "Media",
-    tags: ["Discord", "Media Request", "Automation"],
-    githubUrl: "https://github.com/kiranshila/Doplarr",
-    composeContent: `services:
-  doplarr:
-    image: ghcr.io/hotio/doplarr:latest
-    container_name: \${CONTAINER_PREFIX}doplarr
-    environment:
-      - PUID=\${PUID}
-      - PGID=\${PGID}
-      - TZ=\${TZ}
-      - UMASK=\${UMASK}
-      - DISCORD_TOKEN=
-      - DISCORD_SERVER_ID=
-      - SONARR_URL=http://sonarr:8989
-      - SONARR_API_KEY=
-      - RADARR_URL=http://radarr:7878
-      - RADARR_API_KEY=
-    volumes:
-      - \${CONFIG_PATH}/doplarr:/config
-    restart: \${RESTART_POLICY}`,
-  },
-  {
     id: "nzbhydra2",
     name: "NZBHydra 2",
     description:
@@ -333,30 +307,6 @@ export const automation: DockerTool[] = [
     restart: \${RESTART_POLICY}`,
   },
   {
-    id: "requestrr",
-    name: "Requestrr",
-    description:
-      "Requestrr is a chatbot used to simplify using services like Sonarr/Radarr/Overseerr via integrations like Discord.",
-    category: "Media",
-    tags: ["Discord", "Media Request", "Automation"],
-    githubUrl: "https://github.com/darkalfx/requestrr",
-    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/requestrr.svg",
-    composeContent: `services:
-  requestrr:
-    image: ghcr.io/hotio/requestrr:latest
-    container_name: \${CONTAINER_PREFIX}requestrr
-    environment:
-      - PUID=\${PUID}
-      - PGID=\${PGID}
-      - TZ=\${TZ}
-      - UMASK=\${UMASK}
-    volumes:
-      - \${CONFIG_PATH}/requestrr:/config
-    ports:
-      - 4545:4545
-    restart: \${RESTART_POLICY}`,
-  },
-  {
     id: "rflood",
     name: "rFlood",
     description:
@@ -380,31 +330,6 @@ export const automation: DockerTool[] = [
     ports:
       - 3000:3000
       - 50000:50000
-    restart: \${RESTART_POLICY}`,
-  },
-  {
-    id: "sabnzbd",
-    name: "SABnzbd",
-    description:
-      "Free and easy binary newsreader with web interface. Makes downloading from Usenet easy.",
-    category: "Download",
-    tags: ["Usenet", "Download", "NZB"],
-    githubUrl: "https://github.com/sabnzbd/sabnzbd",
-    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/sabnzbd.svg",
-    composeContent: `services:
-  sabnzbd:
-    image: ghcr.io/hotio/sabnzbd:latest
-    container_name: \${CONTAINER_PREFIX}sabnzbd
-    environment:
-      - PUID=\${PUID}
-      - PGID=\${PGID}
-      - TZ=\${TZ}
-      - UMASK=\${UMASK}
-    volumes:
-      - \${CONFIG_PATH}/sabnzbd:/config
-      - \${DATA_PATH}/downloads:/data/downloads
-    ports:
-      - 8080:8080
     restart: \${RESTART_POLICY}`,
   },
   {
