@@ -7,7 +7,7 @@ import { monitoring } from "./monitoring"
 import { other } from "./other"
 
 // Create a Map to store unique tools by ID
-const toolMap = new Map<string, DockerTool>();
+const toolMap = new Map<string, DockerTool>()
 
 // Add tools in order of priority (media tools take precedence over automation tools)
 const allTools = [
@@ -17,14 +17,14 @@ const allTools = [
   ...databases,
   ...other,
   ...automation,
-];
+]
 
 // Ensure uniqueness by ID
-allTools.forEach(tool => {
+allTools.forEach((tool) => {
   if (!toolMap.has(tool.id)) {
-    toolMap.set(tool.id, tool);
+    toolMap.set(tool.id, tool)
   }
-});
+})
 
 // Export the unique tools array
-export const tools = Array.from(toolMap.values());
+export const tools = Array.from(toolMap.values())

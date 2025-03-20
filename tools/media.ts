@@ -503,5 +503,5 @@ export const media: DockerTool[] = [
     ports:
       - 5000:5000
     restart: \${RESTART_POLICY}`,
-  }
+  },
 ]

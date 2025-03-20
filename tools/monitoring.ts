@@ -295,5 +295,5 @@ export const monitoring: DockerTool[] = [
     ports:
       - 8000:8000
     restart: \${RESTART_POLICY}`,
-  }
+  },
 ]

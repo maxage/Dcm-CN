@@ -203,7 +203,8 @@ export const other: DockerTool[] = [
   {
     id: "homeassistant",
     name: "Home Assistant",
-    description: "Open source home automation platform that puts local control and privacy first. Supported by a worldwide community of bricoleurs, tinkerers and DIYers.",
+    description:
+      "Open source home automation platform that puts local control and privacy first. Supported by a worldwide community of bricoleurs, tinkerers and DIYers.",
     category: "Home Automation",
     tags: ["IoT", "Smart Home", "Automation"],
     githubUrl: "https://github.com/home-assistant/core",
@@ -226,7 +227,8 @@ export const other: DockerTool[] = [
   {
     id: "node-red",
     name: "Node-RED",
-    description: "Flow-based programming tool for connecting hardware devices, APIs and online services. Perfect companion for Home Assistant automations.",
+    description:
+      "Flow-based programming tool for connecting hardware devices, APIs and online services. Perfect companion for Home Assistant automations.",
     category: "Home Automation",
     tags: ["IoT", "Automation", "Flow Programming"],
     githubUrl: "https://github.com/node-red/node-red",
@@ -246,7 +248,8 @@ export const other: DockerTool[] = [
   {
     id: "mosquitto",
     name: "Mosquitto",
-    description: "Lightweight MQTT broker for IoT messaging. Essential for Home Assistant and IoT device communications.",
+    description:
+      "Lightweight MQTT broker for IoT messaging. Essential for Home Assistant and IoT device communications.",
     category: "Home Automation",
     tags: ["IoT", "MQTT", "Messaging"],
     githubUrl: "https://github.com/eclipse/mosquitto",
@@ -269,7 +272,8 @@ export const other: DockerTool[] = [
   {
     id: "zigbee2mqtt",
     name: "Zigbee2MQTT",
-    description: "Enables you to use Zigbee devices without the vendor's bridge or gateway. Connects directly to a wide range of Zigbee adapters.",
+    description:
+      "Enables you to use Zigbee devices without the vendor's bridge or gateway. Connects directly to a wide range of Zigbee adapters.",
     category: "Home Automation",
     tags: ["IoT", "Zigbee", "Smart Home"],
     githubUrl: "https://github.com/Koenkk/zigbee2mqtt",
@@ -291,7 +295,8 @@ export const other: DockerTool[] = [
   {
     id: "freshrss",
     name: "FreshRSS",
-    description: "Self-hosted RSS feed aggregator like Google Reader with modern UI and customization options.",
+    description:
+      "Self-hosted RSS feed aggregator like Google Reader with modern UI and customization options.",
     category: "Productivity",
     tags: ["RSS", "News", "Reading"],
     githubUrl: "https://github.com/FreshRSS/FreshRSS",
@@ -313,7 +318,8 @@ export const other: DockerTool[] = [
   {
     id: "wallabag",
     name: "Wallabag",
-    description: "Self-hosted read-it-later application. Save web pages for offline reading and classify articles.",
+    description:
+      "Self-hosted read-it-later application. Save web pages for offline reading and classify articles.",
     category: "Productivity",
     tags: ["Reading", "Bookmark", "Archive"],
     githubUrl: "https://github.com/wallabag/wallabag",
@@ -335,7 +341,8 @@ export const other: DockerTool[] = [
   {
     id: "tandoorrecipes",
     name: "Tandoor Recipes",
-    description: "The recipe manager that allows you to manage your ever-growing collection of digital recipes.",
+    description:
+      "The recipe manager that allows you to manage your ever-growing collection of digital recipes.",
     category: "Productivity",
     tags: ["Cooking", "Recipes", "Food"],
     githubUrl: "https://github.com/vabene1111/recipes",
@@ -360,7 +367,8 @@ export const other: DockerTool[] = [
   {
     id: "filebrowser",
     name: "File Browser",
-    description: "Web-based file manager with a clean UI for browsing, managing, and sharing files from your server.",
+    description:
+      "Web-based file manager with a clean UI for browsing, managing, and sharing files from your server.",
     category: "Productivity",
     tags: ["Files", "Manager", "Sharing"],
     githubUrl: "https://github.com/filebrowser/filebrowser",
@@ -384,7 +392,8 @@ export const other: DockerTool[] = [
   {
     id: "openvscode",
     name: "OpenVSCode Server",
-    description: "Run VS Code in the browser with server-side computation. Perfect for remote development.",
+    description:
+      "Run VS Code in the browser with server-side computation. Perfect for remote development.",
     category: "Development",
     tags: ["IDE", "Editor", "Development"],
     githubUrl: "https://github.com/gitpod-io/openvscode-server",
@@ -404,7 +413,8 @@ export const other: DockerTool[] = [
   {
     id: "firefly",
     name: "Firefly III",
-    description: "Personal finance manager to help track expenses, income, budgets and more.",
+    description:
+      "Personal finance manager to help track expenses, income, budgets and more.",
     category: "Finance",
     tags: ["Money", "Budgeting", "Finance"],
     githubUrl: "https://github.com/firefly-iii/firefly-iii",
@@ -431,7 +441,8 @@ export const other: DockerTool[] = [
   {
     id: "homepage",
     name: "Homepage",
-    description: "A modern, fully static, fast, secure dashboard for public/private services. Perfect homepage for your server.",
+    description:
+      "A modern, fully static, fast, secure dashboard for public/private services. Perfect homepage for your server.",
     category: "Productivity",
     tags: ["Dashboard", "Homepage", "UI"],
     githubUrl: "https://github.com/benphelps/homepage",
@@ -452,7 +463,8 @@ export const other: DockerTool[] = [
   {
     id: "calibreweb",
     name: "Calibre-Web",
-    description: "Web app for browsing, reading and downloading eBooks stored in a Calibre database.",
+    description:
+      "Web app for browsing, reading and downloading eBooks stored in a Calibre database.",
     category: "Media",
     tags: ["eBooks", "Reading", "Library"],
     githubUrl: "https://github.com/janeczku/calibre-web",
@@ -475,7 +487,8 @@ export const other: DockerTool[] = [
   {
     id: "unifi",
     name: "Unifi Controller",
-    description: "Network management controller for Ubiquiti UniFi devices, enabling centralized management.",
+    description:
+      "Network management controller for Ubiquiti UniFi devices, enabling centralized management.",
     category: "Network",
     tags: ["Network", "Management", "Ubiquiti"],
     githubUrl: "https://github.com/jacobalberty/unifi-docker",
@@ -500,7 +513,8 @@ export const other: DockerTool[] = [
   {
     id: "mealie",
     name: "Mealie",
-    description: "A self-hosted recipe manager and meal planner with a sleek interface and powerful features.",
+    description:
+      "A self-hosted recipe manager and meal planner with a sleek interface and powerful features.",
     category: "Productivity",
     tags: ["Recipes", "Cooking", "Meal Planning"],
     githubUrl: "https://github.com/hay-kot/mealie",
@@ -520,5 +534,5 @@ export const other: DockerTool[] = [
     ports:
       - 9925:9000
     restart: \${RESTART_POLICY}`,
-  }
+  },
 ]
