@@ -100,28 +100,16 @@ cd docker-compose-maker
 ```
 
 2. Install dependencies:
+
+First install [Bun](https://bun.sh/) if you haven't already, then run:
 ```bash
-# We recommend using Bun (https://bun.sh/) for faster installation and development
 bun install
-# or
-npm install
-# or
-yarn install
-# or
-pnpm install
 ```
 
 3. Build and start:
 ```bash
-# With Bun (recommended)
 bun run build
 bun start
-# or with npm
-npm run build
-npm start
-# or with yarn
-yarn build
-yarn start
 ```
 
 ## 🧰 Supported Tools
