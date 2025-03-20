@@ -74,17 +74,17 @@ export default function FloatingBar({
 
   const handleResetClick = () => {
     if (!isResetActive) {
-      setIsResetActive(true);
-      return;
+      setIsResetActive(true)
+      return
     }
 
-    if (onReset) onReset();
-    setIsResetActive(false);
+    if (onReset) onReset()
+    setIsResetActive(false)
   }
 
   const handleResetMouseLeave = () => {
     if (isResetActive) {
-      setIsResetActive(false);
+      setIsResetActive(false)
     }
   }
 
@@ -168,110 +168,95 @@ export default function FloatingBar({
           className={cn(
             "container mx-auto w-full px-0",
             isFixed && "max-w-7xl px-4",
+            isFixed
+              ? ""
+              : "rounded-lg border border-border bg-background/40 p-4 shadow-lg backdrop-blur-md motion-safe:animate-slide-up",
           )}
         >
-          <div
-            className={cn(
-              isFixed ? "flex flex-col gap-4" : "flex flex-col gap-4",
-            )}
-          >
-            <div
-              className={cn(
-                isFixed
-                  ? ""
-                  : "rounded-lg border border-border bg-background/40 p-4 shadow-lg backdrop-blur-md motion-safe:animate-slide-up",
-              )}
-            >
-              <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-                <div className="flex w-full flex-col sm:w-auto">
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium text-base sm:text-lg">
-                      {selectedCount} service{selectedCount !== 1 ? "s" : ""}{" "}
-                      selected
-                    </span>
+          <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+            <div className="items-center gap-2">
+              <span className="font-xs text-muted-foreground">
+                {selectedCount} service{selectedCount !== 1 ? "s" : ""} selected
+              </span>
+              <div className="sm:w-auto">
+                {selectedCount > 0 && (
+                  <div className="flex max-w-full flex-wrap gap-1.5 sm:max-w-[600px]">
+                    <ServiceCircles
+                      selectedServices={selectedToolObjects}
+                      spacing="-space-x-1 xs:-space-x-2 sm:-space-x-4"
+                      onToggleServiceSelection={onToggleToolSelection}
+                      className="mt-1"
+                    />
                   </div>
-
-                  {selectedCount > 0 && (
-                    <div className="mt-2 flex max-w-full flex-wrap gap-1.5 sm:max-w-[600px]">
-                      <ServiceCircles
-                        selectedServices={selectedToolObjects}
-                        spacing="-space-x-1 xs:-space-x-2 sm:-space-x-4"
-                        onToggleServiceSelection={onToggleToolSelection}
-                        className="mt-1"
-                      />
-                    </div>
-                  )}
-                </div>
-
-                <div className="mt-2 flex w-full flex-wrap gap-2 sm:mt-0 sm:w-auto">
-                  <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="flex items-center gap-2 transition-transform motion-safe:hover:scale-105"
-                      onClick={triggerSearchShortcut}
-                    >
-                      <Search className="h-3.5 w-3.5" />
-                      <span className="xs:inline hidden">Search</span>
-                      <kbd className="pointer-events-none ml-1 hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-medium font-mono text-[10px] text-muted-foreground opacity-100 sm:inline-flex">
-                        <span className="text-xs">
-                          {isMounted ? (isApple ? "⌘" : "Ctrl") : "⌘"}
-                        </span>
-                        K
-                      </kbd>
-                    </Button>
-
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      disabled={selectedCount === 0}
-                      className={cn(
-                        "flex xs:min-w-16 items-center gap-2 transition-transform",
-                        isSharing
-                          ? "motion-preset-confetti "
-                          : "motion-safe:hover:scale-105",
-                      )}
-                      onClick={handleShare}
-                    >
-                      <Share2 className="h-3.5 w-3.5" />
-                      <span className="xs:inline hidden">Share</span>
-                    </Button>
-
-                    {onReset && (
-                      <Button
-                        variant={isResetActive ? "destructive" : "outline"}
-                        disabled={selectedCount === 0}
-                        size="sm"
-                        onClick={handleResetClick}
-                        onMouseLeave={handleResetMouseLeave}
-                        className="group relative flex items-center gap-2 transition-all motion-safe:hover:scale-105"
-                      >
-                        <RefreshCw className={cn(
-                          "h-3.5 w-3.5",
-                          isResetActive && "animate-spin"
-                        )} />
-                        {!isResetActive ? (
-                          <span className="xs:inline hidden xs:min-w-16">
-                            Unselect
-                          </span>
-                        ) : (
-                          <span className="motion-preset-shake xs:min-w-16 text-destructive-foreground">
-                            <span className="xs:inline hidden">U sure?</span>
-                          </span>
-                        )}
-                      </Button>
-                    )}                                                       
-                  </div>
-                  <Button
-                    disabled={selectedCount === 0}
-                    size="sm"
-                    className="hover:motion-preset-confetti xs:w-auto font-semibold"
-                    onClick={() => setIsCopyDialogOpen(true)}
-                  >
-                    Copy Compose
-                  </Button>
-                </div>
+                )}
               </div>
+            </div>
+
+            <div className="mt-2 flex w-full flex-wrap gap-2 sm:mt-0 sm:w-auto">
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  className="flex items-center gap-2 transition-transform motion-safe:hover:scale-105"
+                  onClick={triggerSearchShortcut}
+                >
+                  <Search className="h-3.5 w-3.5" />
+                  <span className="xs:inline hidden">Search</span>
+                  <kbd className="pointer-events-none ml-1 hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-medium font-mono text-[10px] text-muted-foreground opacity-100 sm:inline-flex">
+                    <span className="text-xs">
+                      {isMounted ? (isApple ? "⌘" : "Ctrl") : "⌘"}
+                    </span>
+                    K
+                  </kbd>
+                </Button>
+
+                <Button
+                  variant="outline"
+                  disabled={selectedCount === 0}
+                  className={cn(
+                    "flex xs:min-w-16 items-center gap-2 transition-transform",
+                    isSharing
+                      ? "motion-preset-confetti "
+                      : "motion-safe:hover:scale-105",
+                  )}
+                  onClick={handleShare}
+                >
+                  <Share2 className="h-3.5 w-3.5" />
+                  <span className="xs:inline hidden">Share</span>
+                </Button>
+
+                {onReset && (
+                  <Button
+                    variant={isResetActive ? "destructive" : "outline"}
+                    disabled={selectedCount === 0}
+                    onClick={handleResetClick}
+                    onMouseLeave={handleResetMouseLeave}
+                    className="group relative flex items-center gap-2 transition-all motion-safe:hover:scale-105"
+                  >
+                    <RefreshCw
+                      className={cn(
+                        "h-3.5 w-3.5",
+                        isResetActive && "animate-spin",
+                      )}
+                    />
+                    {!isResetActive ? (
+                      <span className="xs:inline hidden xs:min-w-16">
+                        Unselect
+                      </span>
+                    ) : (
+                      <span className="motion-preset-shake xs:min-w-16 text-destructive-foreground">
+                        <span className="xs:inline hidden">U sure?</span>
+                      </span>
+                    )}
+                  </Button>
+                )}
+              </div>
+              <Button
+                disabled={selectedCount === 0}
+                className="hover:motion-preset-confetti xs:w-auto font-semibold"
+                onClick={() => setIsCopyDialogOpen(true)}
+              >
+                Copy Compose
+              </Button>
             </div>
           </div>
         </div>
