@@ -1,3 +1,4 @@
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -41,13 +42,16 @@ export function TemplateCard({ template, allTools, onSelectTemplate, isSelected 
   const templateTools = getToolsFromTemplate(template, allTools);
   const unavailableTools = template.tools.length - templateTools.length;
 
+  // Select up to 4 tools to display as preview
+  const previewTools = templateTools.slice(0, 4);
+
   return (
-    <Card className={`w-full h-full transition-all duration-200 ${isSelected ? "border-primary" : ""}`}>
+    <Card className={`h-full w-full transition-all duration-200 hover:shadow-md ${isSelected ? "border-primary" : ""}`}>
       <CardHeader className="pb-2">
-        <div className="flex justify-between items-center">
+        <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             {template.icon && (
-              <div className="h-8 w-8 relative shrink-0">
+              <div className="relative h-8 w-8 shrink-0">
                 <Image 
                   src={template.icon}
                   alt={template.name}
@@ -59,21 +63,51 @@ export function TemplateCard({ template, allTools, onSelectTemplate, isSelected 
             )}
             <CardTitle className="text-lg">{template.name}</CardTitle>
           </div>
-          <div className="text-xs bg-secondary text-secondary-foreground px-2 py-1 rounded-md">
+          <div className="rounded-md bg-secondary px-2 py-1 text-xs text-secondary-foreground">
             {template.category}
           </div>
         </div>
-        <CardDescription className="line-clamp-2 h-10">
+        <CardDescription className="h-10 line-clamp-2">
           {template.description}
         </CardDescription>
       </CardHeader>
-      <CardContent className="pb-2">
+      <CardContent className="space-y-3 pb-2">
         <div className="text-sm">
           <span className="font-semibold">{templateTools.length}</span> tools included
           {unavailableTools > 0 && (
-            <span className="text-muted-foreground ml-1">
+            <span className="ml-1 text-muted-foreground">
               ({unavailableTools} unavailable)
             </span>
+          )}
+        </div>
+        
+        {/* Preview of the included tools */}
+        <div className="flex flex-wrap gap-1">
+          {previewTools.map((tool) => (
+            <Badge 
+              key={tool.id}
+              variant="outline" 
+              className="rounded-md px-1 py-0.5 text-xs font-normal"
+            >
+              {tool.icon && (
+                <Image 
+                  src={tool.icon} 
+                  alt={tool.name} 
+                  width={12} 
+                  height={12} 
+                  className="mr-1 object-contain"
+                />
+              )}
+              {tool.name}
+            </Badge>
+          ))}
+          {templateTools.length > 4 && (
+            <Badge 
+              variant="outline" 
+              className="rounded-md bg-muted px-1 py-0.5 text-xs font-normal"
+            >
+              +{templateTools.length - 4} more
+            </Badge>
           )}
         </div>
       </CardContent>
