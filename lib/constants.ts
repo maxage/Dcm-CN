@@ -9,7 +9,7 @@ export const DEFAULT_SETTINGS: DockerSettings = {
   umask: "022",
   restartPolicy: "unless-stopped",
   networkMode: "bridge",
-  containerNamePrefix: "docker_",
+  containerNamePrefix: "",
 }
 
 // LocalStorage keys

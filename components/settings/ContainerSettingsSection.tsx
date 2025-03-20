@@ -73,7 +73,7 @@ export function ContainerSettingsSection({
           <Label htmlFor="containerNamePrefix">Container Name Prefix</Label>
           <Input
             id="containerNamePrefix"
-            placeholder="myprefix_"
+            placeholder="homestack"
             value={settings.containerNamePrefix}
             onChange={(e) =>
               onSettingsChange("containerNamePrefix", e.target.value)
