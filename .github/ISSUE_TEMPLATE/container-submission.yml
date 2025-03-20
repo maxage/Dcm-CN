@@ -1,5 +1,7 @@
 name: 📦 Container Submission
 description: Suggest a new container to add to the collection
+tags:
+  - container
 title: "container: "
 labels: ["container-suggestion"]
 body:

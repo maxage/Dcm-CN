@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/ajnart/docker-compose-maker/main/public/favicon.png" height="80" alt="DCM Logo" />
+  <img src="https://github.com/ajnart/docker-compose-maker/blob/main/public/favicon.png?raw=true" height="80" alt="DCM Logo" />
   <h3>Docker Compose Maker</h3>
 </div>
 
