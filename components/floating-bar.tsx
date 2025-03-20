@@ -29,7 +29,7 @@ interface FloatingBarProps {
   selectedTools: string[]
   selectedToolIds: string[]
   onReset?: () => void
-  onToggleToolSelection: (toolId: string) => void
+  onToggleToolSelection?: (toolId: string) => void
   scrollPosition?: number
   selectedToolObjects: DockerTool[]
 }
@@ -135,10 +135,12 @@ export default function FloatingBar({
 
   return (
     <>
-      <SearchCommand
-        selectedTools={selectedToolIds}
-        onToggleToolSelection={onToggleToolSelection}
-      />
+      {onToggleToolSelection && (
+        <SearchCommand
+          selectedTools={selectedToolIds}
+          onToggleToolSelection={onToggleToolSelection}
+        />
+      )}
 
       {isMounted && (
         <CopyComposeModal
@@ -198,6 +200,7 @@ export default function FloatingBar({
                   variant="outline"
                   className="flex items-center gap-2 transition-transform motion-safe:hover:scale-105"
                   onClick={triggerSearchShortcut}
+                  disabled={!onToggleToolSelection}
                 >
                   <Search className="h-3.5 w-3.5" />
                   <span className="xs:inline hidden">Search</span>
