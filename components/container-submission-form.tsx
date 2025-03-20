@@ -103,14 +103,19 @@ export function ContainerSubmissionForm() {
   })
 
   function onSubmit(values: FormValues) {
-    console.log(values)
-    setOpen(false)
+    // Redirect directly to the new form-based issue template
+    const repoUrl = "https://github.com/ajnart/docker-compose-maker";
+    const issueUrl = `${repoUrl}/issues/new?template=container-submission.yml&title=container: ${encodeURIComponent(values.name)}&id=${encodeURIComponent(values.id)}&name=${encodeURIComponent(values.name)}&description=${encodeURIComponent(values.description)}&category=${encodeURIComponent(values.category)}&tags=${encodeURIComponent(values.tags.join(", "))}&githubUrl=${encodeURIComponent(values.githubUrl || "")}&containerData=${encodeURIComponent(values.containerData)}`;
+    
+    // Open the GitHub issue form in a new tab
+    window.open(issueUrl, "_blank");
+    setOpen(false);
   }
 
   // Function to open GitHub issue template directly
   const openGitHubIssue = () => {
     const issueUrl =
-      "https://github.com/username/docker-compose-selector/issues/new?template=container-submission.md"
+      "https://github.com/ajnart/docker-compose-maker/issues/new?template=container-submission.yml"
     window.open(issueUrl, "_blank")
   }
 
@@ -137,7 +142,7 @@ export function ContainerSubmissionForm() {
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+          <form onSubmit={(e) => e.preventDefault()} className="space-y-2">
             <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
               <FormField
                 control={form.control}
@@ -346,7 +351,8 @@ export function ContainerSubmissionForm() {
                   Cancel
                 </Button>
                 <Button
-                  type="submit"
+                  type="button"
+                  onClick={form.handleSubmit(onSubmit)}
                   className="flex items-center gap-1 bg-primary text-primary-foreground hover:bg-primary/90"
                 >
                   <span>Submit Container</span>

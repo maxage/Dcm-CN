@@ -145,6 +145,16 @@ Contributions are welcome! If you'd like to add a new container to the list or i
 4. Push to the branch (`git push origin feature/amazing-container`)
 5. Open a Pull Request
 
+### 📦 Adding New Container Definitions
+
+All container definitions are stored in the `tools/` directory, organized by category. To add a new container:
+
+1. Find the appropriate category file (e.g., `media.ts`, `database.ts`, etc.)
+2. Add your container definition following the `DockerTool` interface format
+3. Make sure it's exported in `tools/index.ts`
+
+For detailed instructions on adding new containers, please see the [CONTRIBUTING.md](CONTRIBUTING.md) file.
+
 ## 📜 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.

@@ -1,0 +1,116 @@
+name: 📦 Container Submission
+description: Suggest a new container to add to the collection
+title: "container: "
+labels: ["container-suggestion"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to suggest a new container!
+        
+        > You can also contribute directly by adding the container definition to the codebase. See [CONTRIBUTING.md](../../CONTRIBUTING.md) for instructions.
+  
+  - type: checkboxes
+    id: prerequisites
+    attributes:
+      label: Prerequisites
+      description: Please confirm these requirements before submitting your container suggestion
+      options:
+        - label: I have searched the issues and confirmed this container has not been suggested before
+          required: true
+        - label: I have verified the container image is actively maintained
+          required: true
+        - label: I have tested this container configuration
+          required: true
+  
+  - type: input
+    id: id
+    attributes:
+      label: Container ID
+      description: A unique ID for the container (lowercase, no spaces)
+      placeholder: "e.g., sonarr, postgres"
+    validations:
+      required: true
+  
+  - type: input
+    id: name
+    attributes:
+      label: Display Name
+      description: The display name of the container
+      placeholder: "e.g., Sonarr, PostgreSQL"
+    validations:
+      required: true
+  
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: A brief description of the container's purpose
+      placeholder: "Describe what this container does, what problem it solves, etc."
+    validations:
+      required: true
+  
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      description: Select the category that best fits this container
+      options:
+        - Media
+        - Management
+        - Networking
+        - Storage
+        - Database
+        - Monitoring
+        - Home Automation
+        - Security
+        - Development
+        - Other (specify in additional information)
+    validations:
+      required: true
+  
+  - type: input
+    id: tags
+    attributes:
+      label: Tags
+      description: Comma-separated list of tags relevant to this container
+      placeholder: "e.g., Streaming, Media Server, Transcoding"
+    validations:
+      required: true
+  
+  - type: input
+    id: githubUrl
+    attributes:
+      label: GitHub URL (Optional)
+      description: Link to the GitHub repository for this container
+      placeholder: "https://github.com/username/repository"
+  
+  - type: textarea
+    id: containerData
+    attributes:
+      label: Docker Compose Service Definition
+      description: The Docker Compose YAML definition for this container
+      placeholder: |
+        services:
+          container-name:
+            container_name: container-name
+            image: image/name:tag
+            ports:
+              - "port:port"
+            environment:
+              - PUID=${PUID}
+              - PGID=${PGID}
+              - TZ=${TZ}
+            volumes:
+              - ${CONFIG_PATH}/container-name:/config
+              - ${DATA_PATH}/data:/data
+      render: yaml
+    validations:
+      required: true
+  
+  - type: textarea
+    id: additionalInfo
+    attributes:
+      label: Additional Information
+      description: Any additional information that could be helpful for the maintainers
+      placeholder: "Special setup instructions, configuration details, etc." 
