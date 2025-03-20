@@ -31,6 +31,14 @@
   <a href="#-contributing">
     <strong>Contribute 🤝</strong>
   </a>
+  •
+  <a href="#-supported-tools">
+    <strong>Supported Tools 📦</strong>
+  </a>
+  <!-- screenshots -->
+  <a href="#-screenshots">
+    <strong>Screenshots 📸</strong>
+  </a>
 </p>
 
 ## 📋 About
@@ -122,9 +130,6 @@ docker run -p 3000:3000 ghcr.io/ajnart/dcm
 ```
 
 Then visit `http://localhost:3000` in your browser.
-
-> [!TIP]
-> For persistence across container restarts, you may want to add a volume mount: `-v dcm-data:/app/data`
 
 The Docker image is available for multiple platforms:
 - linux/amd64
