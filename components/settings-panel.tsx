@@ -51,6 +51,13 @@ export default function SettingsPanel({
     }
   }, [settings, hasChanges])
 
+  // Also save settings when panel is closed if there are changes
+  useEffect(() => {
+    if (!isOpen && hasChanges) {
+      handleSave()
+    }
+  }, [isOpen]) // eslint-disable-line react-hooks/exhaustive-deps
+
   const handleChange = (key: keyof DockerSettings, value: string | boolean) => {
     setLocalSettings(prev => {
       const newSettings = {

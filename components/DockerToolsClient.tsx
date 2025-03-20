@@ -53,10 +53,8 @@ export default function DockerToolsClient({
   }
 
   const handleSettingsChange = (newSettings: DockerSettings) => {
-    // Only update settings if they've actually changed
-    if (JSON.stringify(newSettings) !== JSON.stringify(settings)) {
-      setSettings(newSettings)
-    }
+    // Use saveImmediately=true to explicitly save changes to localStorage
+    setSettings(newSettings, true)
   }
 
   const handleReset = () => {
