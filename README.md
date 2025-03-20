@@ -1,11 +1,10 @@
-<!-- Project Title -->
-# <img src="./public/favicon.png" width="30" height="30" alt="DCM Logo"> DCM - Docker Compose Maker
+<div align="center">
+  <img src="./public/favicon.png" height="80" alt="DCM Logo" />
+  <h3>DCM - Docker Compose Maker</h3>
+</div>
 
 <p align="center">
-<img src="https://img.shields.io/github/stars/ajnart/docker-compose-maker?label=%E2%AD%90%20Stars&style=flat-square?branch=master&kill_cache=1%22">
-<a href="https://docker-compose-maker.vercel.app">
-  <img alt="Live Demo" src="https://img.shields.io/badge/🌐_Live_Demo-Visit_Site-blue">
-</a>
+<img src="https://img.shields.io/github/stars/ajnart/docker-compose-maker?label=%E2%AD%90%20Stars&style=flat-square?branch=main&kill_cache=1%22">
 <a href="https://github.com/ajnart/docker-compose-maker/actions">
   <img title="CI Status" src="https://github.com/ajnart/docker-compose-maker/actions/workflows/build_image.yml/badge.svg" alt="CI Status">
 </a>
@@ -24,10 +23,6 @@
     <strong>Install 💻</strong>
   </a>
   •
-  <a href="#-features">
-    <strong>Features ✨</strong>
-  </a>
-  •
   <a href="#-contributing">
     <strong>Contribute 🤝</strong>
   </a>
@@ -35,7 +30,7 @@
   <a href="#-supported-tools">
     <strong>Supported Tools 📦</strong>
   </a>
-  <!-- screenshots -->
+  •
   <a href="#-screenshots">
     <strong>Screenshots 📸</strong>
   </a>
@@ -54,18 +49,6 @@ No more copy-pasting from documentation or trying to remember the correct config
 > Most containers come pre-configured with best practices and sensible defaults, saving you hours of documentation reading and configuration tweaking.
 
 > 💡 **Share Your Stack**: Using a great tool that's not listed here? We'd love to include it! Check out our [contribution guide](CONTRIBUTING.md) to help others discover and use your favorite containers.
-
-## ✨ Features
-
-- 🧩 **Simple selection interface** - Pick the tools you want to include with a simple click
-- 🔍 **Search functionality** - Find containers quickly with powerful search (Cmd/Ctrl+K)
-- 📊 **GitHub stars** - See popularity metrics for each container
-- 📱 **Responsive design** - Works on desktop, tablet and mobile devices
-- 🌙 **Dark mode support** - Easy on the eyes with automatic theme detection
-- ⚙️ **Configuration variables** - Set common environment variables for all containers
-- 📋 **Copy to clipboard** - One-click to copy your generated docker-compose.yaml
-- 🔒 **Privacy focused** - No tracking in self-hosted version
-- 🚀 **Fast and lightweight** - Built with Next.js for optimal performance
 
 ## 🔧 How to Use DCM
 
