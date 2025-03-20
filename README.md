@@ -117,16 +117,16 @@ yarn start
 
 DCM includes configuration for many popular self-hosted applications, including:
 
-- 📺 **Media Management**: Sonarr, Radarr, Lidarr, Readarr, Prowlarr, Jellyfin, Plex, Emby
-- 🔍 **Dashboards**: Homarr, Heimdall, Portainer
-- 🌐 **Networking**: Traefik, Nginx, Pi-hole, AdGuard Home
-- 💾 **Storage**: Nextcloud
-- 🗄️ **Databases**: MariaDB, MySQL, PostgreSQL, MongoDB, Redis, Elasticsearch
-- 📊 **Monitoring**: Grafana, Prometheus
-- 🏠 **Home Automation**: Home Assistant
-- 🔐 **Security**: Vaultwarden
-- 💻 **Development**: Gitea, Code Server
-- 🔄 **Maintenance**: Watchtower
+- 📺 **Media Management**: [Sonarr](https://github.com/Sonarr/Sonarr), [Radarr](https://github.com/Radarr/Radarr), [Lidarr](https://github.com/lidarr/Lidarr), [Readarr](https://github.com/Readarr/Readarr), [Prowlarr](https://github.com/Prowlarr/Prowlarr), [Jellyfin](https://github.com/jellyfin/jellyfin), [Plex](https://github.com/plexinc/pms-docker), [Emby](https://github.com/MediaBrowser/Emby)
+- 🔍 **Dashboards**: [Homarr](https://github.com/homarr-labs/homarr), [Heimdall](https://github.com/linuxserver/Heimdall), [Portainer](https://github.com/portainer/portainer)
+- 🌐 **Networking**: [Traefik](https://github.com/traefik/traefik), [Nginx](https://github.com/nginx/nginx), [Pi-hole](https://github.com/pi-hole/pi-hole), [AdGuard Home](https://github.com/AdguardTeam/AdGuardHome)
+- 💾 **Storage**: [Nextcloud](https://github.com/nextcloud/server)
+- 🗄️ **Databases**: [MariaDB](https://github.com/MariaDB/server), [MySQL](https://github.com/mysql/mysql-server), [PostgreSQL](https://github.com/postgres/postgres), [MongoDB](https://github.com/mongodb/mongo), [Redis](https://github.com/redis/redis), [Elasticsearch](https://github.com/elastic/elasticsearch)
+- 📊 **Monitoring**: [Grafana](https://github.com/grafana/grafana), [Prometheus](https://github.com/prometheus/prometheus)
+- 🏠 **Home Automation**: [Home Assistant](https://github.com/home-assistant/core)
+- 🔐 **Security**: [Vaultwarden](https://github.com/dani-garcia/vaultwarden)
+- 💻 **Development**: [Gitea](https://github.com/go-gitea/gitea), [Code Server](https://github.com/coder/code-server)
+- 🔄 **Maintenance**: [Watchtower](https://github.com/containrrr/watchtower)
 
 Each tool includes a detailed description, GitHub star count, and pre-configured docker-compose settings.
 
