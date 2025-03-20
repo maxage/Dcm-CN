@@ -33,13 +33,25 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
+import {
+  composeContentSchema,
+  validateComposeContent,
+} from "@/lib/docker-tools"
 import { tools } from "@/tools"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { DialogDescription } from "@radix-ui/react-dialog"
-import { ExternalLink, Github, HelpCircle, PlusCircle, X } from "lucide-react"
-import { useState } from "react"
+import {
+  AlertTriangle,
+  CheckCircle,
+  ExternalLink,
+  Github,
+  Info,
+  PlusCircle,
+} from "lucide-react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
+import { Alert, AlertDescription, AlertTitle } from "./ui/alert"
 import { GradientButton } from "./ui/gradient-button"
 
 const CATEGORIES = [
@@ -55,26 +67,32 @@ const CATEGORIES = [
 ]
 
 // Collect all unique tags from existing tools
-const ALL_TAGS = Array.from(
-  new Set(tools.flatMap((tool) => tool.tags)),
-).sort()
+const ALL_TAGS = Array.from(new Set(tools.flatMap((tool) => tool.tags))).sort()
 
 const formSchema = z.object({
-  id: z.string().min(1, "Container ID is required"),
+  id: z
+    .string()
+    .min(1, "Container ID is required")
+    .regex(
+      /^[a-z0-9-]+$/,
+      "ID must contain only lowercase letters, numbers, and hyphens",
+    ),
   name: z.string().min(1, "Name is required"),
   description: z.string().min(1, "Description is required"),
   category: z.string().min(1, "Category is required"),
   tags: z.array(z.string()).min(1, "At least one tag is required"),
-  githubUrl: z.string().url().or(z.literal("")),
-  containerData: z.string().min(1, "Container definition is required"),
+  githubUrl: z.string().url("Must be a valid URL").or(z.literal("")),
+  containerData: composeContentSchema,
 })
 
 type FormValues = z.infer<typeof formSchema>
 
 export function ContainerSubmissionForm() {
   const [open, setOpen] = useState(false)
-  const [showExample, setShowExample] = useState(false)
   const [tagInput, setTagInput] = useState("")
+  const [validationResult, setValidationResult] = useState<ReturnType<
+    typeof validateComposeContent
+  > | null>(null)
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -87,8 +105,8 @@ export function ContainerSubmissionForm() {
       githubUrl: "https://github.com/sonarr",
       containerData: `services:
   sonarr:
-    container_name: sonarr
-    image: ghcr.io/hotio/sonarr
+    container_name: \${CONTAINER_PREFIX}sonarr
+    image: ghcr.io/hotio/sonarr:latest
     ports:
       - "8989:8989"
     environment:
@@ -97,19 +115,30 @@ export function ContainerSubmissionForm() {
       - UMASK=\${UMASK}
       - TZ=\${TZ}
     volumes:
-      - \${CONFIG}/sonarr:/config
-      - \${DATA}/data:/data`,
+      - \${CONFIG_PATH}/sonarr:/config
+      - \${DATA_PATH}/tv:/data/tv
+      - \${DATA_PATH}/downloads:/data/downloads
+    restart: \${RESTART_POLICY}`,
     },
   })
 
+  // Update validation result when containerData changes
+  useEffect(() => {
+    const containerData = form.watch("containerData")
+    if (containerData) {
+      const result = validateComposeContent(containerData)
+      setValidationResult(result)
+    }
+  }, [form.watch("containerData")])
+
   function onSubmit(values: FormValues) {
     // Redirect directly to the new form-based issue template
-    const repoUrl = "https://github.com/ajnart/docker-compose-maker";
-    const issueUrl = `${repoUrl}/issues/new?template=container-submission.yml&title=container: ${encodeURIComponent(values.name)}&id=${encodeURIComponent(values.id)}&name=${encodeURIComponent(values.name)}&description=${encodeURIComponent(values.description)}&category=${encodeURIComponent(values.category)}&tags=${encodeURIComponent(values.tags.join(", "))}&githubUrl=${encodeURIComponent(values.githubUrl || "")}&containerData=${encodeURIComponent(values.containerData)}`;
-    
+    const repoUrl = "https://github.com/ajnart/docker-compose-maker"
+    const issueUrl = `${repoUrl}/issues/new?template=container-submission.yml&title=container: ${encodeURIComponent(values.name)}&id=${encodeURIComponent(values.id)}&name=${encodeURIComponent(values.name)}&description=${encodeURIComponent(values.description)}&category=${encodeURIComponent(values.category)}&tags=${encodeURIComponent(values.tags.join(", "))}&githubUrl=${encodeURIComponent(values.githubUrl || "")}&containerData=${encodeURIComponent(values.containerData)}`
+
     // Open the GitHub issue form in a new tab
-    window.open(issueUrl, "_blank");
-    setOpen(false);
+    window.open(issueUrl, "_blank")
+    setOpen(false)
   }
 
   // Function to open GitHub issue template directly
@@ -118,6 +147,10 @@ export function ContainerSubmissionForm() {
       "https://github.com/ajnart/docker-compose-maker/issues/new?template=container-submission.yml"
     window.open(issueUrl, "_blank")
   }
+
+  // Generate unique keys for list items
+  const generateUniqueKey = (prefix: string, value: string) =>
+    `${prefix}-${value.replace(/\s+/g, "-").toLowerCase()}`
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -131,7 +164,7 @@ export function ContainerSubmissionForm() {
           <span>Suggest container</span>
         </GradientButton>
       </DialogTrigger>
-      <DialogContent className="max-h-[95vh] max-w-4xl">
+      <DialogContent className="max-h-[95vh] max-w-4xl overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Suggest a new container</DialogTitle>
           <DialogDescription>
@@ -286,18 +319,7 @@ export function ContainerSubmissionForm() {
               name="containerData"
               render={({ field }) => (
                 <FormItem className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <FormLabel>Docker Compose Service Definition</FormLabel>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => setShowExample(!showExample)}
-                      className="h-6 w-6"
-                    >
-                      {showExample ? <X size={16} /> : <HelpCircle size={16} />}
-                    </Button>
-                  </div>
+                  <FormLabel>Docker Compose Service Definition</FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder="Enter the service definition in YAML format"
@@ -305,27 +327,68 @@ export function ContainerSubmissionForm() {
                       {...field}
                     />
                   </FormControl>
-                  {showExample && (
-                    <div className="rounded-md bg-muted p-4 text-sm">
-                      <h4 className="mb-2 font-medium">Example Format:</h4>
-                      <pre className="whitespace-pre-wrap text-xs">
-                        {`services:
-  sonarr:
-    container_name: sonarr
-    image: ghcr.io/hotio/sonarr
-    ports:
-      - "8989:8989"
-    environment:
-      - PUID=\${PUID}
-      - PGID=\${PGID}
-      - UMASK=\${UMASK}
-      - TZ=\${TZ}
-    volumes:
-      - \${CONFIG}/sonarr:/config
-      - \${DATA}/data:/data`}
-                      </pre>
+
+                  {/* Validation feedback section */}
+                  {validationResult && (
+                    <div className="space-y-2">
+                      {validationResult.errors.length > 0 && (
+                        <Alert variant="destructive">
+                          <AlertTriangle className="h-4 w-4" />
+                          <AlertTitle>Validation Errors</AlertTitle>
+                          <AlertDescription>
+                            <ul className="ml-4 list-disc">
+                              {validationResult.errors.map((error) => (
+                                <li key={generateUniqueKey("error", error)}>
+                                  {error}
+                                </li>
+                              ))}
+                            </ul>
+                          </AlertDescription>
+                        </Alert>
+                      )}
+
+                      {validationResult.warnings.length > 0 && (
+                        <Alert variant="warning">
+                          <AlertTriangle className="h-4 w-4" />
+                          <AlertTitle>Recommendations</AlertTitle>
+                          <AlertDescription>
+                            <ul className="ml-4 list-disc">
+                              {validationResult.warnings.map((warning) => (
+                                <li key={generateUniqueKey("warning", warning)}>
+                                  {warning}
+                                </li>
+                              ))}
+                            </ul>
+                          </AlertDescription>
+                        </Alert>
+                      )}
+
+                      {validationResult.isValid &&
+                        validationResult.warnings.length === 0 && (
+                          <Alert variant="success">
+                            <CheckCircle className="h-4 w-4" />
+                            <AlertTitle>Valid Configuration</AlertTitle>
+                            <AlertDescription>
+                              Your Docker Compose configuration looks good!
+                            </AlertDescription>
+                          </Alert>
+                        )}
+
+                      {validationResult.suggestedEnvVars.length > 0 && (
+                        <Alert variant="info">
+                          <Info className="h-4 w-4" />
+                          <AlertTitle>
+                            Suggested Environment Variables
+                          </AlertTitle>
+                          <AlertDescription>
+                            Consider using these environment variables:{" "}
+                            {validationResult.suggestedEnvVars.join(", ")}
+                          </AlertDescription>
+                        </Alert>
+                      )}
                     </div>
                   )}
+
                   <FormMessage />
                 </FormItem>
               )}
