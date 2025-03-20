@@ -91,7 +91,31 @@ export default function FloatingBar({
     if (selectedCount === 0) return
     
     const currentUrl = window.location.href
+    const shareData = {
+      title: "Docker Compose Services",
+      text: `Check out my selected Docker services (${selectedTools.join(", ")})`,
+      url: currentUrl,
+    }
     
+    // Try to use the Web Share API first (better for mobile)
+    if (navigator.share && typeof navigator.share === 'function') {
+      try {
+        await navigator.share(shareData)
+        
+        posthog.capture("share_selection_api", {
+          selected_tools: selectedTools,
+          url: currentUrl,
+        })
+        return
+      } catch (err) {
+        // Fallback to clipboard if sharing was cancelled or failed
+        if (err instanceof Error && err.name !== 'AbortError') {
+          console.error("Sharing failed:", err)
+        }
+      }
+    }
+    
+    // Fallback to clipboard
     try {
       await navigator.clipboard.writeText(currentUrl)
       
@@ -107,7 +131,7 @@ export default function FloatingBar({
         description: "Share this link to show your selected services",
       })
       
-      posthog.capture("share_selection", {
+      posthog.capture("share_selection_clipboard", {
         selected_tools: selectedTools,
         url: currentUrl,
       })
