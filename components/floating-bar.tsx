@@ -13,7 +13,6 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
-import { useToast } from "@/components/ui/toast"
 import type { DockerTool } from "@/lib/docker-tools"
 import { useSettings } from "@/lib/settings-context"
 import { cn } from "@/lib/utils"
@@ -21,6 +20,7 @@ import { Search, Share2 } from "lucide-react"
 import dynamic from "next/dynamic"
 import posthog from "posthog-js"
 import { useEffect, useState } from "react"
+import { toast } from "sonner"
 
 // Dynamically import CopyComposeModal with loading state
 const CopyComposeModal = dynamic(
@@ -57,8 +57,8 @@ export default function FloatingBar({
   const [isFixed, setIsFixed] = useState(false)
   const [isApple, setIsApple] = useState(false)
   const [isMounted, setIsMounted] = useState(false)
+  const [isSharing, setIsSharing] = useState(false)
   const { settings, resetSettings } = useSettings()
-  const { toast } = useToast()
 
   useEffect(() => {
     setIsMounted(true)
@@ -97,6 +97,9 @@ export default function FloatingBar({
       url: currentUrl,
     }
     
+    // Show animation state
+    setIsSharing(true)
+    
     // Try to use the Web Share API first (better for mobile)
     if (navigator.share && typeof navigator.share === 'function') {
       try {
@@ -106,6 +109,9 @@ export default function FloatingBar({
           selected_tools: selectedTools,
           url: currentUrl,
         })
+        
+        // Reset animation state
+        setTimeout(() => setIsSharing(false), 1000)
         return
       } catch (err) {
         // Fallback to clipboard if sharing was cancelled or failed
@@ -119,15 +125,7 @@ export default function FloatingBar({
     try {
       await navigator.clipboard.writeText(currentUrl)
       
-      // Create a temporary element for animation feedback
-      const button = document.getElementById('share-button')
-      if (button) {
-        button.classList.add('animate-pulse')
-        setTimeout(() => button.classList.remove('animate-pulse'), 1000)
-      }
-      
-      toast({
-        title: "URL copied to clipboard!",
+      toast.success("URL copied to clipboard!", {
         description: "Share this link to show your selected services",
       })
       
@@ -136,12 +134,13 @@ export default function FloatingBar({
         url: currentUrl,
       })
     } catch (err) {
-      toast({
-        title: "Failed to copy URL",
+      toast.error("Failed to copy URL", {
         description: "Please try again or copy manually",
-        variant: "destructive",
       })
     }
+    
+    // Reset animation state
+    setTimeout(() => setIsSharing(false), 1000)
   }
 
   // Prevent rendering client-interactive elements during SSR
@@ -275,9 +274,11 @@ export default function FloatingBar({
                     variant="outline"
                     size="sm"
                     disabled={selectedCount === 0}
-                    className="flex items-center gap-2 transition-transform motion-safe:hover:scale-105"
+                    className={cn(
+                      "flex items-center gap-2 transition-transform",
+                      isSharing ? "motion-preset-pulse" : "motion-safe:hover:scale-105"
+                    )}
                     onClick={handleShare}
-                    id="share-button"
                   >
                     <Share2 className="h-3.5 w-3.5" />
                     <span>Share</span>
