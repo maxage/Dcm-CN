@@ -40,17 +40,27 @@ export const ServiceCircles = ({
             <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white bg-primary-foreground ring-1 ring-primary/50 transition-all duration-200 group-hover:z-10 group-hover:scale-110 group-hover:ring-2 group-hover:ring-primary dark:border-gray-800">
               {service.icon ? (
                 <img
-                  className="h-full w-full rounded-full p-0.5 object-contain"
+                  className="h-full w-full rounded-full object-contain p-0.5"
                   src={service.icon}
                   width={40}
                   height={40}
                   alt={`Icon of ${service.name}`}
                   onClick={() => onToggleServiceSelection?.(service.id)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      onToggleServiceSelection?.(service.id)
+                    }
+                  }}
                 />
               ) : (
-                <div 
+                <div
                   className="flex h-full w-full items-center justify-center rounded-full font-bold text-primary"
                   onClick={() => onToggleServiceSelection?.(service.id)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      onToggleServiceSelection?.(service.id)
+                    }
+                  }}
                 >
                   {service.name.charAt(0)}
                 </div>
@@ -96,14 +106,14 @@ export const ServiceCircles = ({
                   <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary-foreground">
                     {service.icon ? (
                       <img
-                        className="h-full w-full rounded-full p-0.5 object-contain"
+                        className="h-full w-full rounded-full object-contain p-0.5"
                         src={service.icon}
                         width={24}
                         height={24}
                         alt={`Icon of ${service.name}`}
                       />
                     ) : (
-                      <div className="flex h-full w-full items-center justify-center rounded-full font-bold text-xs text-primary">
+                      <div className="flex h-full w-full items-center justify-center rounded-full font-bold text-primary text-xs">
                         {service.name.charAt(0)}
                       </div>
                     )}

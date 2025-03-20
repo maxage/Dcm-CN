@@ -4,9 +4,9 @@ import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { GitHubLink } from "@/components/ui/github-link"
 import {
-    HoverCard,
-    HoverCardContent,
-    HoverCardTrigger,
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
 } from "@/components/ui/hover-card"
 import { StarCount } from "@/components/ui/star-count"
 import { TruncatedText } from "@/components/ui/truncated-text"

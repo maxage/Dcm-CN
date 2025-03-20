@@ -9,12 +9,6 @@ import {
   CommandList,
 } from "@/components/ui/command"
 import { DialogTitle } from "@/components/ui/dialog"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 import { tools } from "@/tools"
 import { Check, X } from "lucide-react"
@@ -25,62 +19,22 @@ interface SearchCommandProps {
   onToggleToolSelection: (toolId: string) => void
 }
 
-// Simple debounce function
-const useDebounce = <T,>(value: T, delay: number): T => {
-  const [debouncedValue, setDebouncedValue] = useState<T>(value)
-
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedValue(value)
-    }, delay)
-
-    return () => {
-      clearTimeout(handler)
-    }
-  }, [value, delay])
-
-  return debouncedValue
-}
-
 export function SearchCommand({
   selectedTools,
   onToggleToolSelection,
 }: SearchCommandProps) {
   const [open, setOpen] = useState(false)
-  const [inputValue, setInputValue] = useState("")
-  const searchTerm = useDebounce(inputValue, 300) // 300ms debounce
+  const [searchTerm, setSearchTerm] = useState("")
 
-  const filteredTools = tools.filter((tool) => {
-    if (!searchTerm) return true
-    
-    const searchLower = searchTerm.toLowerCase()
-    
-    // Search in name
-    if (tool.name.toLowerCase().includes(searchLower)) return true
-    
-    // Search in description
-    if (tool.description.toLowerCase().includes(searchLower)) return true
-    
-    // Search in tags
-    if (tool.tags.some(tag => tag.toLowerCase().includes(searchLower))) return true
-    
-    // Search in category
-    if (tool.category.toLowerCase().includes(searchLower)) return true
-    
-    return false
-  })
+  const filteredTools = tools.filter((tool) =>
+    tool.name.toLowerCase().includes(searchTerm.toLowerCase()),
+  )
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Open dialog with Cmd+K or Ctrl+K
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault()
         setOpen((open) => !open)
-      }
-      
-      // Close dialog with Escape key (additional to the built-in behavior)
-      if (e.key === "Escape" && open) {
-        setOpen(false)
       }
     }
 
@@ -95,7 +49,7 @@ export function SearchCommand({
       document.removeEventListener("keydown", handleKeyDown)
       document.removeEventListener("triggerCommandK", handleCustomTrigger)
     }
-  }, [open])
+  }, [])
 
   const handleToolSelect = (toolId: string) => {
     const tool = tools.find((t) => t.id === toolId)
@@ -109,8 +63,8 @@ export function SearchCommand({
       <DialogTitle className="sr-only">Search Services</DialogTitle>
       <CommandInput
         placeholder="Search for services..."
-        value={inputValue}
-        onValueChange={setInputValue}
+        value={searchTerm}
+        onValueChange={setSearchTerm}
       />
       <CommandList>
         <CommandEmpty>No services found.</CommandEmpty>
@@ -147,20 +101,12 @@ export function SearchCommand({
                 <span>{tool.name}</span>
               </div>
               {tool.isUnsupported && (
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div className="ml-2 flex items-center text-destructive">
-                        <X className="h-4 w-4" />
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent side="right" className="max-w-[200px]">
-                      <p className="text-xs">
-                        This service is not officially supported. Check the service's documentation for installation instructions.
-                      </p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+                <div
+                  className="ml-2 flex items-center text-destructive"
+                  title="This service is not supported"
+                >
+                  <X className="h-4 w-4" />
+                </div>
               )}
               {selectedTools.includes(tool.id) && (
                 <Check className="ml-2 h-4 w-4 text-primary" />

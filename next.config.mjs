@@ -3,8 +3,8 @@
 const nextConfig = {
   output: "export",
   images: {
-   unoptimized: true,
-  }
+    unoptimized: true,
+  },
 }
 
 export default nextConfig
