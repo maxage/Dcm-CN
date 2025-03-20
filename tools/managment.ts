@@ -1,7 +1,7 @@
-import type { DockerTool } from "@/lib/docker-tools";
+import type { DockerTool } from "@/lib/docker-tools"
 
 export const management: DockerTool[] = [
-	{
+  {
     id: "portainer",
     name: "Portainer",
     description:
@@ -24,7 +24,7 @@ export const management: DockerTool[] = [
       - TZ=\${TZ}
     restart: \${RESTART_POLICY}`,
   },
-	{
+  {
     id: "traefik",
     name: "Traefik",
     description:
@@ -132,7 +132,8 @@ export const management: DockerTool[] = [
   {
     id: "caddy",
     name: "Caddy",
-    description: "Powerful, enterprise-ready, open source web server with automatic HTTPS.",
+    description:
+      "Powerful, enterprise-ready, open source web server with automatic HTTPS.",
     category: "Networking",
     tags: ["Web Server", "Reverse Proxy", "HTTPS"],
     githubUrl: "https://github.com/caddyserver/caddy",

@@ -1,7 +1,7 @@
-import type { DockerTool } from "@/lib/docker-tools";
+import type { DockerTool } from "@/lib/docker-tools"
 
 export const automation: DockerTool[] = [
-	{
+  {
     id: "sonarr",
     name: "Sonarr",
     description:
@@ -132,7 +132,7 @@ export const automation: DockerTool[] = [
   {
     id: "whisparr",
     name: "Whisparr",
-    description: 
+    description:
       "An adult movie collection manager for Usenet and BitTorrent users.",
     category: "Media",
     tags: ["Adult", "Movies", "Automation"],
@@ -158,7 +158,7 @@ export const automation: DockerTool[] = [
   {
     id: "nzbget",
     name: "NZBGet",
-    description: 
+    description:
       "Efficient usenet downloader, optimized for reliability, completeness, and speed.",
     category: "Download",
     tags: ["Usenet", "Download", "NZB"],
@@ -183,7 +183,7 @@ export const automation: DockerTool[] = [
   {
     id: "bazarr",
     name: "Bazarr",
-    description: 
+    description:
       "Companion application to Sonarr and Radarr that manages and downloads subtitles.",
     category: "Media",
     tags: ["Subtitles", "Automation", "Media"],
@@ -208,7 +208,7 @@ export const automation: DockerTool[] = [
   {
     id: "jackett",
     name: "Jackett",
-    description: 
+    description:
       "API Support for your favorite torrent trackers, translating searches into tracker-site-specific queries.",
     category: "Download",
     tags: ["Indexer", "Proxy", "Torrent"],
@@ -233,7 +233,7 @@ export const automation: DockerTool[] = [
   {
     id: "qbittorrent",
     name: "qBittorrent",
-    description: 
+    description:
       "A cross-platform BitTorrent client with an integrated web interface.",
     category: "Download",
     tags: ["BitTorrent", "Download", "P2P"],
@@ -261,7 +261,7 @@ export const automation: DockerTool[] = [
   {
     id: "doplarr",
     name: "Doplarr",
-    description: 
+    description:
       "An app that automatically sends requests to Sonarr/Radarr based on discord messages.",
     category: "Media",
     tags: ["Discord", "Media Request", "Automation"],
@@ -288,7 +288,7 @@ export const automation: DockerTool[] = [
   {
     id: "nzbhydra2",
     name: "NZBHydra 2",
-    description: 
+    description:
       "NZBHydra 2 is a meta search for newznab indexers and torznab trackers.",
     category: "Download",
     tags: ["Usenet", "Indexer", "Aggregator"],
@@ -313,8 +313,7 @@ export const automation: DockerTool[] = [
   {
     id: "qbitmanage",
     name: "qBitManage",
-    description: 
-      "A tool to manage qBittorrent and automate cross-seeding.",
+    description: "A tool to manage qBittorrent and automate cross-seeding.",
     category: "Download",
     tags: ["BitTorrent", "Management", "Automation"],
     githubUrl: "https://github.com/StuffAnThings/qbit_manage",
@@ -336,7 +335,7 @@ export const automation: DockerTool[] = [
   {
     id: "requestrr",
     name: "Requestrr",
-    description: 
+    description:
       "Requestrr is a chatbot used to simplify using services like Sonarr/Radarr/Overseerr via integrations like Discord.",
     category: "Media",
     tags: ["Discord", "Media Request", "Automation"],
@@ -360,7 +359,7 @@ export const automation: DockerTool[] = [
   {
     id: "rflood",
     name: "rFlood",
-    description: 
+    description:
       "A custom version of Flood with additional ruTorrent-like functionality.",
     category: "Download",
     tags: ["BitTorrent", "Web Interface", "Download"],
@@ -386,7 +385,7 @@ export const automation: DockerTool[] = [
   {
     id: "sabnzbd",
     name: "SABnzbd",
-    description: 
+    description:
       "Free and easy binary newsreader with web interface. Makes downloading from Usenet easy.",
     category: "Download",
     tags: ["Usenet", "Download", "NZB"],
@@ -411,7 +410,7 @@ export const automation: DockerTool[] = [
   {
     id: "unpackerr",
     name: "Unpackerr",
-    description: 
+    description:
       "Extracts archives for various media server software like Sonarr, Radarr, Lidarr, etc.",
     category: "Media",
     tags: ["Extraction", "Automation", "Archive"],

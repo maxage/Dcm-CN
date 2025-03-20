@@ -1,7 +1,7 @@
-import type { DockerTool } from "@/lib/docker-tools";
+import type { DockerTool } from "@/lib/docker-tools"
 
 export const databases: DockerTool[] = [
-	{
+  {
     id: "mariadb",
     name: "MariaDB",
     description: "One of the most popular database servers.",

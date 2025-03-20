@@ -1,7 +1,7 @@
-import type { DockerTool } from "@/lib/docker-tools";
+import type { DockerTool } from "@/lib/docker-tools"
 
 export const monitoring: DockerTool[] = [
-	{
+  {
     id: "grafana",
     name: "Grafana",
     description:
@@ -74,7 +74,7 @@ export const monitoring: DockerTool[] = [
       - TZ=\${TZ}
     restart: \${RESTART_POLICY}`,
   },
-	{
+  {
     id: "watchtower",
     name: "Watchtower",
     description:
@@ -97,7 +97,7 @@ export const monitoring: DockerTool[] = [
       - WATCHTOWER_INCLUDE_STOPPED=false
     restart: \${RESTART_POLICY}`,
   },
-	{
+  {
     id: "homarr",
     name: "Homarr",
     description:
@@ -120,8 +120,7 @@ export const monitoring: DockerTool[] = [
       - '7575:7575'
     restart: \${RESTART_POLICY}`,
   },
-  
- 
+
   {
     id: "heimdall",
     name: "Heimdall",
@@ -146,5 +145,4 @@ export const monitoring: DockerTool[] = [
       - "443:443"
     restart: \${RESTART_POLICY}`,
   },
-
 ]

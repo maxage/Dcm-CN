@@ -1,7 +1,7 @@
-import type { DockerTool } from "@/lib/docker-tools";
+import type { DockerTool } from "@/lib/docker-tools"
 
 export const media: DockerTool[] = [
-	{
+  {
     id: "jellyfin",
     name: "Jellyfin",
     description:
@@ -87,7 +87,7 @@ export const media: DockerTool[] = [
   {
     id: "tautulli",
     name: "Tautulli",
-    description: 
+    description:
       "A monitoring application for Plex Media Server that provides statistics and analytics for your media library.",
     category: "Monitoring",
     tags: ["Plex", "Monitoring", "Statistics"],
@@ -111,7 +111,7 @@ export const media: DockerTool[] = [
   {
     id: "jellyseerr",
     name: "Jellyseerr",
-    description: 
+    description:
       "A request management and media discovery tool for Jellyfin. Fork of Overseerr with native Jellyfin support.",
     category: "Media",
     tags: ["Requests", "Media Management", "Jellyfin"],
@@ -135,7 +135,7 @@ export const media: DockerTool[] = [
   {
     id: "overseerr",
     name: "Overseerr",
-    description: 
+    description:
       "A request management and media discovery tool for Plex. Integrates with Sonarr and Radarr.",
     category: "Media",
     tags: ["Requests", "Media Management", "Plex"],
@@ -159,7 +159,7 @@ export const media: DockerTool[] = [
   {
     id: "stash",
     name: "Stash",
-    description: 
+    description:
       "An organizer for your adult media. Collects and organizes your adult media collection.",
     category: "Media",
     tags: ["Adult", "Media Management", "Organization"],
