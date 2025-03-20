@@ -2,6 +2,29 @@ import type { DockerTool } from "@/lib/docker-tools"
 
 export const monitoring: DockerTool[] = [
   {
+    id: "homarr",
+    name: "Homarr",
+    description:
+      "A modern, feature-rich dashboard for your server. Integrates with Docker for container management, supports multiple users with advanced permissions, and provides a sleek interface for managing your self-hosted services.",
+    category: "Management",
+    tags: ["Dashboard", "Management", "Monitoring"],
+    githubUrl: "https://github.com/homarr-labs/homarr",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/homarr.svg",
+    composeContent: `services:
+  homarr:
+    container_name: \${CONTAINER_PREFIX}homarr
+    image: ghcr.io/homarr-labs/homarr:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - \${CONFIG_PATH}/homarr:/appdata
+    environment:
+      - TZ=\${TZ}
+      - SECRET_ENCRYPTION_KEY=your_64_character_hex_string
+    ports:
+      - '7575:7575'
+    restart: \${RESTART_POLICY}`,
+  },
+  {
     id: "grafana",
     name: "Grafana",
     description:
@@ -97,30 +120,6 @@ export const monitoring: DockerTool[] = [
       - WATCHTOWER_INCLUDE_STOPPED=false
     restart: \${RESTART_POLICY}`,
   },
-  {
-    id: "homarr",
-    name: "Homarr",
-    description:
-      "A modern, feature-rich dashboard for your server. Integrates with Docker for container management, supports multiple users with advanced permissions, and provides a sleek interface for managing your self-hosted services.",
-    category: "Management",
-    tags: ["Dashboard", "Management", "Monitoring"],
-    githubUrl: "https://github.com/homarr-labs/homarr",
-    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/homarr.svg",
-    composeContent: `services:
-  homarr:
-    container_name: \${CONTAINER_PREFIX}homarr
-    image: ghcr.io/homarr-labs/homarr:latest
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - \${CONFIG_PATH}/homarr:/appdata
-    environment:
-      - TZ=\${TZ}
-      - SECRET_ENCRYPTION_KEY=your_64_character_hex_string
-    ports:
-      - '7575:7575'
-    restart: \${RESTART_POLICY}`,
-  },
-
   {
     id: "heimdall",
     name: "Heimdall",

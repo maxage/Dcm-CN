@@ -7,9 +7,9 @@ import { other } from "./other"
 
 export const tools = [
   ...automation,
+  ...monitoring,
   ...media,
   ...management,
   ...databases,
-  ...monitoring,
   ...other,
 ]
