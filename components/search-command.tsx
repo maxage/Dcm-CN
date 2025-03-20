@@ -19,12 +19,30 @@ interface SearchCommandProps {
   onToggleToolSelection: (toolId: string) => void
 }
 
+// Simple debounce function
+const useDebounce = <T,>(value: T, delay: number): T => {
+  const [debouncedValue, setDebouncedValue] = useState<T>(value)
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value)
+    }, delay)
+
+    return () => {
+      clearTimeout(handler)
+    }
+  }, [value, delay])
+
+  return debouncedValue
+}
+
 export function SearchCommand({
   selectedTools,
   onToggleToolSelection,
 }: SearchCommandProps) {
   const [open, setOpen] = useState(false)
-  const [searchTerm, setSearchTerm] = useState("")
+  const [inputValue, setInputValue] = useState("")
+  const searchTerm = useDebounce(inputValue, 300) // 300ms debounce
 
   const filteredTools = tools.filter((tool) => {
     if (!searchTerm) return true
@@ -85,8 +103,8 @@ export function SearchCommand({
       <DialogTitle className="sr-only">Search Services</DialogTitle>
       <CommandInput
         placeholder="Search for services..."
-        value={searchTerm}
-        onValueChange={setSearchTerm}
+        value={inputValue}
+        onValueChange={setInputValue}
       />
       <CommandList>
         <CommandEmpty>No services found.</CommandEmpty>
