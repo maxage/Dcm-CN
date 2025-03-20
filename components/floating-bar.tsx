@@ -16,7 +16,7 @@ import { toast } from "sonner"
 // Dynamically import CopyComposeModal with loading state
 const CopyComposeModal = dynamic(
   () =>
-    import("@/components/copy-compose-modal").then((mod) => ({
+    import("@/components/compose-modal/CopyComposeModal").then((mod) => ({
       default: mod.CopyComposeModal,
     })),
   {
