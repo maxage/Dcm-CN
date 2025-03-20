@@ -124,33 +124,33 @@ bun start
 
 DCM includes configuration for many popular self-hosted applications, including:
 
-- 📺 **Media Management**: 
+📺 **Media Management**: 
   - **Media Servers**: [Jellyfin](https://github.com/jellyfin/jellyfin), [Plex](https://github.com/plexinc/pms-docker), [Emby](https://github.com/MediaBrowser/Emby)
   - **Media Automation**: [Sonarr](https://github.com/Sonarr/Sonarr), [Radarr](https://github.com/Radarr/Radarr), [Lidarr](https://github.com/lidarr/Lidarr), [Readarr](https://github.com/Readarr/Readarr), [Prowlarr](https://github.com/Prowlarr/Prowlarr), [Bazarr](https://github.com/morpheus65535/bazarr), [Whisparr](https://github.com/whisparr/whisparr)
   - **Media Requests**: [Jellyseerr](https://github.com/Fallenbagel/jellyseerr), [Overseerr](https://github.com/sct/overseerr), [Doplarr](https://github.com/kiranshila/Doplarr), [Requestrr](https://github.com/darkalfx/requestrr)
 
-- 🔍 **Dashboards & Management**: 
+🔍 **Dashboards & Management**: 
   - **Dashboards**: [Homarr](https://github.com/homarr-labs/homarr), [Heimdall](https://github.com/linuxserver/Heimdall)
   - **Container Management**: [Portainer](https://github.com/portainer/portainer)
   - **Media Analytics**: [Tautulli](https://github.com/Tautulli/Tautulli)
 
-- 📥 **Download Management**:
+📥 **Download Management**:
   - **Torrent**: [qBittorrent](https://github.com/qbittorrent/qBittorrent)
   - **Usenet**: [NZBGet](https://github.com/nzbget/nzbget), [NZBHydra 2](https://github.com/theotherp/nzbhydra2)
   - **Indexers**: [Jackett](https://github.com/Jackett/Jackett), [Prowlarr](https://github.com/Prowlarr/Prowlarr)
 
-- 🗄️ **Databases**: 
+🗄️ **Databases**: 
   - **SQL**: [MariaDB](https://github.com/MariaDB/server), [MySQL](https://github.com/mysql/mysql-server), [PostgreSQL](https://github.com/postgres/postgres)
   - **NoSQL**: [MongoDB](https://github.com/mongodb/mongo), [Redis](https://github.com/redis/redis)
 
-- 📊 **Monitoring & Automation**: 
+📊 **Monitoring & Automation**: 
   - **Monitoring**: [Grafana](https://github.com/grafana/grafana), [Prometheus](https://github.com/prometheus/prometheus)
   - **Updates**: [Watchtower](https://github.com/containrrr/watchtower)
   - **Home Automation**: [Home Assistant](https://github.com/home-assistant/core)
 
-- 🔐 **Security**: [Vaultwarden](https://github.com/dani-garcia/vaultwarden)
+🔐 **Security**: [Vaultwarden](https://github.com/dani-garcia/vaultwarden)
 
-- 💾 **Storage & Files**: [Nextcloud](https://github.com/nextcloud/server)
+💾 **Storage & Files**: [Nextcloud](https://github.com/nextcloud/server)
 
 Each tool includes a detailed description, GitHub star count, and pre-configured docker-compose settings.
 
