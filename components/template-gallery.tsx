@@ -1,37 +1,37 @@
-import { TemplateCard } from "@/components/template-card";
-import { Input } from "@/components/ui/input";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import type { DockerTool } from "@/lib/docker-tools";
-import type { Template } from "@/lib/templates";
-import { templates } from "@/lib/templates";
-import { Search } from "lucide-react";
-import { useMemo, useState } from "react";
+import { TemplateCard } from "@/components/template-card"
+import { Input } from "@/components/ui/input"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import type { DockerTool } from "@/lib/docker-tools"
+import type { Template } from "@/lib/templates"
+import { templates } from "@/lib/templates"
+import { Search } from "lucide-react"
+import { useMemo, useState } from "react"
 
 interface TemplateGalleryProps {
-  allTools: DockerTool[];
-  onSelectTemplate: (tools: DockerTool[], template: Template) => void;
-  onUnselectTemplate?: (toolIds: string[], templateId: string) => void;
-  selectedTools: DockerTool[];
-  selectedTemplateIds?: string[];
+  allTools: DockerTool[]
+  onSelectTemplate: (tools: DockerTool[], template: Template) => void
+  onUnselectTemplate?: (toolIds: string[], templateId: string) => void
+  selectedTools: DockerTool[]
+  selectedTemplateIds?: string[]
 }
 
-export function TemplateGallery({ 
-  allTools, 
-  onSelectTemplate, 
+export function TemplateGallery({
+  allTools,
+  onSelectTemplate,
   onUnselectTemplate,
   selectedTools,
   selectedTemplateIds = [],
 }: TemplateGalleryProps) {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [activeCategory, setActiveCategory] = useState<string>("all");
+  const [searchQuery, setSearchQuery] = useState("")
+  const [activeCategory, setActiveCategory] = useState<string>("all")
 
   // Get all unique categories from templates
   const categories = useMemo(() => {
     const categorySet = new Set<string>(
-      templates.map((template) => template.category)
-    );
-    return ["all", ...Array.from(categorySet)];
-  }, []);
+      templates.map((template) => template.category),
+    )
+    return ["all", ...Array.from(categorySet)]
+  }, [])
 
   // Filter templates by search query and category
   const filteredTemplates = useMemo(() => {
@@ -39,27 +39,28 @@ export function TemplateGallery({
       const matchesSearch =
         searchQuery === "" ||
         template.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        template.description.toLowerCase().includes(searchQuery.toLowerCase());
+        template.description.toLowerCase().includes(searchQuery.toLowerCase())
 
       const matchesCategory =
-        activeCategory === "all" || template.category === activeCategory;
+        activeCategory === "all" || template.category === activeCategory
 
-      return matchesSearch && matchesCategory;
-    });
-  }, [searchQuery, activeCategory]);
+      return matchesSearch && matchesCategory
+    })
+  }, [searchQuery, activeCategory])
 
   return (
     <div className="space-y-6">
       <div className="flex flex-col space-y-2">
-        <h2 className="text-2xl font-bold">Template Gallery</h2>
+        <h2 className="font-bold text-2xl">Template Gallery</h2>
         <p className="text-muted-foreground">
-          Choose from predefined templates to quickly set up common Docker stacks
+          Choose from predefined templates to quickly set up common Docker
+          stacks
         </p>
       </div>
 
       <div className="space-y-6">
         <div className="relative max-w-md">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Search className="-translate-y-1/2 absolute top-1/2 left-3 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="Search templates..."
             value={searchQuery}
@@ -89,10 +90,14 @@ export function TemplateGallery({
                     key={template.id}
                     template={template}
                     allTools={allTools}
-                    onSelectTemplate={(tools) => onSelectTemplate(tools, template)}
-                    onUnselectTemplate={onUnselectTemplate ? 
-                      (toolIds) => onUnselectTemplate(toolIds, template.id) : 
-                      undefined}
+                    onSelectTemplate={(tools) =>
+                      onSelectTemplate(tools, template)
+                    }
+                    onUnselectTemplate={
+                      onUnselectTemplate
+                        ? (toolIds) => onUnselectTemplate(toolIds, template.id)
+                        : undefined
+                    }
                     isSelected={selectedTemplateIds.includes(template.id)}
                   />
                 ))}
@@ -108,5 +113,5 @@ export function TemplateGallery({
         </Tabs>
       </div>
     </div>
-  );
-} 
+  )
+}
