@@ -45,8 +45,11 @@ export default function SettingsPanel({
 
   // Update local settings when prop settings change
   useEffect(() => {
-    setLocalSettings(settings)
-  }, [settings])
+    // Only update if not currently editing (no unsaved changes)
+    if (!hasChanges) {
+      setLocalSettings(settings)
+    }
+  }, [settings, hasChanges])
 
   const handleChange = (key: keyof DockerSettings, value: string | boolean) => {
     setLocalSettings(prev => {

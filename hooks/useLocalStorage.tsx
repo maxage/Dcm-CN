@@ -44,17 +44,23 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
       try {
         const valueToStore =
           value instanceof Function ? value(storedValue) : value
-        setStoredValue(valueToStore)
         
-        // Only save to localStorage if explicitly requested
-        if (saveImmediately) {
-          saveToStorage(valueToStore)
-        }
+        // Only update state and storage when needed
+        setStoredValue((prevValue) => {
+          const newValue = valueToStore;
+          
+          // Only save to localStorage if explicitly requested and value changed
+          if (saveImmediately && JSON.stringify(newValue) !== JSON.stringify(prevValue)) {
+            saveToStorage(newValue)
+          }
+          
+          return newValue;
+        });
       } catch (error) {
         console.error(`Error setting ${key} in localStorage:`, error)
       }
     },
-    [key, storedValue, saveToStorage],
+    [key, saveToStorage],
   )
 
   const removeValue = useCallback(() => {
