@@ -26,9 +26,25 @@ export function SearchCommand({
   const [open, setOpen] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
 
-  const filteredTools = tools.filter((tool) =>
-    tool.name.toLowerCase().includes(searchTerm.toLowerCase()),
-  )
+  const filteredTools = tools.filter((tool) => {
+    if (!searchTerm) return true
+    
+    const searchLower = searchTerm.toLowerCase()
+    
+    // Search in name
+    if (tool.name.toLowerCase().includes(searchLower)) return true
+    
+    // Search in description
+    if (tool.description.toLowerCase().includes(searchLower)) return true
+    
+    // Search in tags
+    if (tool.tags.some(tag => tag.toLowerCase().includes(searchLower))) return true
+    
+    // Search in category
+    if (tool.category.toLowerCase().includes(searchLower)) return true
+    
+    return false
+  })
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -83,7 +99,7 @@ export function SearchCommand({
                     "mr-2 flex h-6 w-6 items-center justify-center overflow-hidden rounded-sm",
                     selectedTools.includes(tool.id) && !tool.isUnsupported
                       ? "text-primary"
-                      : "text-muted-foreground"
+                      : "text-muted-foreground",
                   )}
                 >
                   {tool.icon ? (
@@ -93,7 +109,9 @@ export function SearchCommand({
                       className="h-full w-full object-contain p-0.5"
                     />
                   ) : (
-                    <div className="font-bold text-xs">{tool.name.charAt(0)}</div>
+                    <div className="font-bold text-xs">
+                      {tool.name.charAt(0)}
+                    </div>
                   )}
                 </div>
                 <span>{tool.name}</span>
