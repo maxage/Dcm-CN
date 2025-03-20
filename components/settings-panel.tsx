@@ -11,7 +11,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
 import { Separator } from "@/components/ui/separator"
-import { useEffect, useState } from "react"
+import { memo, useCallback, useState } from "react"
 
 interface SettingsPanelProps {
   settings: DockerSettings
@@ -33,89 +33,45 @@ export interface DockerSettings {
   containerNamePrefix: string
 }
 
-export default function SettingsPanel({
+// Memoize the settings panel to prevent unnecessary re-renders
+const SettingsPanel = memo(function SettingsPanel({
   settings,
   onSettingsChange,
   isEmbedded = false,
   className = "",
 }: SettingsPanelProps) {
   const [isOpen, setIsOpen] = useState(false)
-  const [localSettings, setLocalSettings] = useState({ ...settings })
-  const [hasChanges, setHasChanges] = useState(false)
 
-  // Update local settings when prop settings change
-  useEffect(() => {
-    // Only update if not currently editing (no unsaved changes)
-    if (!hasChanges) {
-      setLocalSettings(settings)
-    }
-  }, [settings, hasChanges])
-
-  // Also save settings when panel is closed if there are changes
-  useEffect(() => {
-    if (!isOpen && hasChanges) {
-      handleSave()
-    }
-  }, [isOpen]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  const handleChange = (key: keyof DockerSettings, value: string | boolean) => {
-    setLocalSettings(prev => {
-      const newSettings = {
-        ...prev,
-        [key]: value,
-      }
-      setHasChanges(JSON.stringify(newSettings) !== JSON.stringify(settings))
-      return newSettings
+  // Optimize handleChange with useCallback to maintain reference stability
+  const handleChange = useCallback((key: keyof DockerSettings, value: string | boolean) => {
+    onSettingsChange({
+      ...settings,
+      [key]: value,
     })
-  }
+  }, [settings, onSettingsChange])
 
-  const handleSave = () => {
-    onSettingsChange(localSettings)
-    setHasChanges(false)
-  }
-
-  const handleCancel = () => {
-    setLocalSettings({ ...settings })
-    setHasChanges(false)
-  }
-
-  const SettingsContent = () => (
+  // Memoize the settings content to prevent re-renders when panel open state changes
+  const SettingsContent = memo(() => (
     <div className="grid gap-6 pt-4">
-      <VolumePathsSection settings={localSettings} onSettingsChange={handleChange} />
+      <VolumePathsSection settings={settings} onSettingsChange={handleChange} />
 
       <Separator className="[animation-delay:100ms] motion-safe:animate-fade-in" />
 
       <EnvironmentVariablesSection
-        settings={localSettings}
+        settings={settings}
         onSettingsChange={handleChange}
       />
 
       <Separator className="[animation-delay:500ms] motion-safe:animate-fade-in" />
 
       <ContainerSettingsSection
-        settings={localSettings}
+        settings={settings}
         onSettingsChange={handleChange}
       />
-
-      {hasChanges && (
-        <div className="flex justify-end gap-2 [animation-delay:600ms] motion-safe:animate-fade-in">
-          <Button
-            variant="outline"
-            onClick={handleCancel}
-            className="motion-safe:transition-all motion-safe:duration-300 motion-safe:hover:scale-105"
-          >
-            Cancel
-          </Button>
-          <Button
-            onClick={handleSave}
-            className="motion-safe:transition-all motion-safe:duration-300 motion-safe:hover:scale-105"
-          >
-            Save Changes
-          </Button>
-        </div>
-      )}
     </div>
-  )
+  ))
+
+  SettingsContent.displayName = "SettingsContent"
 
   if (isEmbedded) {
     return (
@@ -157,4 +113,8 @@ export default function SettingsPanel({
       </Collapsible>
     </div>
   )
-}
+})
+
+SettingsPanel.displayName = "SettingsPanel"
+
+export default SettingsPanel
