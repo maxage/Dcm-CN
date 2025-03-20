@@ -11,7 +11,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
 import { Separator } from "@/components/ui/separator"
-import { memo, useCallback, useState } from "react"
+import { useState } from "react"
 
 interface SettingsPanelProps {
   settings: DockerSettings
@@ -33,8 +33,7 @@ export interface DockerSettings {
   containerNamePrefix: string
 }
 
-// Memoize the settings panel to prevent unnecessary re-renders
-const SettingsPanel = memo(function SettingsPanel({
+export default function SettingsPanel({
   settings,
   onSettingsChange,
   isEmbedded = false,
@@ -42,16 +41,14 @@ const SettingsPanel = memo(function SettingsPanel({
 }: SettingsPanelProps) {
   const [isOpen, setIsOpen] = useState(false)
 
-  // Optimize handleChange with useCallback to maintain reference stability
-  const handleChange = useCallback((key: keyof DockerSettings, value: string | boolean) => {
+  const handleChange = (key: keyof DockerSettings, value: string | boolean) => {
     onSettingsChange({
       ...settings,
       [key]: value,
     })
-  }, [settings, onSettingsChange])
+  }
 
-  // Memoize the settings content to prevent re-renders when panel open state changes
-  const SettingsContent = memo(() => (
+  const SettingsContent = () => (
     <div className="grid gap-6 pt-4">
       <VolumePathsSection settings={settings} onSettingsChange={handleChange} />
 
@@ -69,9 +66,7 @@ const SettingsPanel = memo(function SettingsPanel({
         onSettingsChange={handleChange}
       />
     </div>
-  ))
-
-  SettingsContent.displayName = "SettingsContent"
+  )
 
   if (isEmbedded) {
     return (
@@ -113,8 +108,4 @@ const SettingsPanel = memo(function SettingsPanel({
       </Collapsible>
     </div>
   )
-})
-
-SettingsPanel.displayName = "SettingsPanel"
-
-export default SettingsPanel
+}

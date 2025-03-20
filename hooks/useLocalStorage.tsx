@@ -6,58 +6,50 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
   // Use a ref to track if we've mounted yet
   const hasMounted = useRef(false)
 
-  // Create a function to get the initial value from localStorage or use initialValue
-  const getInitialValue = () => {
-    if (typeof window === "undefined") return initialValue
-    
-    try {
-      const item = localStorage.getItem(key)
-      return item ? JSON.parse(item) : initialValue
-    } catch (error) {
-      console.error(`Error loading ${key} from localStorage:`, error)
-      return initialValue
-    }
-  }
+  // Initialize state with initialValue to prevent hydration mismatch
+  const [storedValue, setStoredValue] = useState<T>(initialValue)
 
-  // Initialize state with a function to prevent re-computation on re-renders
-  const [storedValue, setStoredValue] = useState<T>(getInitialValue)
-
-  // Save to localStorage without triggering re-renders
-  const saveToStorage = useCallback((value: T) => {
+  // Load from localStorage only after component mounts (client-side only)
+  useEffect(() => {
     if (typeof window === "undefined") return
-    
-    try {
-      localStorage.setItem(key, JSON.stringify(value))
-    } catch (error) {
-      console.error(`Error saving ${key} to localStorage:`, error)
+
+    // Only try to load from localStorage after first render
+    if (!hasMounted.current) {
+      hasMounted.current = true
+      try {
+        const item = localStorage.getItem(key)
+        if (item) {
+          const parsedValue = JSON.parse(item)
+          setStoredValue(parsedValue)
+        }
+      } catch (error) {
+        console.error(`Error loading ${key} from localStorage:`, error)
+      }
     }
   }, [key])
 
-  // Set up sync to localStorage only once after mount
+  // Save to localStorage whenever the value changes (after initial mount)
   useEffect(() => {
-    if (typeof window === "undefined") return
-    
-    if (!hasMounted.current) {
-      hasMounted.current = true
+    if (typeof window === "undefined" || !hasMounted.current) return
+
+    try {
+      localStorage.setItem(key, JSON.stringify(storedValue))
+    } catch (error) {
+      console.error(`Error saving ${key} to localStorage:`, error)
     }
-  }, [])
+  }, [key, storedValue])
 
   const setValue = useCallback(
     (value: T | ((val: T) => T)) => {
       try {
         const valueToStore =
           value instanceof Function ? value(storedValue) : value
-        
-        // Update state
         setStoredValue(valueToStore)
-        
-        // Update localStorage without causing additional re-renders
-        saveToStorage(valueToStore)
       } catch (error) {
         console.error(`Error setting ${key} in localStorage:`, error)
       }
     },
-    [key, storedValue, saveToStorage],
+    [key, storedValue],
   )
 
   const removeValue = useCallback(() => {

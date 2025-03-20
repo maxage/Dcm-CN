@@ -52,11 +52,6 @@ export default function DockerToolsClient({
     )
   }
 
-  const handleSettingsChange = (newSettings: DockerSettings) => {
-    // Use saveImmediately=true to explicitly save changes to localStorage
-    setSettings(newSettings, true)
-  }
-
   const handleReset = () => {
     clearSelectedTools()
     clearSettings()
@@ -70,7 +65,7 @@ export default function DockerToolsClient({
   return (
     <>
       <div className="[animation-delay:300ms] motion-safe:animate-slide-down">
-        <SettingsPanel settings={settings} onSettingsChange={handleSettingsChange} />
+        <SettingsPanel settings={settings} onSettingsChange={setSettings} />
       </div>
 
       <FloatingBar
