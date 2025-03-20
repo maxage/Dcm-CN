@@ -13,10 +13,11 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
+import { useToast } from "@/components/ui/toast"
 import type { DockerTool } from "@/lib/docker-tools"
 import { useSettings } from "@/lib/settings-context"
 import { cn } from "@/lib/utils"
-import { Search } from "lucide-react"
+import { Search, Share2 } from "lucide-react"
 import dynamic from "next/dynamic"
 import posthog from "posthog-js"
 import { useEffect, useState } from "react"
@@ -57,6 +58,7 @@ export default function FloatingBar({
   const [isApple, setIsApple] = useState(false)
   const [isMounted, setIsMounted] = useState(false)
   const { settings, resetSettings } = useSettings()
+  const { toast } = useToast()
 
   useEffect(() => {
     setIsMounted(true)
@@ -83,6 +85,31 @@ export default function FloatingBar({
     resetSettings()
     if (onReset) onReset()
     setIsResetDialogOpen(false)
+  }
+
+  const handleShare = async () => {
+    if (selectedCount === 0) return
+    
+    const currentUrl = window.location.href
+    
+    try {
+      await navigator.clipboard.writeText(currentUrl)
+      toast({
+        title: "URL copied to clipboard!",
+        description: "Share this link to show your selected services",
+      })
+      
+      posthog.capture("share_selection", {
+        selected_tools: selectedTools,
+        url: currentUrl,
+      })
+    } catch (err) {
+      toast({
+        title: "Failed to copy URL",
+        description: "Please try again or copy manually",
+        variant: "destructive",
+      })
+    }
   }
 
   // Prevent rendering client-interactive elements during SSR
@@ -210,6 +237,17 @@ export default function FloatingBar({
                       </span>
                       K
                     </kbd>
+                  </Button>
+
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={selectedCount === 0}
+                    className="flex items-center gap-2 transition-transform motion-safe:hover:scale-105"
+                    onClick={handleShare}
+                  >
+                    <Share2 className="h-3.5 w-3.5" />
+                    <span>Share</span>
                   </Button>
 
                   {onReset && (
