@@ -103,7 +103,7 @@ export function validateComposeContent(content: string): {
   const hardcodedCommonVars = new Set<string>()
 
   // Extract all environment variable references
-  let envVarMatches = [...content.matchAll(ENV_VAR_PATTERN)]
+  const envVarMatches = [...content.matchAll(ENV_VAR_PATTERN)]
   envVarMatches.forEach((match) => usedEnvVars.add(match[1]))
 
   // Check for environment section

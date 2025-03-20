@@ -19,6 +19,7 @@ export function validateAllContainers(): ValidationResult[] {
   return tools
     .filter((tool) => tool.composeContent) // Only validate tools with compose content
     .map((tool) => {
+      // biome-ignore lint/style/noNonNullAssertion: I am validating tools with compose content
       const validation = validateComposeContent(tool.composeContent!)
 
       return {
