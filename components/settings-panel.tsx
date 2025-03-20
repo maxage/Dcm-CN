@@ -1,8 +1,6 @@
 "use client"
 
-import { ContainerSettingsSection } from "@/components/settings/ContainerSettingsSection"
-import { EnvironmentVariablesSection } from "@/components/settings/EnvironmentVariablesSection"
-import { VolumePathsSection } from "@/components/settings/VolumePathsSection"
+import SettingsForm from "@/components/settings/SettingsForm"
 import { Button } from "@/components/ui/button"
 import { CardContent } from "@/components/ui/card"
 import {
@@ -10,14 +8,12 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
-import { Separator } from "@/components/ui/separator"
 import { useState } from "react"
 
 interface SettingsPanelProps {
-  settings: DockerSettings
-  onSettingsChange: (settings: DockerSettings) => void
   isEmbedded?: boolean
   className?: string
+  onSavingChange?: (saving: boolean) => void
 }
 
 export interface DockerSettings {
@@ -29,49 +25,28 @@ export interface DockerSettings {
   umask: string
   restartPolicy: string
   networkMode: string
-  useTraefik: boolean
   containerNamePrefix: string
 }
 
 export default function SettingsPanel({
-  settings,
-  onSettingsChange,
   isEmbedded = false,
   className = "",
+  onSavingChange,
 }: SettingsPanelProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const [isSaving, setIsSaving] = useState(false)
 
-  const handleChange = (key: keyof DockerSettings, value: string | boolean) => {
-    onSettingsChange({
-      ...settings,
-      [key]: value,
-    })
+  // Handle saving state change from SettingsForm
+  const handleSavingChange = (saving: boolean) => {
+    setIsSaving(saving)
+    // Pass the saving state up to parent if the callback exists
+    if (onSavingChange) onSavingChange(saving)
   }
-
-  const SettingsContent = () => (
-    <div className="grid gap-6 pt-4">
-      <VolumePathsSection settings={settings} onSettingsChange={handleChange} />
-
-      <Separator className="[animation-delay:100ms] motion-safe:animate-fade-in" />
-
-      <EnvironmentVariablesSection
-        settings={settings}
-        onSettingsChange={handleChange}
-      />
-
-      <Separator className="[animation-delay:500ms] motion-safe:animate-fade-in" />
-
-      <ContainerSettingsSection
-        settings={settings}
-        onSettingsChange={handleChange}
-      />
-    </div>
-  )
 
   if (isEmbedded) {
     return (
       <div className={className}>
-        <SettingsContent />
+        <SettingsForm onSavingChange={handleSavingChange} />
       </div>
     )
   }
@@ -86,6 +61,11 @@ export default function SettingsPanel({
         <div className="flex items-center justify-between bg-muted/30 px-4 py-3">
           <div className="flex items-center gap-2">
             <h3 className="font-medium text-lg">Docker Compose Settings</h3>
+            {isSaving && (
+              <div className="flex items-center gap-1 font-medium text-green-500 text-sm">
+                <span className="animate-pulse">Saving...</span>
+              </div>
+            )}
           </div>
           <CollapsibleTrigger asChild>
             <Button
@@ -102,7 +82,7 @@ export default function SettingsPanel({
 
         <CollapsibleContent className="motion-safe:animate-slide-down">
           <CardContent className="p-4 pt-0">
-            <SettingsContent />
+            <SettingsForm onSavingChange={handleSavingChange} />
           </CardContent>
         </CollapsibleContent>
       </Collapsible>

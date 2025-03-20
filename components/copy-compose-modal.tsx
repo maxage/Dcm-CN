@@ -2,6 +2,7 @@
 
 import type { DockerSettings } from "@/components/settings-panel"
 import SettingsPanel from "@/components/settings-panel"
+import EmbeddedSettings from "@/components/settings/EmbeddedSettings"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,9 +17,8 @@ import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { useLocalStorage } from "@/hooks/useLocalStorage"
-import { DEFAULT_SETTINGS, STORAGE_KEYS } from "@/lib/constants"
 import type { DockerTool } from "@/lib/docker-tools"
+import { useSettings } from "@/lib/settings-context"
 import { cn } from "@/lib/utils"
 import Editor from "@monaco-editor/react"
 import { Check, Copy, Download, File } from "lucide-react"
@@ -111,14 +111,12 @@ export function CopyComposeModal({
   const composeEditorRef = useRef<editor.IStandaloneCodeEditor | null>(null)
   const envEditorRef = useRef<editor.IStandaloneCodeEditor | null>(null)
   const { theme, resolvedTheme } = useTheme()
+  const { settings } = useSettings()
 
   // After mounting, we can safely access the theme
   useEffect(() => {
     setMounted(true)
   }, [])
-
-  const { value: settings, setValue: setSettings } =
-    useLocalStorage<DockerSettings>(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS)
 
   // Function to configure Monaco with custom themes
   const handleEditorWillMount = (monaco: typeof import("monaco-editor")) => {
@@ -470,6 +468,8 @@ NETWORK_MODE=${settings.networkMode}
         </AlertDialogHeader>
 
         <div className="flex-1">
+          <EmbeddedSettings />
+          
           <div className="mb-2 flex items-center justify-between">
             <Tabs
               className="w-full"

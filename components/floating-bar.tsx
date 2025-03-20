@@ -2,7 +2,6 @@
 
 import { ServiceCircles } from "@/components/magicui/avatar-circles"
 import { SearchCommand } from "@/components/search-command"
-import type { DockerSettings } from "@/components/settings-panel"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,6 +14,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 import type { DockerTool } from "@/lib/docker-tools"
+import { useSettings } from "@/lib/settings-context"
 import { cn } from "@/lib/utils"
 import { Search } from "lucide-react"
 import dynamic from "next/dynamic"
@@ -36,7 +36,6 @@ interface FloatingBarProps {
   selectedCount: number
   selectedTools: string[]
   selectedToolIds: string[]
-  settings: DockerSettings
   onReset?: () => void
   onToggleToolSelection: (toolId: string) => void
   scrollPosition?: number
@@ -47,7 +46,6 @@ export default function FloatingBar({
   selectedCount,
   selectedTools,
   selectedToolIds,
-  settings,
   onReset,
   onToggleToolSelection,
   scrollPosition = 200,
@@ -58,6 +56,7 @@ export default function FloatingBar({
   const [isFixed, setIsFixed] = useState(false)
   const [isApple, setIsApple] = useState(false)
   const [isMounted, setIsMounted] = useState(false)
+  const { settings, resetSettings } = useSettings()
 
   useEffect(() => {
     setIsMounted(true)
@@ -81,9 +80,8 @@ export default function FloatingBar({
   }, [scrollPosition])
 
   const handleReset = () => {
-    if (onReset) {
-      onReset()
-    }
+    resetSettings()
+    if (onReset) onReset()
     setIsResetDialogOpen(false)
   }
 

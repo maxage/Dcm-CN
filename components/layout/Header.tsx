@@ -30,7 +30,7 @@ export function Header() {
             </GradientButton>
 
             <GradientButton
-              href="https://github.com/ajnart/docker-compose-selector"
+              href="https://github.com/ajnart/docker-compose-maker"
               external
             >
               <svg

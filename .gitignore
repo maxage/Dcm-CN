@@ -29,3 +29,6 @@ next-env.d.ts
 # ShadCN
 components/ui/
 docker-compose.yaml
+
+# Cursor
+.cursor

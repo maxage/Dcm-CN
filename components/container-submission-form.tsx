@@ -38,7 +38,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { DialogDescription } from "@radix-ui/react-dialog"
 import { ExternalLink, Github, HelpCircle, PlusCircle, X } from "lucide-react"
 import { useState } from "react"
-import { useForm } from "react-hook-form"
+import { useForm } from "@tanstack/react-form"
 import * as z from "zod"
 import { GradientButton } from "./ui/gradient-button"
 
