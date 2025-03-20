@@ -12,7 +12,9 @@ type SettingsContextType = {
   isLoading: boolean
 }
 
-const SettingsContext = createContext<SettingsContextType | undefined>(undefined)
+const SettingsContext = createContext<SettingsContextType | undefined>(
+  undefined,
+)
 
 export function SettingsProvider({ children }: { children: React.ReactNode }) {
   const [settings, setSettings] = useState<DockerSettings>(DEFAULT_SETTINGS)
@@ -45,7 +47,10 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     }
   }, [settings, isLoading])
 
-  const updateSettings = (key: keyof DockerSettings, value: string | boolean) => {
+  const updateSettings = (
+    key: keyof DockerSettings,
+    value: string | boolean,
+  ) => {
     setSettings((prev) => ({
       ...prev,
       [key]: value,
@@ -81,4 +86,4 @@ export function useSettings() {
     throw new Error("useSettings must be used within a SettingsProvider")
   }
   return context
-} 
+}

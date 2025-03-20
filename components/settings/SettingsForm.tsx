@@ -15,11 +15,12 @@ interface SettingsFormProps {
   onSavingChange?: (isSaving: boolean) => void
 }
 
-export default function SettingsForm({ 
-  className = "", 
-  onSavingChange 
+export default function SettingsForm({
+  className = "",
+  onSavingChange,
 }: SettingsFormProps) {
-  const { settings, updateAllSettings, resetSettings, isLoading } = useSettings()
+  const { settings, updateAllSettings, resetSettings, isLoading } =
+    useSettings()
   const [isSaving, setIsSaving] = useState(false)
   const [formValues, setFormValues] = useState<DockerSettings>(settings)
 
@@ -36,7 +37,7 @@ export default function SettingsForm({
       setIsSaving(true)
       if (onSavingChange) onSavingChange(true)
       // Simulate a small delay to show the saving indicator
-      await new Promise(resolve => setTimeout(resolve, 300))
+      await new Promise((resolve) => setTimeout(resolve, 300))
       updateAllSettings(value)
       setIsSaving(false)
       if (onSavingChange) onSavingChange(false)
@@ -44,7 +45,7 @@ export default function SettingsForm({
   })
 
   const handleChange = (key: keyof DockerSettings, value: string | boolean) => {
-    setFormValues(prev => {
+    setFormValues((prev) => {
       const newValues = { ...prev, [key]: value }
       return newValues
     })
@@ -55,12 +56,15 @@ export default function SettingsForm({
     if (isLoading) return
 
     const timeout = setTimeout(() => {
-      if (!isSaving && JSON.stringify(formValues) !== JSON.stringify(settings)) {
+      if (
+        !isSaving &&
+        JSON.stringify(formValues) !== JSON.stringify(settings)
+      ) {
         setIsSaving(true)
         if (onSavingChange) onSavingChange(true)
-        
+
         updateAllSettings(formValues)
-        
+
         // Add a slight delay before removing saving indicator
         setTimeout(() => {
           setIsSaving(false)
@@ -70,7 +74,14 @@ export default function SettingsForm({
     }, 500)
 
     return () => clearTimeout(timeout)
-  }, [formValues, settings, isLoading, isSaving, updateAllSettings, onSavingChange])
+  }, [
+    formValues,
+    settings,
+    isLoading,
+    isSaving,
+    updateAllSettings,
+    onSavingChange,
+  ])
 
   if (isLoading) {
     return (
@@ -82,32 +93,32 @@ export default function SettingsForm({
 
   return (
     <div className={`${className}`}>
-      <form 
+      <form
         className="grid gap-6 pt-4"
         onSubmit={(e) => {
           e.preventDefault()
           updateAllSettings(formValues)
         }}
       >
-        <VolumePathsSection 
-          settings={formValues} 
-          onSettingsChange={handleChange} 
+        <VolumePathsSection
+          settings={formValues}
+          onSettingsChange={handleChange}
         />
 
         <Separator className="[animation-delay:100ms] motion-safe:animate-fade-in" />
 
-        <EnvironmentVariablesSection 
-          settings={formValues} 
-          onSettingsChange={handleChange} 
+        <EnvironmentVariablesSection
+          settings={formValues}
+          onSettingsChange={handleChange}
         />
 
         <Separator className="[animation-delay:500ms] motion-safe:animate-fade-in" />
 
-        <ContainerSettingsSection 
-          settings={formValues} 
-          onSettingsChange={handleChange} 
+        <ContainerSettingsSection
+          settings={formValues}
+          onSettingsChange={handleChange}
         />
       </form>
     </div>
   )
-} 
+}

@@ -19,8 +19,8 @@ interface EnvironmentVariablesSectionProps {
 
 // Timezone data organized by region
 const timezoneData = {
-  "UTC": ["UTC"],
-  "Africa": [
+  UTC: ["UTC"],
+  Africa: [
     "Africa/Abidjan",
     "Africa/Accra",
     "Africa/Algiers",
@@ -31,7 +31,7 @@ const timezoneData = {
     "Africa/Nairobi",
     "Africa/Tunis",
   ],
-  "America": [
+  America: [
     "America/Anchorage",
     "America/Argentina/Buenos_Aires",
     "America/Bogota",
@@ -48,12 +48,12 @@ const timezoneData = {
     "America/Toronto",
     "America/Vancouver",
   ],
-  "Antarctica": [
+  Antarctica: [
     "Antarctica/Casey",
     "Antarctica/McMurdo",
     "Antarctica/South_Pole",
   ],
-  "Asia": [
+  Asia: [
     "Asia/Baghdad",
     "Asia/Bangkok",
     "Asia/Dhaka",
@@ -74,13 +74,13 @@ const timezoneData = {
     "Asia/Tehran",
     "Asia/Tokyo",
   ],
-  "Atlantic": [
+  Atlantic: [
     "Atlantic/Azores",
     "Atlantic/Canary",
     "Atlantic/Cape_Verde",
     "Atlantic/Reykjavik",
   ],
-  "Australia": [
+  Australia: [
     "Australia/Adelaide",
     "Australia/Brisbane",
     "Australia/Darwin",
@@ -89,7 +89,7 @@ const timezoneData = {
     "Australia/Perth",
     "Australia/Sydney",
   ],
-  "Europe": [
+  Europe: [
     "Europe/Amsterdam",
     "Europe/Athens",
     "Europe/Berlin",
@@ -112,11 +112,8 @@ const timezoneData = {
     "Europe/Warsaw",
     "Europe/Zurich",
   ],
-  "Indian": [
-    "Indian/Maldives",
-    "Indian/Mauritius",
-  ],
-  "Pacific": [
+  Indian: ["Indian/Maldives", "Indian/Mauritius"],
+  Pacific: [
     "Pacific/Auckland",
     "Pacific/Fiji",
     "Pacific/Guam",
@@ -152,7 +149,16 @@ export function EnvironmentVariablesSection({
             <SelectContent className="max-h-[300px]">
               {Object.entries(timezoneData).map(([region, timezones]) => (
                 <Fragment key={region}>
-                  {region !== "UTC" && <SelectItem key={`region-${region}`} value={`region-${region}`} disabled className="font-semibold">{region}</SelectItem>}
+                  {region !== "UTC" && (
+                    <SelectItem
+                      key={`region-${region}`}
+                      value={`region-${region}`}
+                      disabled
+                      className="font-semibold"
+                    >
+                      {region}
+                    </SelectItem>
+                  )}
                   {timezones.map((timezone) => (
                     <SelectItem key={timezone} value={timezone}>
                       {timezone}

@@ -21,15 +21,12 @@ export default function EmbeddedSettings() {
           {isVisible ? "Hide settings" : "Show settings"}
         </Button>
       </div>
-      
+
       {isVisible && (
         <div className="mt-4">
-          <SettingsPanel 
-            isEmbedded 
-            className="rounded-md border p-4"
-          />
+          <SettingsPanel isEmbedded className="rounded-md border p-4" />
         </div>
       )}
     </div>
   )
-} 
+}
