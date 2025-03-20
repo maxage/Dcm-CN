@@ -227,7 +227,11 @@ export async function fetchGitHubStars(): Promise<DockerTool[]> {
       }
 
       const data = await response.json()
-      console.log(`Fetched stars for ${tool.name}`)
+      // No newline at the end 
+      console.log(
+        `Fetched stars for ${tool.name} (${data.stargazers_count}) \t`,
+        tool.githubUrl,
+      )
       return {
         ...tool,
         stars: data.stargazers_count,

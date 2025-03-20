@@ -11,6 +11,7 @@
     "start": "serve out",
     "lint": "biome lint",
     "format": "biome format",
+    "ci": "bun test && bun lint && bun format && bun run build",
     "deploy": "next build && wrangler pages deploy",
     "test:compose": "bun test tests/validate-compose.test.ts",
     "test:containers": "bun test tests/validate-all-containers.test.ts",
