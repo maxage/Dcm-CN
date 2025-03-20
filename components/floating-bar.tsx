@@ -15,6 +15,7 @@ import {
 import { Button } from "@/components/ui/button"
 import type { DockerTool } from "@/lib/docker-tools"
 import { useSettings } from "@/lib/settings-context"
+import { generateShareUrl } from "@/lib/url-utils"
 import { cn } from "@/lib/utils"
 import { Search, Share2 } from "lucide-react"
 import dynamic from "next/dynamic"
@@ -41,7 +42,6 @@ interface FloatingBarProps {
   onToggleToolSelection: (toolId: string) => void
   scrollPosition?: number
   selectedToolObjects: DockerTool[]
-  generateShareableUrl: () => string
 }
 
 export default function FloatingBar({
@@ -52,7 +52,6 @@ export default function FloatingBar({
   onToggleToolSelection,
   scrollPosition = 200,
   selectedToolObjects,
-  generateShareableUrl,
 }: FloatingBarProps) {
   const [isResetDialogOpen, setIsResetDialogOpen] = useState(false)
   const [isCopyDialogOpen, setIsCopyDialogOpen] = useState(false)
@@ -92,23 +91,23 @@ export default function FloatingBar({
   const handleShare = async () => {
     if (selectedCount === 0) return
     
-    // Generate the shareable URL with encoded tool selection
-    const shareableUrl = generateShareableUrl()
+    // Generate encoded share URL
+    const shareUrl = generateShareUrl(selectedToolIds)
     
     // Show animation state
     setIsSharing(true)
     
     // Use clipboard API
     try {
-      await navigator.clipboard.writeText(shareableUrl)
+      await navigator.clipboard.writeText(shareUrl)
       
-      toast.success("URL copied to clipboard!", {
+      toast.success("Share URL copied to clipboard!", {
         description: "Share this link to show your selected services",
       })
       
       posthog.capture("share_selection_clipboard", {
         selected_tools: selectedTools,
-        url: shareableUrl,
+        url: shareUrl,
       })
     } catch (err) {
       toast.error("Failed to copy URL", {
