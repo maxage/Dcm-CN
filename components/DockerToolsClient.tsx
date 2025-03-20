@@ -9,7 +9,8 @@ import { STORAGE_KEYS } from "@/lib/constants"
 import type { DockerTool } from "@/lib/docker-tools"
 import { SettingsProvider } from "@/lib/settings-context"
 import { decodeShareUrl } from "@/lib/url-utils"
-import { Templates } from "lucide-react"
+import { Palette } from "lucide-react"
+import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useRef } from "react"
 
@@ -75,13 +76,12 @@ export default function DockerToolsClient({
     <SettingsProvider>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-3xl font-bold">Docker Compose Maker</h1>
-        <Button
-          className="flex items-center gap-2"
-          onClick={() => router.push("/templates")}
-        >
-          <Templates size={16} />
-          Template Gallery
-        </Button>
+        <Link prefetch href="/templates">
+          <Button className="flex items-center gap-2">
+            <Palette size={16} />
+            Template Gallery
+          </Button>
+        </Link>
       </div>
 
       <div className="[animation-delay:300ms] motion-safe:animate-slide-down">
