@@ -1,7 +1,7 @@
 name: 🐞 Bug Report
 description: Report that something is broken or not working as intended
 title: "bug: "
-labels: ["bug", "needs triage"]
+labels: ["bug"]
 body:
   - type: textarea
     attributes:
