@@ -192,6 +192,12 @@ export async function fetchGitHubStars(): Promise<DockerTool[]> {
     return cachedTools
   }
 
+  // Skip fetching in development environment
+  if (process.env.NODE_ENV === "development") {
+    console.log("Skipping GitHub stars fetch in development environment")
+    return tools
+  }
+
   const toolsWithoutGitHub = tools.filter((tool) => !tool.githubUrl)
   const toolsWithGitHub = tools.filter((tool) => tool.githubUrl)
 
