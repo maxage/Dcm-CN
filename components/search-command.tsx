@@ -9,6 +9,12 @@ import {
   CommandList,
 } from "@/components/ui/command"
 import { DialogTitle } from "@/components/ui/dialog"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 import { tools } from "@/tools"
 import { Check, X } from "lucide-react"
@@ -141,12 +147,20 @@ export function SearchCommand({
                 <span>{tool.name}</span>
               </div>
               {tool.isUnsupported && (
-                <div
-                  className="ml-2 flex items-center text-destructive"
-                  title="This service is not supported"
-                >
-                  <X className="h-4 w-4" />
-                </div>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="ml-2 flex items-center text-destructive">
+                        <X className="h-4 w-4" />
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent side="right" className="max-w-[200px]">
+                      <p className="text-xs">
+                        This service is not officially supported. Check the service's documentation for installation instructions.
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               )}
               {selectedTools.includes(tool.id) && (
                 <Check className="ml-2 h-4 w-4 text-primary" />
