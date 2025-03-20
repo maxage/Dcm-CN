@@ -11,6 +11,7 @@ import type { DockerTool } from "@/lib/docker-tools"
 import type { Template } from "@/lib/templates"
 import { getToolsFromTemplate } from "@/lib/templates"
 import { cn } from "@/lib/utils"
+import { useAutoAnimate } from "@formkit/auto-animate/react"
 import { MinusCircle, PlusCircle } from "lucide-react"
 import Image from "next/image"
 import { useState } from "react"
@@ -37,6 +38,10 @@ export function TemplateCard({
   const [toolIconErrors, setToolIconErrors] = useState<Record<string, boolean>>(
     {},
   )
+  
+  // AutoAnimate refs for smooth animations
+  const [toolsContainerRef] = useAutoAnimate<HTMLDivElement>({ duration: 200 })
+  const [cardRef] = useAutoAnimate<HTMLDivElement>({ duration: 150 })
 
   const handleSelectTemplate = () => {
     if (isSelected) {
@@ -94,12 +99,13 @@ export function TemplateCard({
 
   return (
     <Card
+      ref={cardRef}
       className={cn(
-        "group relative flex h-full w-full select-none flex-col overflow-hidden transition-all duration-300",
+        "group relative h-full cursor-pointer select-none overflow-hidden rounded-sm transition-all hover:shadow-md",
         isSelected
-          ? "border-primary bg-secondary"
+          ? "bg-secondary"
           : "border-border hover:border-muted-foreground/20",
-        "hover:shadow-md hover:motion-safe:scale-[1.03]",
+        "hover:motion-safe:scale-105",
       )}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
@@ -116,13 +122,13 @@ export function TemplateCard({
         )}
       />
 
-      <CardHeader className="pb-2">
+      <CardHeader className="p-4 pb-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             {template.icon && !iconError ? (
               <div
                 className={cn(
-                  "relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-md transition-all duration-300",
+                  "flex h-10 w-10 items-center justify-center overflow-hidden rounded-md transition-all duration-300",
                   isSelected
                     ? "bg-primary/40 text-primary-foreground"
                     : "bg-primary/10 text-primary group-hover:bg-primary/20",
@@ -140,7 +146,7 @@ export function TemplateCard({
             ) : (
               <div
                 className={cn(
-                  "relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-md transition-all duration-300",
+                  "flex h-10 w-10 items-center justify-center overflow-hidden rounded-md transition-all duration-300",
                   isSelected
                     ? "bg-primary/40 text-primary-foreground"
                     : "bg-primary/10 text-primary group-hover:bg-primary/20",
@@ -150,7 +156,7 @@ export function TemplateCard({
               </div>
             )}
             <div>
-              <CardTitle className="text-lg leading-tight">
+              <CardTitle className="font-mono font-semibold leading-tight text-lg tracking-tight">
                 {template.name}
               </CardTitle>
               <div className="mt-1 inline-block rounded-md bg-secondary px-2 py-0.5 text-secondary-foreground text-xs">
@@ -159,12 +165,12 @@ export function TemplateCard({
             </div>
           </div>
         </div>
-        <CardDescription className="mt-2 line-clamp-2 h-10">
+        <CardDescription className="mt-2 line-clamp-2">
           {template.description}
         </CardDescription>
       </CardHeader>
 
-      <CardContent className="flex-1 space-y-3 pb-4">
+      <CardContent className="flex-1 space-y-3 p-4 pt-0">
         <div className="flex items-center gap-2 text-sm">
           <Badge variant="secondary" className="font-normal">
             {templateTools.length} tools included
@@ -176,14 +182,14 @@ export function TemplateCard({
           )}
         </div>
 
-        {/* Preview of the included tools */}
-        <div className="flex flex-wrap gap-1.5">
+        {/* Preview of the included tools with animation */}
+        <div ref={toolsContainerRef} className="flex flex-wrap gap-1">
           {previewTools.map((tool) => (
             <Badge
               key={tool.id}
               variant="outline"
               className={cn(
-                "rounded-md px-1.5 py-0.5 font-normal text-xs transition-all duration-300",
+                "rounded-md px-1 py-0.5 font-normal text-xs transition-all duration-300",
                 isSelected ? "bg-secondary/80" : "group-hover:bg-background/80",
               )}
             >
@@ -207,7 +213,7 @@ export function TemplateCard({
           {templateTools.length > 4 && (
             <Badge
               variant="outline"
-              className="rounded-md bg-muted/80 px-1.5 py-0.5 font-normal text-xs"
+              className="rounded-md bg-muted/80 px-1 py-0.5 font-normal text-xs"
             >
               +{templateTools.length - 4} more
             </Badge>
