@@ -53,8 +53,6 @@ export default function DockerToolsClient({
       return
     }
 
-    posthog.capture("tool_selected", { tool_id: toolId })
-
     const newSelectedTools = selectedTools.includes(toolId)
       ? selectedTools.filter((id) => id !== toolId)
       : [...selectedTools, toolId]
