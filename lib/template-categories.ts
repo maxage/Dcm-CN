@@ -12,4 +12,4 @@ export enum TemplateCategory {
   DOWNLOAD = "Download",
   COMMUNICATION = "Communication",
   OTHER = "Other",
-} 
+}
