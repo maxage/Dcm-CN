@@ -1,14 +1,20 @@
 {
-  "name": "my-v0-project",
-  "version": "0.1.0",
+  "name": "docker-compose-maker",
+  "version": "1.0.0",
+  "description": "A tool to create docker-compose.yaml files",
+  "author": "ajnart",
+  "license": "AGPL-3.0-only",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "serve out",
-    "lint": "next lint",
+    "lint": "biome lint",
+    "format": "biome format",
     "deploy": "next build && wrangler pages deploy",
-    "test:compose": "bun run tests/validate-compose.test.ts"
+    "test:compose": "bun test tests/validate-compose.test.ts",
+    "test:containers": "bun test tests/validate-all-containers.test.ts",
+    "test": "bun test"
   },
   "dependencies": {
     "@hookform/resolvers": "^4.1.3",
@@ -80,10 +86,8 @@
     "tailwindcss-motion": "^1.1.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2",
-    "wrangler": "^4.1.0"
+    "wrangler": "^4.1.0",
+    "@types/bun": "latest"
   },
-  "trustedDependencies": [
-    "@biomejs/biome",
-    "@parcel/watcher"
-  ]
+  "trustedDependencies": ["@biomejs/biome", "@parcel/watcher"]
 }
