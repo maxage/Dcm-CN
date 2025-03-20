@@ -163,8 +163,8 @@ bun test:containers
 
 ## 🖼️ Screenshots
 
-![UI Screenshot]("/public/ui-demo.png")
-![Generated docker-compose file]("/public/compose-output.png")
+![UI Screenshot](/public/ui-demo.png)
+![Generated docker-compose file](/public/compose-output.png)
 
 ## 🤝 Contributing
 
