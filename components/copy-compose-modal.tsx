@@ -233,7 +233,7 @@ export function CopyComposeModal({
           )
 
           // Find and process each match
-          let match
+          let match: RegExpExecArray | null
           while ((match = servicePortRegex.exec(result)) !== null) {
             // Find a new port that's not already allocated
             let newPort = Number(port) + 1
@@ -603,10 +603,10 @@ NETWORK_MODE=${settings.networkMode}
           <EmbeddedSettings />
 
           {portConflicts && (
-            <Alert className="my-3">
+            <Alert variant="info" className="my-3 bg-secondary">
               <AlertCircle className="h-4 w-4" />
               <AlertTitle>Port conflicts detected and fixed</AlertTitle>
-              <AlertDescription>
+              <AlertDescription className="text-foreground text-xs">
                 We found {portConflicts.conflicts.length} port conflict(s) and
                 fixed {portConflicts.fixed} issue(s). We've fixed it for you.
                 Because we're just <b>that cool 😎</b>
