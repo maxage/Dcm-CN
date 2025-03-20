@@ -1,116 +1,87 @@
-import { execSync } from 'node:child_process'
-import { promises as fs } from 'node:fs'
-import path from 'node:path'
-import { DEFAULT_SETTINGS } from '../lib/constants'
-import type { DockerTool } from '../lib/docker-tools'
-import { tools } from '../tools'
+import { afterAll, describe, expect, test } from "bun:test"
+import { execSync } from "node:child_process"
+import { promises as fs } from "node:fs"
+import path from "node:path"
+import { DEFAULT_SETTINGS } from "../lib/constants"
+import type { DockerTool } from "../lib/docker-tools"
+import { tools } from "../tools"
 
-// Test summary
-const testResults = {
-  success: 0,
-  failed: 0,
-  failedServices: [] as string[],
-}
+// Temp files paths
+const tempComposeFilePath = path.join(process.cwd(), "docker-compose.yaml")
+const tempEnvFilePath = path.join(process.cwd(), ".env")
 
-async function main() {
-  try {
-    console.log("Starting Docker Compose validation tests...\n")
-    
-    // Filter out unsupported tools
-    const supportedTools = tools.filter(tool => !tool.isUnsupported)
-    console.log(`Found ${supportedTools.length} supported Docker tools`)
-    
-    // Test 1: Test each service individually
-    console.log("\n🧪 Test 1: Validating each service individually...")
-    await testIndividualServices(supportedTools)
-    
-    // Test 2: Test all services together
-    console.log("\n🧪 Test 2: Validating all services together...")
-    await testAllServices(supportedTools)
-    
-    // Print test summary
-    console.log("\n📊 Test Summary:")
-    console.log(`✅ Successful tests: ${testResults.success}`)
-    console.log(`❌ Failed tests: ${testResults.failed}`)
-    
-    if (testResults.failedServices.length > 0) {
-      console.log("\n❌ Failed services:")
-      testResults.failedServices.forEach(service => {
-        console.log(`  - ${service}`)
-      })
-      return false
-    }
-    
-    console.log("\n🎉 All tests passed!")
-    return true
-  } catch (error) {
-    console.error("\n❌ Unexpected error:", error instanceof Error ? error.message : String(error))
-    return false
-  }
-}
+describe("Docker Compose Validation", () => {
+  const supportedTools = tools.filter((tool) => !tool.isUnsupported)
 
-async function testIndividualServices(tools: DockerTool[]) {
-  for (const tool of tools) {
+  // Clean up temporary files after all tests
+  afterAll(async () => {
     try {
-      process.stdout.write(`  Testing ${tool.name}... `)
-      
-      // Generate compose file with just this service
-      const composeContent = generateDockerComposeFile([tool])
-      
+      await fs.unlink(tempComposeFilePath)
+      await fs.unlink(tempEnvFilePath)
+    } catch (err) {
+      // Ignore errors if files don't exist
+    }
+  })
+
+  describe("Individual Services", () => {
+    // Test each service individually
+    for (const tool of supportedTools) {
+      test(`Service: ${tool.name}`, async () => {
+        // Skip tools without compose content
+        if (!tool.composeContent) {
+          return
+        }
+
+        try {
+          // Generate compose file with just this service
+          const composeContent = generateDockerComposeFile([tool])
+
+          // Create a temporary docker-compose.yaml file
+          await fs.writeFile(tempComposeFilePath, composeContent, "utf8")
+
+          // Generate .env file with default settings
+          const envContent = generateEnvFile()
+          await fs.writeFile(tempEnvFilePath, envContent, "utf8")
+
+          // Validate the docker-compose file - this will throw an error if validation fails
+          execSync("docker compose config --quiet", { encoding: "utf8" })
+
+          // If we get here, validation passed
+          expect(true).toBe(true)
+        } catch (error) {
+          // Fail the test with the error message
+          const errorMsg =
+            error instanceof Error ? error.message : String(error)
+          expect.fail(`Service "${tool.name}" validation failed: ${errorMsg}`)
+        }
+      })
+    }
+  })
+
+  test("All services together", async () => {
+    try {
+      // Generate docker-compose content with all services
+      const composeContent = generateDockerComposeFile(supportedTools)
+
       // Create a temporary docker-compose.yaml file
-      const tempFilePath = path.join(process.cwd(), 'docker-compose.yaml')
-      await fs.writeFile(tempFilePath, composeContent, 'utf8')
-      
+      await fs.writeFile(tempComposeFilePath, composeContent, "utf8")
+
       // Generate .env file with default settings
       const envContent = generateEnvFile()
-      const envFilePath = path.join(process.cwd(), '.env')
-      await fs.writeFile(envFilePath, envContent, 'utf8')
-      
-      // Validate the docker-compose file
-      execSync('docker compose config --quiet', { encoding: 'utf8' })
-      
-      // If we get here, validation passed
-      console.log("✅ Passed")
-      testResults.success++
-    } catch (error) {
-      console.log("❌ Failed")
-      console.error(`    Error: ${error instanceof Error ? error.message : String(error)}`)
-      testResults.failed++
-      testResults.failedServices.push(tool.name)
-    }
-  }
-}
+      await fs.writeFile(tempEnvFilePath, envContent, "utf8")
 
-async function testAllServices(tools: DockerTool[]) {
-  try {
-    // Generate docker-compose content with all services
-    const composeContent = generateDockerComposeFile(tools)
-    
-    // Create a temporary docker-compose.yaml file
-    const tempFilePath = path.join(process.cwd(), 'docker-compose.yaml')
-    await fs.writeFile(tempFilePath, composeContent, 'utf8')
-    console.log(`  Generated docker-compose.yaml with ${tools.length} services`)
-    
-    // Generate .env file with default settings
-    const envContent = generateEnvFile()
-    const envFilePath = path.join(process.cwd(), '.env')
-    await fs.writeFile(envFilePath, envContent, 'utf8')
-    console.log('  Generated .env file with default settings')
-    
-    // Validate the docker-compose file
-    console.log("  Validating combined docker-compose.yaml file...")
-    execSync('docker compose config --quiet', { encoding: 'utf8' })
-    
-    console.log("  ✅ Validation of all services together successful!")
-    testResults.success++
-    
-    return true
-  } catch (error) {
-    console.error("  ❌ Validation of all services together failed:", error instanceof Error ? error.message : String(error))
-    testResults.failed++
-    return false
-  }
-}
+      // Validate the docker-compose file
+      execSync("docker compose config --quiet", { encoding: "utf8" })
+
+      // If we get here, validation passed
+      expect(true).toBe(true)
+    } catch (error) {
+      // Fail the test with the error message
+      const errorMsg = error instanceof Error ? error.message : String(error)
+      expect.fail(`Combined services validation failed: ${errorMsg}`)
+    }
+  })
+})
 
 function generateDockerComposeFile(selectedTools: DockerTool[]): string {
   // Create docker-compose header
@@ -200,7 +171,7 @@ function generateDockerComposeFile(selectedTools: DockerTool[]): string {
 function generateEnvFile(): string {
   // Get default settings
   const settings = DEFAULT_SETTINGS
-  
+
   return `# Docker Compose Environment Variables
 # These can be overridden by setting them in your shell or in a .env file
 
@@ -223,19 +194,3 @@ RESTART_POLICY=${settings.restartPolicy}
 NETWORK_MODE=${settings.networkMode}
 `
 }
-
-// Run the test
-main()
-  .then((success) => {
-    if (success) {
-      console.log("\n✨ All tests passed successfully!")
-      process.exit(0)
-    } else {
-      console.error("\n❌ Some tests failed")
-      process.exit(1)
-    }
-  })
-  .catch((error) => {
-    console.error("\n❌ An error occurred during tests:", error)
-    process.exit(1)
-  }) 
