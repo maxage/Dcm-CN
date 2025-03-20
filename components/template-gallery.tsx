@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { DockerTool } from "@/lib/docker-tools";
 import { templates } from "@/lib/templates";
+import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { useMemo, useState } from "react";
 
 interface TemplateGalleryProps {
@@ -45,7 +46,7 @@ export function TemplateGallery({ allTools, onSelectTemplate, selectedTools }: T
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div className="flex flex-col space-y-2">
         <h2 className="text-2xl font-bold">Template Gallery</h2>
         <p className="text-muted-foreground">
@@ -53,16 +54,19 @@ export function TemplateGallery({ allTools, onSelectTemplate, selectedTools }: T
         </p>
       </div>
 
-      <div className="space-y-4">
-        <Input
-          placeholder="Search templates..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="max-w-md"
-        />
+      <div className="space-y-6">
+        <div className="relative max-w-md">
+          <MagnifyingGlassIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            placeholder="Search templates..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-9"
+          />
+        </div>
 
         <Tabs value={activeCategory} onValueChange={setActiveCategory}>
-          <TabsList className="mb-4">
+          <TabsList className="mb-6">
             {categories.map((category) => (
               <TabsTrigger
                 key={category}
@@ -76,7 +80,7 @@ export function TemplateGallery({ allTools, onSelectTemplate, selectedTools }: T
 
           <TabsContent value={activeCategory} className="mt-0">
             {filteredTemplates.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {filteredTemplates.map((template) => (
                   <TemplateCard
                     key={template.id}
@@ -88,7 +92,7 @@ export function TemplateGallery({ allTools, onSelectTemplate, selectedTools }: T
                 ))}
               </div>
             ) : (
-              <div className="text-center py-8">
+              <div className="py-8 text-center">
                 <p className="text-muted-foreground">
                   No templates found matching your criteria
                 </p>
