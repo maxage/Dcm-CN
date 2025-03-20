@@ -15,6 +15,69 @@ interface DockerToolsClientProps {
   dockerTools: DockerTool[]
 }
 
+// Encode selected tool IDs into a compact string
+function encodeToolIds(selectedIds: string[], allTools: DockerTool[]): string {
+  // Create a mapping of tool IDs to their index position
+  const toolIndexMap = Object.fromEntries(
+    allTools.map((tool, index) => [tool.id, index])
+  )
+  
+  // Create a binary representation where each bit represents if a tool is selected
+  let binaryString = ''
+  for (let i = 0; i < allTools.length; i++) {
+    binaryString += selectedIds.includes(allTools[i].id) ? '1' : '0'
+  }
+  
+  // Convert binary string to base64 for compactness
+  // First pad the binary string to multiples of 8
+  while (binaryString.length % 8 !== 0) {
+    binaryString += '0'
+  }
+  
+  // Convert binary to bytes, then to base64
+  const bytes = new Uint8Array(binaryString.length / 8)
+  for (let i = 0; i < binaryString.length; i += 8) {
+    const byte = binaryString.substr(i, 8)
+    bytes[i / 8] = parseInt(byte, 2)
+  }
+  
+  // Convert to base64 and make URL safe
+  return btoa(String.fromCharCode(...bytes))
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/, '')
+}
+
+// Decode the compact string back to selected tool IDs
+function decodeToolIds(encoded: string, allTools: DockerTool[]): string[] {
+  try {
+    // Make base64 URL-safe string back to regular base64
+    const base64 = encoded
+      .replace(/-/g, '+')
+      .replace(/_/g, '/')
+      .padEnd(encoded.length + (4 - (encoded.length % 4)) % 4, '=')
+    
+    // Convert base64 to bytes, then to binary string
+    const bytes = Uint8Array.from(atob(base64), c => c.charCodeAt(0))
+    let binaryString = ''
+    
+    bytes.forEach(byte => {
+      binaryString += byte.toString(2).padStart(8, '0')
+    })
+    
+    // Trim binary string to the number of tools
+    binaryString = binaryString.substring(0, allTools.length)
+    
+    // Convert binary string back to tool IDs
+    return allTools
+      .filter((_, index) => binaryString[index] === '1')
+      .map(tool => tool.id)
+  } catch (error) {
+    console.error('Error decoding tool IDs:', error)
+    return []
+  }
+}
+
 export default function DockerToolsClient({
   dockerTools,
 }: DockerToolsClientProps) {
@@ -28,31 +91,35 @@ export default function DockerToolsClient({
   } = useLocalStorage<string[]>(STORAGE_KEYS.SELECTED_TOOLS, [])
 
   // Get tools from URL search params if they exist
-  const toolsFromParams = searchParams.get('tools')
-  const selectedTools = toolsFromParams ? 
-    toolsFromParams.split(',').filter(id => dockerTools.some(tool => tool.id === id)) : 
-    storedTools
+  const toolsParam = searchParams.get('t')
+  
+  // If URL param exists, decode it, otherwise use localStorage
+  const selectedTools = toolsParam 
+    ? decodeToolIds(toolsParam, dockerTools)
+    : storedTools
 
   // Update URL with selected tools
   const updateUrlParams = useCallback((toolIds: string[]) => {
     const params = new URLSearchParams(searchParams.toString())
     
     if (toolIds.length > 0) {
-      params.set('tools', toolIds.join(','))
+      // Use a shorter parameter name ('t' instead of 'tools')
+      // and encode the IDs to save space
+      params.set('t', encodeToolIds(toolIds, dockerTools))
     } else {
-      params.delete('tools')
+      params.delete('t')
     }
     
     const newUrl = `${window.location.pathname}${params.toString() ? `?${params.toString()}` : ''}`
     router.push(newUrl)
-  }, [router, searchParams])
+  }, [router, searchParams, dockerTools])
 
   // Sync localStorage with URL params on initial load
   useEffect(() => {
-    if (toolsFromParams && toolsFromParams !== storedTools.join(',')) {
+    if (toolsParam && selectedTools.join(',') !== storedTools.join(',')) {
       setStoredTools(selectedTools)
     }
-  }, [toolsFromParams, storedTools, selectedTools, setStoredTools])
+  }, [toolsParam, selectedTools, storedTools, setStoredTools])
 
   const toggleToolSelection = (toolId: string) => {
     const tool = dockerTools.find((t) => t.id === toolId)
