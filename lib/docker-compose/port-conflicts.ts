@@ -1,6 +1,4 @@
-export function detectAndFixPortConflicts(
-  content: string,
-): {
+export function detectAndFixPortConflicts(content: string): {
   fixedContent: string
   conflicts: { fixed: number; conflicts: string[] } | null
 } {
@@ -93,4 +91,4 @@ export function detectAndFixPortConflicts(
     fixedContent: result,
     conflicts: conflicts.length > 0 ? { fixed: fixedCount, conflicts } : null,
   }
-} 
+}

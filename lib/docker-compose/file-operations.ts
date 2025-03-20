@@ -7,17 +7,17 @@ export async function copyToClipboard(
   content: string,
   fileType: "compose" | "env",
   selectedTools: DockerTool[],
-  settings: DockerSettings
+  settings: DockerSettings,
 ): Promise<boolean> {
   try {
     await navigator.clipboard.writeText(content)
-    
+
     toast.success(
       `${fileType === "compose" ? "Docker Compose" : ".env"} file copied to clipboard`,
       {
         description: `${selectedTools.length} service${selectedTools.length !== 1 ? "s" : ""} configuration copied.`,
         duration: 3000,
-      }
+      },
     )
 
     posthog.capture("copy_compose_success", {
@@ -29,12 +29,13 @@ export async function copyToClipboard(
     return true
   } catch (err) {
     console.error("Failed to copy: ", err)
-    
+
     toast.error("Failed to copy to clipboard", {
-      description: err instanceof Error ? err.message : "An error occurred while copying",
+      description:
+        err instanceof Error ? err.message : "An error occurred while copying",
       duration: 5000,
     })
-    
+
     return false
   }
 }
@@ -43,7 +44,7 @@ export function downloadFile(
   content: string,
   fileType: "compose" | "env",
   selectedTools: DockerTool[],
-  settings: DockerSettings
+  settings: DockerSettings,
 ): void {
   const filename = fileType === "compose" ? "docker-compose.yaml" : ".env"
 
@@ -73,7 +74,7 @@ export function downloadFile(
     })
   } catch (err) {
     console.error("Failed to download file: ", err)
-    
+
     toast.error("Failed to download file", {
       description:
         err instanceof Error
@@ -82,4 +83,4 @@ export function downloadFile(
       duration: 5000,
     })
   }
-} 
+}

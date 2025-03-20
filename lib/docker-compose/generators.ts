@@ -1,6 +1,6 @@
-import type { DockerSettings } from "@/components/settings-panel";
-import type { DockerTool } from "@/lib/docker-tools";
-import { detectAndFixPortConflicts } from "./port-conflicts";
+import type { DockerSettings } from "@/components/settings-panel"
+import type { DockerTool } from "@/lib/docker-tools"
+import { detectAndFixPortConflicts } from "./port-conflicts"
 
 export function generateEnvFileContent(settings: DockerSettings): string {
   return `# Docker Compose Environment Variables
@@ -29,10 +29,10 @@ NETWORK_MODE=${settings.networkMode}
 export function generateComposeContent(
   selectedTools: DockerTool[],
   settings: DockerSettings,
-  showInterpolated: boolean
+  showInterpolated: boolean,
 ): {
-  content: string;
-  portConflicts: { fixed: number; conflicts: string[] } | null;
+  content: string
+  portConflicts: { fixed: number; conflicts: string[] } | null
 } {
   const composeHeader = `#  ____   ____ __  __ 
 # |  _ \\ / ___|  \\/  |
@@ -76,8 +76,7 @@ export function generateComposeContent(
 
       if (prevDefinesBlock) {
         currentIndentLevel++
-      }
-      else if (!isServiceLine && index > 0) {
+      } else if (!isServiceLine && index > 0) {
         const originalIndent = line.match(/^\s*/)?.[0].length || 0
         const prevOriginalIndent =
           lines[index - 1].match(/^\s*/)?.[0].length || 0
@@ -118,4 +117,4 @@ export function generateComposeContent(
     content: fixedContent,
     portConflicts: conflicts,
   }
-} 
+}
