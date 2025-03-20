@@ -1,7 +1,4 @@
 "use client"
-
-import type { DockerSettings } from "@/components/settings-panel"
-import SettingsPanel from "@/components/settings-panel"
 import EmbeddedSettings from "@/components/settings/EmbeddedSettings"
 import {
   AlertDialog,
@@ -19,13 +16,12 @@ import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import type { DockerTool } from "@/lib/docker-tools"
 import { useSettings } from "@/lib/settings-context"
-import { cn } from "@/lib/utils"
 import Editor from "@monaco-editor/react"
 import { Check, Copy, Download, File } from "lucide-react"
 import type { editor } from "monaco-editor"
 import { useTheme } from "next-themes"
 import posthog from "posthog-js"
-import { Suspense, lazy, memo, useEffect, useRef, useState } from "react"
+import { memo, useEffect, useRef, useState } from "react"
 import { siDocker } from "simple-icons"
 import { toast } from "sonner"
 

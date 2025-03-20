@@ -9,7 +9,6 @@ import type { DockerTool } from "@/lib/docker-tools"
 import { SettingsProvider } from "@/lib/settings-context"
 import { decodeShareUrl } from "@/lib/url-utils"
 import { useRouter, useSearchParams } from "next/navigation"
-import posthog from "posthog-js"
 import { useEffect, useRef } from "react"
 
 interface DockerToolsClientProps {

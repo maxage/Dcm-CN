@@ -23,6 +23,7 @@
         "noForEach": "off"
       },
       "correctness": {
+        "noUnusedImports": "info",
         "useExhaustiveDependencies": "off"
       },
       "nursery": {

@@ -2,8 +2,6 @@
 
 import SettingsPanel from "@/components/settings-panel"
 import { Button } from "@/components/ui/button"
-import { useSettings } from "@/lib/settings-context"
-import { Check } from "lucide-react"
 import { useState } from "react"
 
 export default function EmbeddedSettings() {
