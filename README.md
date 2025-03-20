@@ -27,13 +27,21 @@
   <a href="#-features">
     <strong>Features ✨</strong>
   </a>
+  •
+  <a href="#-contributing">
+    <strong>Contribute 🤝</strong>
+  </a>
 </p>
 
 ## 📋 About
 
+> 🌟 **Community-Driven Project**: DCM started as a simple tool but aims to become the go-to resource for Docker Compose configurations, powered by the community. We believe everyone has their favorite self-hosted tools, and we'd love for you to share yours! Whether you're using a popular application or a hidden gem, your contribution helps others discover and easily deploy great software.
+
 DCM (Docker Compose Maker) is a simple yet powerful tool that helps you create `docker-compose.yaml` files for your self-hosted applications. Select from a curated list of popular containers and generate a ready-to-use configuration file with just a few clicks.
 
 No more copy-pasting from documentation or trying to remember the correct configuration options - this tool makes it easy to set up your Docker environment.
+
+> 💡 **Share Your Stack**: Using a great tool that's not listed here? We'd love to include it! Check out our [contribution guide](CONTRIBUTING.md) to help others discover and use your favorite containers.
 
 ## ✨ Features
 
@@ -163,28 +171,23 @@ bun test:containers
 
 ## 🖼️ Screenshots
 
+### User Interface
 ![UI Screenshot](/public/ui-demo.png)
+
+### Generated docker compose file
 ![Generated docker-compose file](/public/compose-output.png)
 
 ## 🤝 Contributing
 
-Contributions are welcome! If you'd like to add a new container to the list or improve the existing configurations:
+We welcome contributions to DCM! Whether you want to add new container definitions, improve documentation, or fix bugs, your help is appreciated.
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-container`)
-3. Commit your changes (`git commit -m 'Add some amazing container'`)
-4. Push to the branch (`git push origin feature/amazing-container`)
-5. Open a Pull Request
+Please check our [CONTRIBUTING.md](CONTRIBUTING.md) guide for detailed instructions on:
+- How to add new container definitions
+- Code style guidelines
+- Testing requirements
+- Pull request process
 
-### 📦 Adding New Container Definitions
-
-All container definitions are stored in the `tools/` directory, organized by category. To add a new container:
-
-1. Find the appropriate category file (e.g., `media.ts`, `database.ts`, etc.)
-2. Add your container definition following the `DockerTool` interface format
-3. Make sure it's exported in `tools/index.ts`
-
-For detailed instructions on adding new containers, please see the [CONTRIBUTING.md](CONTRIBUTING.md) file.
+The easiest way to contribute is by adding new container definitions to our growing collection!
 
 ## 📜 License
 
