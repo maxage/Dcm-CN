@@ -7,7 +7,10 @@
   <img alt="Live Demo" src="https://img.shields.io/badge/🌐_Live_Demo-Visit_Site-blue">
 </a>
 <a href="https://github.com/ajnart/docker-compose-maker/actions">
-  <img title="CI Status" src="https://github.com/ajnart/docker-compose-maker/actions/workflows/docker.yml/badge.svg" alt="CI Status">
+  <img title="CI Status" src="https://github.com/ajnart/docker-compose-maker/actions/workflows/build_image.yml/badge.svg" alt="CI Status">
+</a>
+<a href="https://github.com/ajnart/docker-compose-maker/pkgs/container/dcm">
+  <img alt="Docker Image" src="https://img.shields.io/badge/🐳_Docker_Image-ghcr.io/ajnart/dcm-blue">
 </a>
 </p>
 
@@ -61,6 +64,11 @@ docker run -p 3000:3000 ghcr.io/ajnart/dcm
 ```
 
 Then visit `http://localhost:3000` in your browser.
+
+The Docker image is available for multiple platforms:
+- linux/amd64
+- linux/arm64
+- linux/arm/v7
 
 ### 📦 Using Docker Compose
 
