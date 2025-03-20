@@ -5,7 +5,7 @@ import type { DockerTool } from "@/lib/docker-tools";
 import type { Template } from "@/lib/templates";
 import { getToolsFromTemplate } from "@/lib/templates";
 import { cn } from "@/lib/utils";
-import { MinusCircle, Package, PlusCircle } from "lucide-react";
+import { MinusCircle, PlusCircle } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -27,6 +27,8 @@ export function TemplateCard({
 }: TemplateCardProps) {
   const [loading, setLoading] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
+  const [iconError, setIconError] = useState(false);
+  const [toolIconErrors, setToolIconErrors] = useState<Record<string, boolean>>({});
 
   const handleSelectTemplate = () => {
     if (isSelected) {
@@ -72,6 +74,14 @@ export function TemplateCard({
   // Select up to 4 tools to display as preview
   const previewTools = templateTools.slice(0, 4);
 
+  // Handle image error for a specific tool
+  const handleToolIconError = (toolId: string) => {
+    setToolIconErrors(prev => ({
+      ...prev,
+      [toolId]: true
+    }));
+  };
+
   return (
     <Card 
       className={cn(
@@ -99,7 +109,7 @@ export function TemplateCard({
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            {template.icon ? (
+            {template.icon && !iconError ? (
               <div className={cn(
                 "relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-md transition-all duration-300",
                 isSelected 
@@ -112,6 +122,7 @@ export function TemplateCard({
                   width={40}
                   height={40}
                   className="object-contain p-1.5"
+                  onError={() => setIconError(true)}
                 />
               </div>
             ) : (
@@ -121,7 +132,7 @@ export function TemplateCard({
                   ? "bg-primary/40 text-primary-foreground" 
                   : "bg-primary/10 group-hover:bg-primary/20 text-primary"
               )}>
-                <Package size={20} />
+                <span className="font-bold">{template.name.charAt(0)}</span>
               </div>
             )}
             <div>
@@ -160,14 +171,19 @@ export function TemplateCard({
                 isSelected ? "bg-secondary/80" : "group-hover:bg-background/80"
               )}
             >
-              {tool.icon && (
+              {tool.icon && !toolIconErrors[tool.id] ? (
                 <Image 
                   src={tool.icon} 
                   alt={tool.name} 
                   width={12} 
                   height={12} 
                   className="mr-1.5 object-contain"
+                  onError={() => handleToolIconError(tool.id)}
                 />
+              ) : (
+                <span className="mr-1.5 inline-block h-3 w-3 rounded-full bg-primary/10 text-center text-[8px] font-bold">
+                  {tool.name.charAt(0)}
+                </span>
               )}
               {tool.name}
             </Badge>
