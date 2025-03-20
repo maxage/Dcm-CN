@@ -91,7 +91,7 @@ export default function DockerToolsClient({
   } = useLocalStorage<string[]>(STORAGE_KEYS.SELECTED_TOOLS, [])
 
   // Check for encoded tools in the URL on initial load
-  const toolsParam = searchParams.get('t')
+  const toolsParam = searchParams.get('share')
   
   // Load from URL parameter if present (only on initial page load)
   useEffect(() => {
@@ -109,7 +109,7 @@ export default function DockerToolsClient({
     
     const baseUrl = window.location.href.split('?')[0]
     const encoded = encodeToolIds(selectedTools, dockerTools)
-    return `${baseUrl}?t=${encoded}`
+    return `${baseUrl}?share=${encoded}`
   }, [selectedTools, dockerTools])
 
   const toggleToolSelection = (toolId: string) => {
