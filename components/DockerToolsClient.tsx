@@ -7,7 +7,7 @@ import { useLocalStorage } from "@/hooks/useLocalStorage"
 import { STORAGE_KEYS } from "@/lib/constants"
 import type { DockerTool } from "@/lib/docker-tools"
 import { SettingsProvider } from "@/lib/settings-context"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useSearchParams } from "next/navigation"
 import posthog from "posthog-js"
 import { useCallback, useEffect } from "react"
 
@@ -81,7 +81,6 @@ function decodeToolIds(encoded: string, allTools: DockerTool[]): string[] {
 export default function DockerToolsClient({
   dockerTools,
 }: DockerToolsClientProps) {
-  const router = useRouter()
   const searchParams = useSearchParams()
   
   const {
