@@ -1,10 +1,11 @@
 "use client"
 
 import Editor from "@monaco-editor/react"
-import type { editor } from "monaco-editor"
 import { memo } from "react"
 
-export const configureMonacoThemes = (monaco: typeof import("monaco-editor")) => {
+export const configureMonacoThemes = (
+  monaco: typeof import("monaco-editor"),
+) => {
   monaco.editor.defineTheme("tailwind-dark", {
     base: "vs-dark",
     inherit: true,
@@ -84,4 +85,4 @@ export const EnvEditor = memo(
       value={content}
     />
   ),
-) 
+)
