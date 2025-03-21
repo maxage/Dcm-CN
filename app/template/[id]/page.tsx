@@ -34,7 +34,7 @@ export default async function TemplatePage({
 }) {
   // Await params as required by Next.js when using generateStaticParams
   const { id } = await params
-  
+
   // Find the template with the matching ID
   const template = templates.find((t) => t.id === id)
 

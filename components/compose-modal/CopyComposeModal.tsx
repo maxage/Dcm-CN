@@ -239,7 +239,7 @@ export function CopyComposeModal({
                 Settings
               </TabsTrigger>
             </TabsList>
-            
+
             <TabsContent value="compose">
               <div className="mb-2 flex items-center justify-end">
                 <ActionButtons
@@ -258,7 +258,7 @@ export function CopyComposeModal({
                 />
               </div>
             </TabsContent>
-            
+
             <TabsContent value="env">
               <div className="mb-2 flex items-center justify-end">
                 <ActionButtons
@@ -276,7 +276,7 @@ export function CopyComposeModal({
                 />
               </div>
             </TabsContent>
-            
+
             <TabsContent value="settings">
               <SettingsForm />
             </TabsContent>

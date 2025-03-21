@@ -1,7 +1,6 @@
 "use client"
 
 import Editor from "@monaco-editor/react"
-import { editor } from "monaco-editor"
 import { memo } from "react"
 
 export const configureMonacoThemes = (

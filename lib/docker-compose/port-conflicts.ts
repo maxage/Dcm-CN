@@ -69,10 +69,8 @@ export function detectAndFixPortConflicts(content: string): {
 
           const replacement = `${match[1]}${newPort}${match[3]}`
 
-          if (match === servicePortRegex.exec(result)) {
-            conflicts[conflicts.length - 1] +=
-              `\n  → Changed ${serviceToFix}: ${port} → ${newPort}`
-          }
+          conflicts[conflicts.length - 1] +=
+            `\n  → Changed ${serviceToFix}: ${port} → ${newPort}`
 
           result =
             result.substring(0, match.index) +
