@@ -40,7 +40,8 @@ export const configureMonacoThemes = (
 interface BaseEditorProps {
   value?: string
   content?: string
-  onMount?: (editor: editor.IStandaloneCodeEditor) => void
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  onMount?: (editor: any) => void
   theme?: string
   beforeMount?: (monaco: typeof import("monaco-editor")) => void
   readOnly?: boolean
