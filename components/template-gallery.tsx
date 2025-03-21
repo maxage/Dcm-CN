@@ -75,7 +75,7 @@ export function TemplateGallery({
               <TabsTrigger
                 key={category}
                 value={category}
-                className="capitalize mb-2 mr-1"
+                className="mr-1 mb-2 capitalize"
               >
                 {category === "all" ? "All Templates" : category}
               </TabsTrigger>
