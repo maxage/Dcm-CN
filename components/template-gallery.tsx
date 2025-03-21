@@ -70,12 +70,12 @@ export function TemplateGallery({
         </div>
 
         <Tabs value={activeCategory} onValueChange={setActiveCategory}>
-          <TabsList className="mb-6 flex flex-wrap">
+          <TabsList className="mb-6">
             {categories.map((category) => (
               <TabsTrigger
                 key={category}
                 value={category}
-                className="mr-1 mb-2 capitalize"
+                className="capitalize"
               >
                 {category === "all" ? "All Templates" : category}
               </TabsTrigger>

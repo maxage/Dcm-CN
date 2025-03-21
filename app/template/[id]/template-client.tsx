@@ -3,9 +3,9 @@
 import ActionButtons from "@/components/compose-modal/ActionButtons"
 import PortConflictsAlert from "@/components/compose-modal/PortConflictsAlert"
 import {
-  ComposeEditor,
-  EnvEditor,
-  configureMonacoThemes,
+    ComposeEditor,
+    EnvEditor,
+    configureMonacoThemes,
 } from "@/components/editors/MonacoEditor"
 import SettingsForm from "@/components/settings/SettingsForm"
 import { Badge } from "@/components/ui/badge"
@@ -16,25 +16,25 @@ import { Separator } from "@/components/ui/separator"
 import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
-  copyToClipboard,
-  downloadFile,
+    copyToClipboard,
+    downloadFile,
 } from "@/lib/docker-compose/file-operations"
 import {
-  generateComposeContent,
-  generateEnvFile,
+    generateComposeContent,
+    generateEnvFile,
 } from "@/lib/docker-compose/generators"
 import type { DockerTool } from "@/lib/docker-tools"
 import { useSettings } from "@/lib/settings-context"
 import type { Template } from "@/lib/templates"
 import {
-  AlertTriangle,
-  ArrowLeft,
-  Download,
-  ExternalLink,
-  File,
-  Info,
-  Settings,
-  Star,
+    AlertTriangle,
+    ArrowLeft,
+    Download,
+    ExternalLink,
+    File,
+    Info,
+    Settings,
+    Star,
 } from "lucide-react"
 import type { editor } from "monaco-editor"
 import { useTheme } from "next-themes"
@@ -226,9 +226,9 @@ export function TemplateClient({
         </div>
 
         <div className="mb-8">
-          <div className="mb-6 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+          <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center gap-4">
             {template.icon && (
-              <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border bg-background shadow-sm sm:h-20 sm:w-20">
+              <div className="relative h-16 w-16 sm:h-20 sm:w-20 flex-shrink-0 overflow-hidden rounded-md border bg-background shadow-sm">
                 <Image
                   alt={template.name}
                   className="object-contain p-2"
@@ -238,12 +238,8 @@ export function TemplateClient({
               </div>
             )}
             <div className="w-full min-w-0">
-              <h1 className="truncate font-bold text-2xl sm:text-3xl">
-                {template.name}
-              </h1>
-              <p className="line-clamp-2 text-muted-foreground sm:line-clamp-none">
-                {template.description}
-              </p>
+              <h1 className="truncate font-bold text-2xl sm:text-3xl">{template.name}</h1>
+              <p className="text-muted-foreground line-clamp-2 sm:line-clamp-none">{template.description}</p>
 
               <div className="mt-4 flex flex-wrap items-center gap-2">
                 <Badge
@@ -284,11 +280,8 @@ export function TemplateClient({
           >
             <CardHeader className="pb-0">
               <div className="flex items-center justify-between">
-                <TabsList className="grid w-full grid-cols-2 gap-1 sm:grid-cols-4">
-                  <TabsTrigger
-                    value="services"
-                    className="text-xs sm:text-base"
-                  >
+                <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-1">
+                  <TabsTrigger value="services" className="text-xs sm:text-base">
                     Services
                   </TabsTrigger>
                   <TabsTrigger value="compose" className="text-xs sm:text-base">
@@ -297,7 +290,7 @@ export function TemplateClient({
                       role="img"
                       viewBox="0 0 24 24"
                       xmlns="http://www.w3.org/2000/svg"
-                      className="mr-1 h-3 w-3 fill-current sm:h-4 sm:w-4"
+                      className="mr-1 h-3 w-3 sm:h-4 sm:w-4 fill-current"
                     >
                       <path d={siDocker.path} />
                     </svg>
@@ -307,10 +300,7 @@ export function TemplateClient({
                     <File className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
                     Env
                   </TabsTrigger>
-                  <TabsTrigger
-                    value="settings"
-                    className="text-xs sm:text-base"
-                  >
+                  <TabsTrigger value="settings" className="text-xs sm:text-base">
                     <Settings className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
                     Settings
                   </TabsTrigger>
@@ -326,7 +316,7 @@ export function TemplateClient({
                   {templateTools.map((tool) => (
                     <div
                       key={tool.id}
-                      className="flex flex-col items-start gap-4 rounded-md border bg-card p-4 shadow-sm transition-colors hover:bg-accent/10 sm:flex-row sm:items-center"
+                      className="flex flex-col sm:flex-row items-start sm:items-center gap-4 rounded-md border bg-card p-4 shadow-sm transition-colors hover:bg-accent/10"
                     >
                       {tool.icon && (
                         <div className="relative h-14 w-14 flex-shrink-0 overflow-hidden rounded-md border bg-background">
@@ -339,7 +329,7 @@ export function TemplateClient({
                         </div>
                       )}
 
-                      <div className="w-full min-w-0 flex-1">
+                      <div className="min-w-0 w-full flex-1">
                         <div className="flex items-center justify-between">
                           <div className="truncate font-medium text-lg">
                             {tool.name}
