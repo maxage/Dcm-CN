@@ -1,17 +1,10 @@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import type { DockerTool } from "@/lib/docker-tools"
 import type { Template } from "@/lib/templates"
 import { getToolsFromTemplate } from "@/lib/templates"
 import { cn } from "@/lib/utils"
-import { useAutoAnimate } from "@formkit/auto-animate/react"
 import { MinusCircle, PlusCircle } from "lucide-react"
 import Image from "next/image"
 import { useState } from "react"
@@ -38,10 +31,6 @@ export function TemplateCard({
   const [toolIconErrors, setToolIconErrors] = useState<Record<string, boolean>>(
     {},
   )
-  
-  // AutoAnimate refs for smooth animations
-  const [toolsContainerRef] = useAutoAnimate<HTMLDivElement>({ duration: 200 })
-  const [cardRef] = useAutoAnimate<HTMLDivElement>({ duration: 150 })
 
   const handleSelectTemplate = () => {
     if (isSelected) {
@@ -99,13 +88,13 @@ export function TemplateCard({
 
   return (
     <Card
-      ref={cardRef}
       className={cn(
-        "group relative h-full cursor-pointer select-none overflow-hidden rounded-sm transition-all hover:shadow-md",
+        "group relative cursor-pointer select-none overflow-hidden rounded-sm transition-all hover:shadow-md",
         isSelected
           ? "bg-secondary"
           : "border-border hover:border-muted-foreground/20",
         "hover:motion-safe:scale-105",
+        "flex h-80 flex-col",
       )}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
@@ -156,21 +145,12 @@ export function TemplateCard({
               </div>
             )}
             <div>
-              <CardTitle className="font-mono font-semibold leading-tight text-lg tracking-tight">
+              <CardTitle className="font-mono font-semibold text-lg leading-tight tracking-tight">
                 {template.name}
               </CardTitle>
-              <div className="mt-1 inline-block rounded-md bg-secondary px-2 py-0.5 text-secondary-foreground text-xs">
-                {template.category}
-              </div>
             </div>
           </div>
         </div>
-        <CardDescription className="mt-2 line-clamp-2">
-          {template.description}
-        </CardDescription>
-      </CardHeader>
-
-      <CardContent className="flex-1 space-y-3 p-4 pt-0">
         <div className="flex items-center gap-2 text-sm">
           <Badge variant="secondary" className="font-normal">
             {templateTools.length} tools included
@@ -181,9 +161,11 @@ export function TemplateCard({
             </span>
           )}
         </div>
+      </CardHeader>
 
-        {/* Preview of the included tools with animation */}
-        <div ref={toolsContainerRef} className="flex flex-wrap gap-1">
+      <CardContent className="flex-1 space-y-3 overflow-hidden p-4 pt-0">
+        {/* Preview of the included tools */}
+        <div className="flex flex-wrap gap-1">
           {previewTools.map((tool) => (
             <Badge
               key={tool.id}
@@ -219,6 +201,9 @@ export function TemplateCard({
             </Badge>
           )}
         </div>
+        <span className="line-clamp-2 text-muted-foreground text-sm">
+          {template.description}
+        </span>
       </CardContent>
 
       <div
