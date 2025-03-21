@@ -6,7 +6,7 @@ import { useTheme } from "next-themes"
 import { useEffect, useRef, useState } from "react"
 import { siDocker } from "simple-icons"
 
-import EmbeddedSettings from "@/components/settings/EmbeddedSettings"
+import SettingsForm from "@/components/settings/SettingsForm"
 import type { DockerTool } from "@/lib/docker-tools"
 import { useSettings } from "@/lib/settings-context"
 
@@ -22,7 +22,8 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Settings } from "lucide-react"
 
 import {
   ComposeEditor,
@@ -206,63 +207,80 @@ export function CopyComposeModal({
         </AlertDialogHeader>
 
         <div className="flex-1">
-          <EmbeddedSettings />
-
           {portConflicts && (
             <PortConflictsAlert portConflicts={portConflicts} />
           )}
 
-          <div className="mb-2 flex items-center justify-between">
-            <Tabs
-              className="w-full"
-              defaultValue="compose"
-              onValueChange={setActiveTab}
-              value={activeTab}
-            >
-              <TabsList>
-                <TabsTrigger value="compose">
-                  <svg
-                    aria-label="GitHub"
-                    role="img"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="mr-2 h-4 w-4 fill-current"
-                  >
-                    <path d={siDocker.path} />
-                  </svg>
-                  docker-compose.yaml
-                </TabsTrigger>
-                <TabsTrigger value="env">
-                  <File className="mr-2 h-4 w-4" />
-                  .env
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
+          <Tabs
+            className="w-full"
+            defaultValue="compose"
+            onValueChange={setActiveTab}
+            value={activeTab}
+          >
+            <TabsList className="mb-4 grid w-full max-w-md grid-cols-3">
+              <TabsTrigger value="compose">
+                <svg
+                  aria-label="Docker"
+                  role="img"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="mr-2 h-4 w-4 fill-current"
+                >
+                  <path d={siDocker.path} />
+                </svg>
+                docker-compose.yaml
+              </TabsTrigger>
+              <TabsTrigger value="env">
+                <File className="mr-2 h-4 w-4" />
+                .env
+              </TabsTrigger>
+              <TabsTrigger value="settings">
+                <Settings className="mr-2 h-4 w-4" />
+                Settings
+              </TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="compose">
+              <div className="mb-2 flex items-center justify-end">
+                <ActionButtons
+                  onCopy={handleCopy}
+                  onDownload={handleDownload}
+                  copied={copied}
+                />
+              </div>
 
-            <ActionButtons
-              onCopy={handleCopy}
-              onDownload={handleDownload}
-              copied={copied}
-            />
-          </div>
+              <div className="h-[calc(65vh-40px)] flex-1 overflow-hidden rounded border">
+                <ComposeEditor
+                  content={composeContent}
+                  onMount={handleComposeEditorDidMount}
+                  beforeMount={configureMonacoThemes}
+                  theme={currentTheme}
+                />
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="env">
+              <div className="mb-2 flex items-center justify-end">
+                <ActionButtons
+                  onCopy={handleCopy}
+                  onDownload={handleDownload}
+                  copied={copied}
+                />
+              </div>
 
-          <div className="h-[calc(65vh-40px)] flex-1 overflow-hidden rounded border">
-            {activeTab === "compose" && (
-              <ComposeEditor
-                content={composeContent}
-                onMount={handleComposeEditorDidMount}
-                beforeMount={configureMonacoThemes}
-                theme={currentTheme}
-              />
-            )}
-            {activeTab === "env" && (
-              <EnvEditor
-                content={envFileContent}
-                onMount={handleEnvEditorDidMount}
-                theme={currentTheme}
-              />
-            )}
-          </div>
+              <div className="h-[calc(65vh-40px)] flex-1 overflow-hidden rounded border">
+                <EnvEditor
+                  content={envFileContent}
+                  onMount={handleEnvEditorDidMount}
+                  theme={currentTheme}
+                />
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="settings">
+              <SettingsForm />
+            </TabsContent>
+          </Tabs>
         </div>
 
         <AlertDialogFooter className="mt-4">

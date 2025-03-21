@@ -1,6 +1,6 @@
 import { generateComposeContent } from "@/lib/docker-compose/generators"
-import { fetchGitHubStars } from "@/lib/docker-tools"
 import { getToolsFromTemplate, templates } from "@/lib/templates"
+import { tools } from "@/tools"
 import { notFound } from "next/navigation"
 import { TemplateClient } from "./template-client"
 
@@ -20,7 +20,7 @@ const defaultSettings = {
 export const dynamic = "force-static"
 export const revalidate = 21600
 
-export async function generateStaticParams() {
+export function generateStaticParams() {
   // Generate static pages for all templates
   return templates.map((template) => ({
     id: template.id,
@@ -29,11 +29,12 @@ export async function generateStaticParams() {
 
 export default async function TemplatePage({
   params,
-}: { params: { id: string } }) {
-  // Await params to fix the "params should be awaited" error
-  const { id } = await Promise.resolve(params)
-  const tools = await fetchGitHubStars()
-
+}: {
+  params: Promise<{ id: string }>
+}) {
+  // Await params as required by Next.js when using generateStaticParams
+  const { id } = await params
+  
   // Find the template with the matching ID
   const template = templates.find((t) => t.id === id)
 
