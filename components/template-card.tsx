@@ -5,8 +5,10 @@ import type { DockerTool } from "@/lib/docker-tools"
 import type { Template } from "@/lib/templates"
 import { getToolsFromTemplate } from "@/lib/templates"
 import { cn } from "@/lib/utils"
-import { MinusCircle, PlusCircle } from "lucide-react"
+import { Eye, MinusCircle, PlusCircle } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { toast } from "sonner"
 
@@ -25,6 +27,7 @@ export function TemplateCard({
   onUnselectTemplate,
   isSelected = false,
 }: TemplateCardProps) {
+  const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [isHovering, setIsHovering] = useState(false)
   const [iconError, setIconError] = useState(false)
@@ -32,7 +35,10 @@ export function TemplateCard({
     {},
   )
 
-  const handleSelectTemplate = () => {
+  const handleSelectTemplate = (e: React.MouseEvent) => {
+    // Stop propagation to prevent navigation when clicking the button
+    e.stopPropagation()
+
     if (isSelected) {
       // If template is already selected and we have an unselect handler, use it
       if (onUnselectTemplate) {
@@ -86,6 +92,11 @@ export function TemplateCard({
     }))
   }
 
+  // Navigate to template page
+  const handleCardClick = () => {
+    router.push(`/template/${template.id}`)
+  }
+
   return (
     <Card
       className={cn(
@@ -98,6 +109,7 @@ export function TemplateCard({
       )}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
+      onClick={handleCardClick}
       tabIndex={0}
     >
       <div
@@ -110,6 +122,25 @@ export function TemplateCard({
               : "bg-transparent",
         )}
       />
+
+      {/* View Template Button (appears on hover) */}
+      {isHovering && (
+        <div className="absolute top-2 right-2 z-10">
+          <Link
+            href={`/template/${template.id}`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Button
+              variant="secondary"
+              size="sm"
+              className="flex items-center gap-1 bg-background/80 backdrop-blur-sm"
+            >
+              <Eye size={14} />
+              <span className="text-xs">View</span>
+            </Button>
+          </Link>
+        </div>
+      )}
 
       <CardHeader className="p-4 pb-2">
         <div className="flex items-center justify-between">
@@ -213,6 +244,13 @@ export function TemplateCard({
             ? "border-primary/30 bg-secondary/70"
             : "border-muted bg-muted/20 group-hover:bg-muted/40",
         )}
+        onClick={(e) => e.stopPropagation()} // Prevent card click from triggering when clicking in this area
+        onKeyDown={(e) => {
+          // Prevent propagation when Space or Enter is pressed
+          if (e.key === " " || e.key === "Enter") {
+            e.stopPropagation()
+          }
+        }}
       >
         <Button
           variant={isSelected ? "outline" : "default"}

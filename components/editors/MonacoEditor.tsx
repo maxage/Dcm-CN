@@ -38,17 +38,26 @@ export const configureMonacoThemes = (
 }
 
 interface BaseEditorProps {
-  content: string
-  onMount: (editor: editor.IStandaloneCodeEditor) => void
-  theme: string
+  value?: string
+  content?: string
+  onMount?: (editor: editor.IStandaloneCodeEditor) => void
+  theme?: string
   beforeMount?: (monaco: typeof import("monaco-editor")) => void
+  readOnly?: boolean
 }
 
 export const ComposeEditor = memo(
-  ({ content, onMount, beforeMount, theme }: BaseEditorProps) => (
+  ({
+    value,
+    content,
+    onMount,
+    beforeMount,
+    theme = "vs",
+    readOnly = false,
+  }: BaseEditorProps) => (
     <Editor
       defaultLanguage="yaml"
-      defaultValue={content}
+      defaultValue={content || value}
       height="100%"
       onMount={onMount}
       beforeMount={beforeMount}
@@ -56,33 +65,45 @@ export const ComposeEditor = memo(
         automaticLayout: true,
         fontSize: 13,
         minimap: { enabled: false },
-        readOnly: false,
+        readOnly,
         scrollBeyondLastLine: false,
         wordWrap: "on",
       }}
       theme={theme}
-      value={content}
+      value={content || value}
     />
   ),
 )
 
+ComposeEditor.displayName = "ComposeEditor"
+
 export const EnvEditor = memo(
-  ({ content, onMount, theme }: BaseEditorProps) => (
+  ({
+    value,
+    content,
+    onMount,
+    beforeMount,
+    theme = "vs",
+    readOnly = false,
+  }: BaseEditorProps) => (
     <Editor
       defaultLanguage="ini"
-      defaultValue={content}
+      defaultValue={content || value}
       height="100%"
       onMount={onMount}
+      beforeMount={beforeMount}
       options={{
         automaticLayout: true,
         fontSize: 13,
         minimap: { enabled: false },
-        readOnly: false,
+        readOnly,
         scrollBeyondLastLine: false,
         wordWrap: "on",
       }}
       theme={theme}
-      value={content}
+      value={content || value}
     />
   ),
 )
+
+EnvEditor.displayName = "EnvEditor"

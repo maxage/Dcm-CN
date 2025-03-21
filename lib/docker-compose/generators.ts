@@ -26,6 +26,57 @@ NETWORK_MODE=${settings.networkMode}
 `
 }
 
+export function generateEnvFile(
+  selectedTools: DockerTool[],
+  settings: DockerSettings,
+): string {
+  // Start with the base environment variables
+  let envContent = generateEnvFileContent(settings)
+
+  // Extract any custom environment variables from the tools
+  selectedTools.forEach((tool) => {
+    if (!tool.composeContent) return
+
+    // Look for environment variables in the compose content
+    const envMatches = tool.composeContent.match(
+      /environment:(?:\s*-\s*([A-Z0-9_]+)=.+)+/gms,
+    )
+
+    if (envMatches && envMatches.length > 0) {
+      envContent += `\n# ${tool.name} specific environment variables\n`
+
+      // Extract each variable
+      const varMatches = tool.composeContent.match(
+        /\s*-\s*([A-Z0-9_]+)=([^\n]+)/g,
+      )
+      if (varMatches) {
+        varMatches.forEach((match) => {
+          const parts = match.match(/\s*-\s*([A-Z0-9_]+)=([^\n]+)/)
+          if (parts && parts.length >= 3) {
+            const varName = parts[1]
+            let varValue = parts[2].trim()
+
+            // Remove any quotes from the value
+            if (
+              (varValue.startsWith('"') && varValue.endsWith('"')) ||
+              (varValue.startsWith("'") && varValue.endsWith("'"))
+            ) {
+              varValue = varValue.substring(1, varValue.length - 1)
+            }
+
+            // Only add if it's not already a system variable we provide
+            if (!envContent.includes(`${varName}=`)) {
+              envContent += `${varName}=${varValue}\n`
+            }
+          }
+        })
+      }
+    }
+  })
+
+  return envContent
+}
+
 export function generateComposeContent(
   selectedTools: DockerTool[],
   settings: DockerSettings,

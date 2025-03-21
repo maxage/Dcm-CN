@@ -189,7 +189,6 @@ export const media: DockerTool[] = [
     category: "Media",
     tags: ["Discord", "Requests", "Bot"],
     githubUrl: "https://github.com/kiranshila/Doplarr",
-    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/doplarr.svg",
     composeContent: `services:
   doplarr:
     image: ghcr.io/kiranshila/doplarr:latest
