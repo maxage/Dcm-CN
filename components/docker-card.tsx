@@ -13,6 +13,7 @@ import { TruncatedText } from "@/components/ui/truncated-text"
 import type { DockerTool } from "@/lib/docker-tools"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
+import posthog from "posthog-js"
 
 interface DockerCardProps {
   tool: DockerTool
@@ -35,6 +36,12 @@ export default function DockerCard({
       return
     }
     onSelect()
+    posthog.capture("service_selected", {
+      service_id: tool.id,
+      service_name: tool.name,
+      service_category: tool.category,
+      service_tags: tool.tags,
+    })
   }
 
   const CardComponent = (
