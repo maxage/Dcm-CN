@@ -2,22 +2,12 @@
 
 import { ServiceCircles } from "@/components/magicui/avatar-circles"
 import { SearchCommand } from "@/components/search-command"
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 import type { DockerTool } from "@/lib/docker-tools"
 import { useSettings } from "@/lib/settings-context"
 import { generateShareUrl } from "@/lib/url-utils"
 import { cn } from "@/lib/utils"
-import { Search, Share2 } from "lucide-react"
+import { RefreshCw, Search, Share2 } from "lucide-react"
 import dynamic from "next/dynamic"
 import posthog from "posthog-js"
 import { useEffect, useState } from "react"
@@ -26,7 +16,7 @@ import { toast } from "sonner"
 // Dynamically import CopyComposeModal with loading state
 const CopyComposeModal = dynamic(
   () =>
-    import("@/components/copy-compose-modal").then((mod) => ({
+    import("@/components/compose-modal/CopyComposeModal").then((mod) => ({
       default: mod.CopyComposeModal,
     })),
   {
@@ -39,7 +29,7 @@ interface FloatingBarProps {
   selectedTools: string[]
   selectedToolIds: string[]
   onReset?: () => void
-  onToggleToolSelection: (toolId: string) => void
+  onToggleToolSelection?: (toolId: string) => void
   scrollPosition?: number
   selectedToolObjects: DockerTool[]
 }
@@ -53,12 +43,12 @@ export default function FloatingBar({
   scrollPosition = 200,
   selectedToolObjects,
 }: FloatingBarProps) {
-  const [isResetDialogOpen, setIsResetDialogOpen] = useState(false)
   const [isCopyDialogOpen, setIsCopyDialogOpen] = useState(false)
   const [isFixed, setIsFixed] = useState(false)
   const [isApple, setIsApple] = useState(false)
   const [isMounted, setIsMounted] = useState(false)
   const [isSharing, setIsSharing] = useState(false)
+  const [isResetActive, setIsResetActive] = useState(false)
   const { settings, resetSettings } = useSettings()
 
   useEffect(() => {
@@ -82,10 +72,20 @@ export default function FloatingBar({
     return () => window.removeEventListener("scroll", handleScroll)
   }, [scrollPosition])
 
-  const handleReset = () => {
-    resetSettings()
+  const handleResetClick = () => {
+    if (!isResetActive) {
+      setIsResetActive(true)
+      return
+    }
+
     if (onReset) onReset()
-    setIsResetDialogOpen(false)
+    setIsResetActive(false)
+  }
+
+  const handleResetMouseLeave = () => {
+    if (isResetActive) {
+      setIsResetActive(false)
+    }
   }
 
   const handleShare = async () => {
@@ -135,51 +135,27 @@ export default function FloatingBar({
 
   return (
     <>
-      <SearchCommand
-        selectedTools={selectedToolIds}
-        onToggleToolSelection={onToggleToolSelection}
-      />
+      {onToggleToolSelection && (
+        <SearchCommand
+          selectedTools={selectedToolIds}
+          onToggleToolSelection={onToggleToolSelection}
+        />
+      )}
 
       {isMounted && (
-        <>
-          <AlertDialog
-            open={isResetDialogOpen}
-            onOpenChange={setIsResetDialogOpen}
-          >
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  This will reset all selections and settings to their default
-                  values.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction
-                  className="bg-destructive hover:bg-destructive/90"
-                  onClick={handleReset}
-                >
-                  Reset All
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-
-          <CopyComposeModal
-            isOpen={isCopyDialogOpen}
-            onOpenChange={(open) => {
-              if (open) {
-                posthog.capture("copy_compose_opened", {
-                  selected_tools: selectedTools,
-                  settings: settings,
-                })
-              }
-              setIsCopyDialogOpen(open)
-            }}
-            selectedTools={selectedToolObjects}
-          />
-        </>
+        <CopyComposeModal
+          isOpen={isCopyDialogOpen}
+          onOpenChange={(open) => {
+            if (open) {
+              posthog.capture("copy_compose_opened", {
+                selected_tools: selectedTools,
+                settings: settings,
+              })
+            }
+            setIsCopyDialogOpen(open)
+          }}
+          selectedTools={selectedToolObjects}
+        />
       )}
 
       <div
@@ -194,94 +170,96 @@ export default function FloatingBar({
           className={cn(
             "container mx-auto w-full px-0",
             isFixed && "max-w-7xl px-4",
+            isFixed
+              ? ""
+              : "rounded-lg border border-border bg-background/40 p-4 shadow-lg backdrop-blur-md motion-safe:animate-slide-up",
           )}
         >
-          <div
-            className={cn(
-              isFixed ? "flex flex-col gap-4" : "flex flex-col gap-4",
-            )}
-          >
-            <div
-              className={cn(
-                isFixed
-                  ? ""
-                  : "rounded-lg border border-border bg-background/40 p-4 shadow-lg backdrop-blur-md motion-safe:animate-slide-up",
-              )}
-            >
-              <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-                <div className="flex flex-col">
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium text-lg">
-                      {selectedCount} service{selectedCount !== 1 ? "s" : ""}{" "}
-                      selected
-                    </span>
+          <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+            <div className="items-center gap-2">
+              <span className="font-xs text-muted-foreground">
+                {selectedCount} service{selectedCount !== 1 ? "s" : ""} selected
+              </span>
+              <div className="sm:w-auto">
+                {selectedCount > 0 && (
+                  <div className="flex max-w-full flex-wrap gap-1.5 sm:max-w-[600px]">
+                    <ServiceCircles
+                      selectedServices={selectedToolObjects}
+                      spacing="-space-x-1 xs:-space-x-2 sm:-space-x-4"
+                      onToggleServiceSelection={onToggleToolSelection}
+                      className="mt-1"
+                    />
                   </div>
-
-                  {selectedCount > 0 && (
-                    <div className="mt-2 flex max-w-[600px] flex-wrap gap-1.5">
-                      <ServiceCircles
-                        selectedServices={selectedToolObjects}
-                        spacing="-space-x-2 sm:-space-x-4"
-                        onToggleServiceSelection={onToggleToolSelection}
-                        className="mt-1"
-                      />
-                    </div>
-                  )}
-                </div>
-
-                <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="flex items-center gap-2 transition-transform motion-safe:hover:scale-105"
-                    onClick={triggerSearchShortcut}
-                  >
-                    <Search className="h-3.5 w-3.5" />
-                    <span>Search</span>
-                    <kbd className="pointer-events-none ml-1 inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-medium font-mono text-[10px] text-muted-foreground opacity-100">
-                      <span className="text-xs">
-                        {isMounted ? (isApple ? "⌘" : "Ctrl") : "⌘"}
-                      </span>
-                      K
-                    </kbd>
-                  </Button>
-
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    disabled={selectedCount === 0}
-                    className={cn(
-                      "flex items-center gap-2 transition-transform",
-                      isSharing
-                        ? "motion-preset-pulse"
-                        : "motion-safe:hover:scale-105",
-                    )}
-                    onClick={handleShare}
-                  >
-                    <Share2 className="h-3.5 w-3.5" />
-                    <span>Share</span>
-                  </Button>
-
-                  {onReset && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setIsResetDialogOpen(true)}
-                      className="transition-transform motion-safe:hover:scale-105"
-                    >
-                      Reset All
-                    </Button>
-                  )}
-                  <Button
-                    disabled={selectedCount === 0}
-                    size="sm"
-                    className="hover:motion-preset-confetti font-semibold"
-                    onClick={() => setIsCopyDialogOpen(true)}
-                  >
-                    Copy Compose
-                  </Button>
-                </div>
+                )}
               </div>
+            </div>
+
+            <div className="mt-2 flex w-full flex-wrap gap-2 sm:mt-0 sm:w-auto">
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  className="flex items-center gap-2 transition-transform motion-safe:hover:scale-105"
+                  onClick={triggerSearchShortcut}
+                  disabled={!onToggleToolSelection}
+                >
+                  <Search className="h-3.5 w-3.5" />
+                  <span className="xs:inline hidden">Search</span>
+                  <kbd className="pointer-events-none ml-1 hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-medium font-mono text-[10px] text-muted-foreground opacity-100 sm:inline-flex">
+                    <span className="text-xs">
+                      {isMounted ? (isApple ? "⌘" : "Ctrl") : "⌘"}
+                    </span>
+                    K
+                  </kbd>
+                </Button>
+
+                <Button
+                  variant="outline"
+                  disabled={selectedCount === 0}
+                  className={cn(
+                    "flex xs:min-w-16 items-center gap-2 transition-transform",
+                    isSharing
+                      ? "motion-preset-confetti "
+                      : "motion-safe:hover:scale-105",
+                  )}
+                  onClick={handleShare}
+                >
+                  <Share2 className="h-3.5 w-3.5" />
+                  <span className="xs:inline hidden">Share</span>
+                </Button>
+
+                {onReset && (
+                  <Button
+                    variant={isResetActive ? "destructive" : "outline"}
+                    disabled={selectedCount === 0}
+                    onClick={handleResetClick}
+                    onMouseLeave={handleResetMouseLeave}
+                    className="group relative flex items-center gap-2 transition-all motion-safe:hover:scale-105"
+                  >
+                    <RefreshCw
+                      className={cn(
+                        "h-3.5 w-3.5",
+                        isResetActive && "animate-spin",
+                      )}
+                    />
+                    {!isResetActive ? (
+                      <span className="xs:inline hidden xs:min-w-16">
+                        Unselect
+                      </span>
+                    ) : (
+                      <span className="motion-preset-shake xs:min-w-16 text-destructive-foreground">
+                        <span className="xs:inline hidden">U sure?</span>
+                      </span>
+                    )}
+                  </Button>
+                )}
+              </div>
+              <Button
+                disabled={selectedCount === 0}
+                className="hover:motion-preset-confetti xs:w-auto font-semibold"
+                onClick={() => setIsCopyDialogOpen(true)}
+              >
+                Copy Compose
+              </Button>
             </div>
           </div>
         </div>

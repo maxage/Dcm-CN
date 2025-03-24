@@ -181,4 +181,326 @@ export const media: DockerTool[] = [
       - 9999:9999
     restart: \${RESTART_POLICY}`,
   },
+  {
+    id: "doplarr",
+    name: "Doplarr",
+    description:
+      "An automation tool that integrates with Sonarr/Radarr and Discord to automatically process requests from a Discord bot.",
+    category: "Media",
+    tags: ["Discord", "Requests", "Bot"],
+    githubUrl: "https://github.com/kiranshila/Doplarr",
+    composeContent: `services:
+  doplarr:
+    image: ghcr.io/kiranshila/doplarr:latest
+    container_name: \${CONTAINER_PREFIX}doplarr
+    environment:
+      - TZ=\${TZ}
+      - PUID=\${PUID}
+      - PGID=\${PGID}
+      - DISCORD_TOKEN=changeme
+      - DISCORD_SERVER_ID=changeme
+      - RADARR_URL=http://radarr:7878
+      - RADARR_API_KEY=changeme
+      - SONARR_URL=http://sonarr:8989
+      - SONARR_API_KEY=changeme
+    restart: \${RESTART_POLICY}`,
+  },
+  {
+    id: "requestrr",
+    name: "Requestrr",
+    description:
+      "A chatbot for Discord that allows users to request content on your media server through simple chat commands.",
+    category: "Media",
+    tags: ["Discord", "Requests", "Bot"],
+    githubUrl: "https://github.com/darkalfx/requestrr",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/requestrr.svg",
+    composeContent: `services:
+  requestrr:
+    image: linuxserver/requestrr:latest
+    container_name: \${CONTAINER_PREFIX}requestrr
+    environment:
+      - TZ=\${TZ}
+      - PUID=\${PUID}
+      - PGID=\${PGID}
+    volumes:
+      - \${CONFIG_PATH}/requestrr:/config
+    ports:
+      - 4545:4545
+    restart: \${RESTART_POLICY}`,
+  },
+  {
+    id: "ombi",
+    name: "Ombi",
+    description:
+      "A self-hosted web application that automatically sends your media requests to Sonarr, Radarr, and Lidarr.",
+    category: "Media",
+    tags: ["Requests", "Media Management", "Integration"],
+    githubUrl: "https://github.com/Ombi-app/Ombi",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/ombi.svg",
+    composeContent: `services:
+  ombi:
+    image: ghcr.io/hotio/ombi:latest
+    container_name: \${CONTAINER_PREFIX}ombi
+    environment:
+      - TZ=\${TZ}
+      - PUID=\${PUID}
+      - PGID=\${PGID}
+    volumes:
+      - \${CONFIG_PATH}/ombi:/config
+    ports:
+      - 3579:3579
+    restart: \${RESTART_POLICY}`,
+  },
+  {
+    id: "sabnzbd",
+    name: "SABnzbd",
+    description:
+      "Free and easy binary newsreader, makes downloading from Usenet easy by automating the process.",
+    category: "Download",
+    tags: ["Usenet", "Download", "NZB"],
+    githubUrl: "https://github.com/sabnzbd/sabnzbd",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/sabnzbd.svg",
+    composeContent: `services:
+  sabnzbd:
+    image: ghcr.io/hotio/sabnzbd:latest
+    container_name: \${CONTAINER_PREFIX}sabnzbd
+    environment:
+      - TZ=\${TZ}
+      - PUID=\${PUID}
+      - PGID=\${PGID}
+      - UMASK=\${UMASK}
+    volumes:
+      - \${CONFIG_PATH}/sabnzbd:/config
+      - \${DATA_PATH}/downloads:/data/downloads
+    ports:
+      - 8080:8080
+    restart: \${RESTART_POLICY}`,
+  },
+  {
+    id: "transmission",
+    name: "Transmission",
+    description:
+      "A fast, easy, and free BitTorrent client with a web interface.",
+    category: "Download",
+    tags: ["BitTorrent", "Download", "P2P"],
+    githubUrl: "https://github.com/transmission/transmission",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/transmission.svg",
+    composeContent: `services:
+  transmission:
+    image: linuxserver/transmission:latest
+    container_name: \${CONTAINER_PREFIX}transmission
+    environment:
+      - TZ=\${TZ}
+      - PUID=\${PUID}
+      - PGID=\${PGID}
+      - UMASK=002
+      - USER=username
+      - PASS=password
+    volumes:
+      - \${CONFIG_PATH}/transmission:/config
+      - \${DATA_PATH}/downloads:/data/downloads
+      - \${DATA_PATH}/watch:/watch
+    ports:
+      - 9091:9091
+      - 51413:51413
+      - 51413:51413/udp
+    restart: \${RESTART_POLICY}`,
+  },
+  {
+    id: "metube",
+    name: "MeTube",
+    description:
+      "A web GUI for youtube-dl with playlist support. Allows you to download videos from YouTube and dozens of other sites.",
+    category: "Media",
+    tags: ["YouTube", "Download", "Video"],
+    githubUrl: "https://github.com/alexta69/metube",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/metube.svg",
+    composeContent: `services:
+  metube:
+    image: alexta69/metube:latest
+    container_name: \${CONTAINER_PREFIX}metube
+    environment:
+      - TZ=\${TZ}
+      - PUID=\${PUID}
+      - PGID=\${PGID}
+    volumes:
+      - \${DATA_PATH}/downloads:/downloads
+    ports:
+      - 8081:8081
+    restart: \${RESTART_POLICY}`,
+  },
+  {
+    id: "navidrome",
+    name: "Navidrome",
+    description:
+      "Modern Music Server and Streamer compatible with Subsonic/Airsonic API. Stream your music collection from your own server.",
+    category: "Media",
+    tags: ["Music", "Streaming", "Audio"],
+    githubUrl: "https://github.com/navidrome/navidrome",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/navidrome.svg",
+    composeContent: `services:
+  navidrome:
+    image: deluan/navidrome:latest
+    container_name: \${CONTAINER_PREFIX}navidrome
+    environment:
+      - TZ=\${TZ}
+      - PUID=\${PUID}
+      - PGID=\${PGID}
+      - ND_SCANSCHEDULE=1h
+    volumes:
+      - \${CONFIG_PATH}/navidrome:/data
+      - \${DATA_PATH}/music:/music:ro
+    ports:
+      - 4533:4533
+    restart: \${RESTART_POLICY}`,
+  },
+  {
+    id: "airsonic-advanced",
+    name: "Airsonic Advanced",
+    description:
+      "A more modern implementation of the Airsonic fork with features like podcasts, audiobooks, and last.fm scrobbling.",
+    category: "Media",
+    tags: ["Music", "Streaming", "Audio"],
+    githubUrl: "https://github.com/airsonic-advanced/airsonic-advanced",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/airsonic.svg",
+    composeContent: `services:
+  airsonic:
+    image: airsonicadvanced/airsonic-advanced:latest
+    container_name: \${CONTAINER_PREFIX}airsonic
+    environment:
+      - TZ=\${TZ}
+      - PUID=\${PUID}
+      - PGID=\${PGID}
+      - JAVA_OPTS=-Xmx700m
+    volumes:
+      - \${CONFIG_PATH}/airsonic:/airsonic/data
+      - \${DATA_PATH}/music:/airsonic/music:ro
+      - \${DATA_PATH}/playlists:/airsonic/playlists
+      - \${DATA_PATH}/podcasts:/airsonic/podcasts
+    ports:
+      - 4040:4040
+    restart: \${RESTART_POLICY}`,
+  },
+  {
+    id: "audiobookshelf",
+    name: "Audiobookshelf",
+    description:
+      "Self-hosted audiobook and podcast server with a modern interface for managing and listening to your audio collections.",
+    category: "Media",
+    tags: ["Audiobooks", "Podcasts", "Library"],
+    githubUrl: "https://github.com/advplyr/audiobookshelf",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/audiobookshelf.svg",
+    composeContent: `services:
+  audiobookshelf:
+    image: ghcr.io/advplyr/audiobookshelf:latest
+    container_name: \${CONTAINER_PREFIX}audiobookshelf
+    environment:
+      - TZ=\${TZ}
+      - PUID=\${PUID}
+      - PGID=\${PGID}
+    volumes:
+      - \${CONFIG_PATH}/audiobookshelf:/config
+      - \${DATA_PATH}/audiobooks:/audiobooks
+      - \${DATA_PATH}/podcasts:/podcasts
+    ports:
+      - 13378:80
+    restart: \${RESTART_POLICY}`,
+  },
+  {
+    id: "flaresolverr",
+    name: "FlareSolverr",
+    description:
+      "Proxy server to bypass Cloudflare and DDoS-GUARD protection, used by indexers to scrape content from protected sites.",
+    category: "Download",
+    tags: ["Proxy", "Cloudflare", "Bypass"],
+    githubUrl: "https://github.com/FlareSolverr/FlareSolverr",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/flaresolverr.svg",
+    composeContent: `services:
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: \${CONTAINER_PREFIX}flaresolverr
+    environment:
+      - TZ=\${TZ}
+      - LOG_LEVEL=info
+    ports:
+      - 8191:8191
+    restart: \${RESTART_POLICY}`,
+  },
+  {
+    id: "immich",
+    name: "Immich",
+    description:
+      "Self-hosted photo and video backup solution directly from your mobile phone. Alternative to Google Photos with a similar user experience.",
+    category: "Media",
+    tags: ["Photos", "Videos", "Backup"],
+    githubUrl: "https://github.com/immich-app/immich",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/immich.svg",
+    composeContent: `services:
+  immich:
+    image: ghcr.io/immich-app/immich-server:latest
+    container_name: \${CONTAINER_PREFIX}immich
+    environment:
+      - TZ=\${TZ}
+      - DB_HOSTNAME=immich-postgres
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - DB_DATABASE_NAME=immich
+      - REDIS_HOSTNAME=immich-redis
+    volumes:
+      - \${CONFIG_PATH}/immich/library:/usr/src/app/library
+      - \${DATA_PATH}/photos:/usr/src/app/upload
+    ports:
+      - 2283:3001
+    restart: \${RESTART_POLICY}`,
+  },
+  {
+    id: "photoprism",
+    name: "PhotoPrism",
+    description:
+      "AI-powered photos app for browsing, organizing & sharing your photo collection. Features face recognition, object detection, and geolocation.",
+    category: "Media",
+    tags: ["Photos", "AI", "Gallery"],
+    githubUrl: "https://github.com/photoprism/photoprism",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/photoprism.svg",
+    composeContent: `services:
+  photoprism:
+    image: photoprism/photoprism:latest
+    container_name: \${CONTAINER_PREFIX}photoprism
+    environment:
+      - TZ=\${TZ}
+      - PHOTOPRISM_ADMIN_PASSWORD=insecure
+      - PHOTOPRISM_SITE_URL=http://localhost:2342/
+      - PHOTOPRISM_ORIGINALS_LIMIT=5000
+      - PHOTOPRISM_HTTP_COMPRESSION=gzip
+    volumes:
+      - \${CONFIG_PATH}/photoprism:/photoprism/storage
+      - \${DATA_PATH}/photos:/photoprism/originals
+    ports:
+      - 2342:2342
+    restart: \${RESTART_POLICY}`,
+  },
+  {
+    id: "kavita",
+    name: "Kavita",
+    description:
+      "Fast, feature rich, cross platform reading server for comics, manga, magazines, and ebooks. Responsive web UI with a focus on manga reading.",
+    category: "Media",
+    tags: ["Comics", "Manga", "eBooks"],
+    githubUrl: "https://github.com/Kareadita/Kavita",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/kavita.svg",
+    composeContent: `services:
+  kavita:
+    image: kizaing/kavita:latest
+    container_name: \${CONTAINER_PREFIX}kavita
+    environment:
+      - TZ=\${TZ}
+    volumes:
+      - \${CONFIG_PATH}/kavita:/kavita/config
+      - \${DATA_PATH}/manga:/manga
+      - \${DATA_PATH}/comics:/comics
+      - \${DATA_PATH}/books:/books
+    ports:
+      - 5000:5000
+    restart: \${RESTART_POLICY}`,
+  },
 ]

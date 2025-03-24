@@ -26,6 +26,13 @@
         "noUnusedImports": "info",
         "useExhaustiveDependencies": "off"
       },
+      "suspicious": {
+        "noArrayIndexKey": "off",
+        "noAssignInExpressions": "off"
+      },
+      "style": {
+        "noNonNullAssertion": "off"
+      },
       "nursery": {
         "useSortedClasses": {
           "level": "error",

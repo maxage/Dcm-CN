@@ -3,11 +3,14 @@
 import ToolGrid from "@/components/ToolGrid"
 import FloatingBar from "@/components/floating-bar"
 import SettingsPanel from "@/components/settings-panel"
+import { Button } from "@/components/ui/button"
 import { useLocalStorage } from "@/hooks/useLocalStorage"
 import { STORAGE_KEYS } from "@/lib/constants"
 import type { DockerTool } from "@/lib/docker-tools"
 import { SettingsProvider } from "@/lib/settings-context"
 import { decodeShareUrl } from "@/lib/url-utils"
+import { Palette } from "lucide-react"
+import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useRef } from "react"
 
@@ -71,6 +74,16 @@ export default function DockerToolsClient({
 
   return (
     <SettingsProvider>
+      <div className="mb-6 flex items-center justify-between">
+        <h1 className="font-bold text-3xl">Docker Compose Maker</h1>
+        <Link prefetch href="/templates">
+          <Button className="flex items-center gap-2">
+            <Palette size={16} />
+            Template Gallery
+          </Button>
+        </Link>
+      </div>
+
       <div className="[animation-delay:300ms] motion-safe:animate-slide-down">
         <SettingsPanel />
       </div>

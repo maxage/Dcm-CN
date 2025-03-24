@@ -55,9 +55,10 @@ No more copy-pasting from documentation or trying to remember the correct config
 Using Docker Compose Maker is simple and intuitive:
 
 1. **Select containers** - Browse the curated list of self-hosted applications and click to select the ones you want to include
-2. **Configure settings** - Adjust environment variables, paths, and other common settings
-3. **Generate your configuration** - Click "Copy Compose" to view and customize your docker-compose.yaml
-4. **Deploy your stack** - Use one of the following methods to deploy your containers:
+2. **Use templates** - Choose from predefined templates in the Template Gallery for common stacks like media servers
+3. **Configure settings** - Adjust environment variables, paths, and other common settings
+4. **Generate your configuration** - Click "Copy Compose" to view and customize your docker-compose.yaml
+5. **Deploy your stack** - Use one of the following methods to deploy your containers:
 
 > [!IMPORTANT]
 > All containers are configured to use environment variables like `${PUID}`, `${PGID}`, and `${TZ}`. Make sure to set these in your deployment to avoid permission issues.
@@ -212,6 +213,25 @@ bun test:compose
 # Run container schema validation tests
 bun test:containers
 ```
+
+## 🔄 Template Gallery
+
+DCM includes a Template Gallery that allows you to quickly add predefined stacks of containers based on common use cases:
+
+- **Media Server Stacks**: Complete media server setups with Jellyfin/Plex and related tools
+- **Development Environments**: Web development stacks with databases and web servers
+- **Monitoring Solutions**: Grafana, Prometheus, and other monitoring tools
+- **Database Clusters**: Various database engines with management tools
+- **Security Tools**: Password managers and security-related containers
+- **And more!**: Smart home hubs, personal cloud solutions, and other useful templates
+
+To use the Template Gallery:
+1. Click the "Template Gallery" button at the top of the main page
+2. Browse or search for templates that match your needs
+3. Click "Use Template" to add all containers from that template to your selection
+4. Return to the main page to customize your selected containers
+
+You can combine multiple templates to create your perfect self-hosted environment!
 
 ## 🖼️ Screenshots
 

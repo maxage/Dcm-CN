@@ -9,6 +9,7 @@ import {
   CommandList,
 } from "@/components/ui/command"
 import { DialogTitle } from "@/components/ui/dialog"
+import { cn } from "@/lib/utils"
 import { tools } from "@/tools"
 import { Check, X } from "lucide-react"
 import { useEffect, useState } from "react"
@@ -77,6 +78,26 @@ export function SearchCommand({
               disabled={tool.isUnsupported}
             >
               <div className="flex items-center">
+                <div
+                  className={cn(
+                    "mr-2 flex h-6 w-6 items-center justify-center overflow-hidden rounded-sm",
+                    selectedTools.includes(tool.id) && !tool.isUnsupported
+                      ? "text-primary"
+                      : "text-muted-foreground",
+                  )}
+                >
+                  {tool.icon ? (
+                    <img
+                      src={tool.icon}
+                      alt={`${tool.name} icon`}
+                      className="h-full w-full object-contain p-0.5"
+                    />
+                  ) : (
+                    <div className="font-bold text-xs">
+                      {tool.name.charAt(0)}
+                    </div>
+                  )}
+                </div>
                 <span>{tool.name}</span>
               </div>
               {tool.isUnsupported && (

@@ -15,6 +15,7 @@
     "deploy": "next build && wrangler pages deploy",
     "test:compose": "bun test tests/validate-compose.test.ts",
     "test:containers": "bun test tests/validate-all-containers.test.ts",
+    "test:templates": "bun test tests/templates.test.ts",
     "test": "bun test"
   },
   "dependencies": {
