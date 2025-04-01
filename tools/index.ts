@@ -11,12 +11,12 @@ const toolMap = new Map<string, DockerTool>()
 
 // Add tools in order of priority (media tools take precedence over automation tools)
 const allTools = [
+  ...automation,
   ...media,
   ...monitoring,
   ...management,
   ...databases,
   ...other,
-  ...automation,
 ]
 
 // Ensure uniqueness by ID
