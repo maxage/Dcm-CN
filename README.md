@@ -125,7 +125,6 @@ The Docker image is available for multiple platforms:
 Create a `docker-compose.yaml` file:
 
 ```yaml
-version: '3'
 services:
   dcm:
     image: ghcr.io/ajnart/dcm
