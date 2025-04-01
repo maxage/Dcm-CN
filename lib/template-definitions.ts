@@ -4,13 +4,13 @@ import type { Template } from "./templates"
 // Predefined templates with personality-based themes
 export const templateDefinitions: Template[] = [
   {
-    id: "the-photographer",
-    name: "The Photographer",
+    id: "the-self-promo",
+    name: "The Self Promo",
     description:
-      "For the person who takes 500 photos of the same sunset and needs AI to sort through them all",
+      "Promoting your other self-hosted services, really? It's almost embarrassing...",
     category: TemplateCategory.MEDIA,
-    icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/photoprism.png",
-    tools: ["photoprism", "immich", "mariadb", "redis"],
+    icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/homarr.png",
+    tools: ["homarr"],
   },
   {
     id: "the-privacy-schizo",

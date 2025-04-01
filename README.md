@@ -110,10 +110,10 @@ Visit [compose.ajnart.dev](https://compose.ajnart.dev) to use the tool immediate
 Run with a single command:
 
 ```bash
-docker run -p 3000:3000 ghcr.io/ajnart/dcm
+docker run -p 7576:7576 --name dcm --rm ghcr.io/ajnart/dcm
 ```
 
-Then visit `http://localhost:3000` in your browser.
+Then visit `http://localhost:7576` in your browser.
 
 The Docker image is available for multiple platforms:
 - linux/amd64
@@ -131,7 +131,7 @@ services:
     image: ghcr.io/ajnart/dcm
     container_name: dcm
     ports:
-      - "3000:3000"
+      - "7576:7576"
     restart: unless-stopped
 ```
 

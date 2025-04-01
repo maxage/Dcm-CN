@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
-    "start": "serve out",
+    "start": "serve out -p 7576",
     "lint": "biome lint",
     "format": "biome format",
     "ci": "bun test && bun lint && bun format && bun run build",

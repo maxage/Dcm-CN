@@ -8,6 +8,6 @@ RUN npm install -g serve
 
 ENV DISABLE_TELEMETRY=true
 
-EXPOSE 3000
+EXPOSE 7576
 
-CMD ["serve", "/app"]
+CMD ["serve", "/app", "-p", "7576"]
