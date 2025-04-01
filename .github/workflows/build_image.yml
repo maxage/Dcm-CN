@@ -36,7 +36,7 @@ jobs:
         run: bun test
 
       - name: Build application
-        run: bun run build
+        run: GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} bun run build
 
       - name: Docker meta
         id: meta
