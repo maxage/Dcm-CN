@@ -429,6 +429,7 @@ export const media: DockerTool[] = [
   {
     id: "immich",
     name: "Immich",
+    isUnsupported: true,
     description:
       "Self-hosted photo and video backup solution directly from your mobile phone. Alternative to Google Photos with a similar user experience.",
     category: "Media",
