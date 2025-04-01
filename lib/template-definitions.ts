@@ -268,15 +268,6 @@ export const templateDefinitions: Template[] = [
     ],
   },
   {
-    id: "the-self-hosted-gamer",
-    name: "The Self-Hosted Gamer",
-    description:
-      "Why pay for a game server when you can just use that old laptop with the broken screen?",
-    category: TemplateCategory.OTHER,
-    icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/minecraft.png",
-    tools: ["minecraft", "factorio", "valheim", "terraria"],
-  },
-  {
     id: "the-dev-environment",
     name: "The Dev Environment",
     description:
