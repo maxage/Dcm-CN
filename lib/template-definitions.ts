@@ -61,7 +61,7 @@ export const templateDefinitions: Template[] = [
       "prowlarr",
       "qbittorrent",
       "bazarr",
-      "overseerr",
+      "jellyseerr",
       "calibreweb",
       "readarr",
     ],
