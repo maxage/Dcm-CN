@@ -92,5 +92,6 @@
     "wrangler": "^4.6.0",
     "@types/bun": "latest"
   },
-  "trustedDependencies": ["@biomejs/biome", "@parcel/watcher"]
+  "trustedDependencies": ["@biomejs/biome", "@parcel/watcher"],
+  "packageManager": "bun@1.2.5"
 }
