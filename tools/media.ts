@@ -550,4 +550,28 @@ export const media: DockerTool[] = [
       - \${DATA_PATH}/downloads:/downloads
     restart: \${RESTART_POLICY}`,
   },
+  {
+    id: "netalertx",
+    name: "NetAlertX",
+    description:
+      "Network intruder and presence detector. Scans for devices connected to your network and alerts you if new and unknown devices are found.",
+    category: "Media",
+    tags: ["Monitoring", "Security", "Network"],
+    githubUrl: "https://github.com/jokob-sk/NetAlertX",
+    composeContent: `services:
+  netalertx:
+    image: ghcr.io/jokob-sk/netalertx:latest
+    container_name: \${CONTAINER_PREFIX}netalertx
+    network_mode: "host"
+    environment:
+      - TZ=\${TZ}
+      - PORT=20211
+    volumes:
+      - \${CONFIG_PATH}/netalertx:/app/config
+      - \${DATA_PATH}/netalertx/db:/app/db
+      - \${DATA_PATH}/netalertx/logs:/app/log
+      - type: tmpfs
+        target: /app/api
+    restart: \${RESTART_POLICY}`,
+  },
 ]
