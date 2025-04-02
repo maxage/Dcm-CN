@@ -504,4 +504,29 @@ export const media: DockerTool[] = [
       - 5000:5000
     restart: \${RESTART_POLICY}`,
   },
+  {
+    id: "pairdrop",
+    name: "PairDrop",
+    description:
+      "File sharing on your local network that works on all platforms.",
+    category: "Media",
+    tags: ["Cloud", "Sharing"],
+    githubUrl: "https://github.com/schlagmichdoch/PairDrop",
+    composeContent: `services:
+  pairdrop:
+    image: lscr.io/linuxserver/pairdrop:latest
+    container_name: \${CONTAINER_PREFIX}pairdrop
+    environment:
+      - PUID=\${PUID}
+      - PGID=\${PGID}
+      - TZ=\${TZ}
+      - WS_SERVER=false
+      - WS_FALLBACK=false
+      - RTC_CONFIG=false
+      - RATE_LIMIT=false
+      - DEBUG_MODE=false
+    ports:
+      - 3000:3000
+    restart: \${RESTART_POLICY}`,
+  },
 ]
