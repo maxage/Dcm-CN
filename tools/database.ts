@@ -109,7 +109,7 @@ export const databases: DockerTool[] = [
     id: "redis",
     name: "Redis",
     description:
-      "An open-source, in-memory data structure store used as a database, cache, message broker, and queue.",
+      "A source-available, in-memory data structure store used as a database, cache, message broker, and queue.",
     category: "Database",
     tags: ["Cache", "Database", "In-Memory"],
     githubUrl: "https://github.com/redis/redis",
