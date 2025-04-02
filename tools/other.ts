@@ -446,7 +446,7 @@ export const other: DockerTool[] = [
     category: "Productivity",
     tags: ["Dashboard", "Homepage", "UI"],
     githubUrl: "https://github.com/benphelps/homepage",
-    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/homepage.svg",
+    icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/homepage.png",
     composeContent: `services:
   homepage:
     image: ghcr.io/benphelps/homepage:latest
