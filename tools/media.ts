@@ -570,8 +570,7 @@ export const media: DockerTool[] = [
       - \${CONFIG_PATH}/netalertx:/app/config
       - \${DATA_PATH}/netalertx/db:/app/db
       - \${DATA_PATH}/netalertx/logs:/app/log
-      - type: tmpfs
-        target: /app/api
+      - /tmp/api:/app/api
     restart: \${RESTART_POLICY}`,
   },
 ]
