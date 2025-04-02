@@ -1,2 +1,2 @@
-name = "docker-compose-maker"
+name = "dcm"
 pages_build_output_dir = "./out"

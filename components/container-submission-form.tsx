@@ -2,51 +2,51 @@
 
 import { Button } from "@/components/ui/button"
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
 } from "@/components/ui/dialog"
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import {
-  MultiSelector,
-  MultiSelectorContent,
-  MultiSelectorInput,
-  MultiSelectorItem,
-  MultiSelectorList,
-  MultiSelectorTrigger,
+    MultiSelector,
+    MultiSelectorContent,
+    MultiSelectorInput,
+    MultiSelectorItem,
+    MultiSelectorList,
+    MultiSelectorTrigger,
 } from "@/components/ui/multi-select"
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import {
-  composeContentSchema,
-  validateComposeContent,
+    composeContentSchema,
+    validateComposeContent,
 } from "@/lib/docker-tools"
 import { tools } from "@/tools"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { DialogDescription } from "@radix-ui/react-dialog"
 import {
-  AlertTriangle,
-  CheckCircle,
-  ExternalLink,
-  Github,
-  Info,
-  PlusCircle,
+    AlertTriangle,
+    CheckCircle,
+    ExternalLink,
+    Github,
+    Info,
+    PlusCircle,
 } from "lucide-react"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -133,7 +133,7 @@ export function ContainerSubmissionForm() {
 
   function onSubmit(values: FormValues) {
     // Redirect directly to the new form-based issue template
-    const repoUrl = "https://github.com/ajnart/docker-compose-maker"
+    const repoUrl = "https://github.com/ajnart/dcm"
     const issueUrl = `${repoUrl}/issues/new?template=container-submission.yml&title=container: ${encodeURIComponent(values.name)}&id=${encodeURIComponent(values.id)}&name=${encodeURIComponent(values.name)}&description=${encodeURIComponent(values.description)}&category=${encodeURIComponent(values.category)}&tags=${encodeURIComponent(values.tags.join(", "))}&githubUrl=${encodeURIComponent(values.githubUrl || "")}&containerData=${encodeURIComponent(values.containerData)}`
 
     // Open the GitHub issue form in a new tab
@@ -144,7 +144,7 @@ export function ContainerSubmissionForm() {
   // Function to open GitHub issue template directly
   const openGitHubIssue = () => {
     const issueUrl =
-      "https://github.com/ajnart/docker-compose-maker/issues/new?template=container-submission.yml"
+      "https://github.com/ajnart/dcm/issues/new?template=container-submission.yml"
     window.open(issueUrl, "_blank")
   }
 

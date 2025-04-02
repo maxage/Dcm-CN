@@ -4,11 +4,11 @@
 </div>
 
 <p align="center">
-<img src="https://img.shields.io/github/stars/ajnart/docker-compose-maker?label=%E2%AD%90%20Stars&style=flat-square?branch=main&kill_cache=1%22">
-<a href="https://github.com/ajnart/docker-compose-maker/actions">
-  <img title="CI Status" src="https://github.com/ajnart/docker-compose-maker/actions/workflows/build_image.yml/badge.svg" alt="CI Status">
+<img src="https://img.shields.io/github/stars/ajnart/dcm?label=%E2%AD%90%20Stars&style=flat-square?branch=main&kill_cache=1%22">
+<a href="https://github.com/ajnart/dcm/actions">
+  <img title="CI Status" src="https://github.com/ajnart/dcm/actions/workflows/build_image.yml/badge.svg" alt="CI Status">
 </a>
-<a href="https://github.com/ajnart/docker-compose-maker/pkgs/container/dcm">
+<a href="https://github.com/ajnart/dcm/pkgs/container/dcm">
   <img alt="Docker Image" src="https://img.shields.io/badge/🐳_Docker_Image-ghcr.io/ajnart/dcm-blue">
 </a>
 </p>
@@ -144,8 +144,8 @@ docker-compose up -d
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/ajnart/docker-compose-maker.git
-cd docker-compose-maker
+git clone https://github.com/ajnart/dcm.git
+cd dcm
 ```
 
 2. Install dependencies:

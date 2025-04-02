@@ -8,7 +8,7 @@ body:
       value: |
         Thanks for taking the time to suggest a new container!
         
-        > You can also contribute directly by adding the container definition to the codebase. See [CONTRIBUTING.md](https://github.com/ajnart/docker-compose-maker/blob/main/CONTRIBUTING.md) for instructions.
+        > You can also contribute directly by adding the container definition to the codebase. See [CONTRIBUTING.md](https://github.com/ajnart/dcm/blob/main/CONTRIBUTING.md) for instructions.
   
   - type: checkboxes
     id: prerequisites

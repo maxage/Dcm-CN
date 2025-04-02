@@ -1,13 +1,13 @@
 <div align="center">
-  <img src="https://github.com/ajnart/docker-compose-maker/blob/main/public/favicon.png?raw=true" height="80" alt="DCM Logo" />
+  <img src="https://github.com/ajnart/dcm/blob/main/public/favicon.png?raw=true" height="80" alt="DCM Logo" />
   <h3>Docker Compose Maker</h3>
 </div>
 
 <!-- 
 Specific templates are available for different types of contributions:
-- For adding a new container: https://github.com/ajnart/docker-compose-maker/compare/main...main?template=new_container.md
-- For bug fixes: https://github.com/ajnart/docker-compose-maker/compare/main...main?template=bugfix.md
-- For new features: https://github.com/ajnart/docker-compose-maker/compare/main...main?template=feature.md
+- For adding a new container: https://github.com/ajnart/dcm/compare/main...main?template=new_container.md
+- For bug fixes: https://github.com/ajnart/dcm/compare/main...main?template=bugfix.md
+- For new features: https://github.com/ajnart/dcm/compare/main...main?template=feature.md
 -->
 
 ### Type of Change
@@ -44,4 +44,4 @@ Specific templates are available for different types of contributions:
 - [ ] Docker Compose definition has been tested
 - [ ] Container has been added to the appropriate category file and indexed in `tools/index.ts`
 
-This PR is in accordance with the [CONTRIBUTING.md](https://github.com/ajnart/docker-compose-maker/blob/main/CONTRIBUTING.md) guidelines. 
+This PR is in accordance with the [CONTRIBUTING.md](https://github.com/ajnart/dcm/blob/main/CONTRIBUTING.md) guidelines. 
