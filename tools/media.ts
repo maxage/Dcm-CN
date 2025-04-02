@@ -529,4 +529,25 @@ export const media: DockerTool[] = [
       - 3000:3000
     restart: \${RESTART_POLICY}`,
   },
+  {
+    id: "pinchflat",
+    name: "Pinchflat",
+    description:
+      "A self-hosted app for downloading YouTube content built using yt-dlp.",
+    category: "Media",
+    tags: ["TV", "PVR", "Monitoring"],
+    githubUrl: "https://github.com/kieraneglin/pinchflat",
+    composeContent: `services:
+  pinchflat:
+    image: ghcr.io/kieraneglin/pinchflat:latest
+    container_name: \${CONTAINER_PREFIX}pinchflat
+    environment:
+      - TZ=\${TZ}
+    ports:
+      - "8945:8945"
+    volumes:
+      - \${CONFIG_PATH}/pinchflat:/config
+      - \${DATA_PATH}/downloads:/downloads
+    restart: \${RESTART_POLICY}`,
+  },
 ]
