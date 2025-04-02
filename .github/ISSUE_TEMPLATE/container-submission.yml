@@ -81,9 +81,16 @@ body:
   - type: input
     id: githubUrl
     attributes:
-      label: GitHub URL (Optional)
+      label: GitHub URL
       description: Link to the GitHub repository for this container
       placeholder: "https://github.com/username/repository"
+  
+  - type: input
+    id: icon
+    attributes:
+      label: Icon URL
+      description: URL to the icon for this container, preferably from dashboard-icons
+      placeholder: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/example.svg"
   
   - type: textarea
     id: containerData
