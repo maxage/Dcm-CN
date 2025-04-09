@@ -535,4 +535,40 @@ export const other: DockerTool[] = [
       - 9925:9000
     restart: \${RESTART_POLICY}`,
   },
+  {
+    id: "actualbudget",
+    name: "Actual Budget",
+    description:
+      "A super fast and privacy-focused app for managing your finances.",
+    category: "Finance",
+    tags: ["Money", "Budgeting", "Finance"],
+    githubUrl: "https://github.com/actualbudget/actual",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/actual-budget.svg",
+    composeContent: `services:
+  actualbudget:
+    image: docker.io/actualbudget/actual-server:latest
+    container_name: \${CONTAINER_PREFIX}actualbudget
+    environment:
+      # Uncomment any of the lines below to set configuration options.
+      # - ACTUAL_HTTPS_KEY=/data/selfhost.key
+      # - ACTUAL_HTTPS_CERT=/data/selfhost.crt
+      - ACTUAL_PORT=5006
+      - ACTUAL_UPLOAD_FILE_SYNC_SIZE_LIMIT_MB=20
+      - ACTUAL_UPLOAD_SYNC_ENCRYPTED_FILE_SYNC_SIZE_LIMIT_MB=50
+      # - ACTUAL_UPLOAD_FILE_SIZE_LIMIT_MB=20
+      # See all options and more details at https://actualbudget.github.io/docs/Installing/Configuration
+      # !! If you are not using any of these options, remove the 'environment:' tag entirely.
+    volumes:
+      - \${CONFIG_PATH}/actual-data:/data
+    ports:
+      - 5006:5006
+    healthcheck:
+      # Enable health check for the instance
+      test: ['CMD-SHELL', 'node src/scripts/health-check.js']
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    restart: \${RESTART_POLICY}`,
+  },
 ]
