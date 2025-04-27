@@ -10,11 +10,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-<<<<<<< HEAD
-  IMAGE_NAME: maxage/Dcm-CN
-=======
   IMAGE_NAME: maxage/dcm-cn
->>>>>>> 3e9a4bbc0113a5f95ed09babb611bca4bc01b2b8
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
