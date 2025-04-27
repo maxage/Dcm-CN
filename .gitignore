@@ -32,3 +32,4 @@ docker-compose.yaml
 
 # Cursor
 .cursor
+.github/workflows/build_image.yml
