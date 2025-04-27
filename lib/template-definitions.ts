@@ -5,7 +5,7 @@ import type { Template } from "./templates"
 export const templateDefinitions: Template[] = [
   {
     id: "the-self-promo",
-    name: "自我推销者",
+    name: "The Self Promoter",
     description:
       "推广你的其他自托管服务？这真是有点尴尬...",
     category: TemplateCategory.MEDIA,
@@ -14,7 +14,7 @@ export const templateDefinitions: Template[] = [
   },
   {
     id: "the-privacy-schizo",
-    name: "隐私偏执狂",
+    name: "The Privacy Schizo",
     description:
       "如果他们真的在监视你，那就不是偏执了。锡箔帽需要另外购买。",
     category: TemplateCategory.SECURITY,
@@ -30,7 +30,7 @@ export const templateDefinitions: Template[] = [
   },
   {
     id: "the-dad",
-    name: "家庭管理员",
+    name: "The Dad",
     description:
       "基础的家庭服务器设置，让所有人都开心，并将 Wi-Fi 投诉降到最低",
     category: TemplateCategory.MEDIA,
@@ -39,7 +39,7 @@ export const templateDefinitions: Template[] = [
   },
   {
     id: "the-media-server-starter",
-    name: "媒体服务器入门版",
+    name: "The Media Server Starter",
     description:
       "一个简单的媒体服务器设置，适合那些'Netflix又涨价了？'的人群",
     category: TemplateCategory.MEDIA,
@@ -48,7 +48,7 @@ export const templateDefinitions: Template[] = [
   },
   {
     id: "the-media-hoarder",
-    name: "媒体收藏狂",
+    name: "The Media Hoarder",
     description:
       "适合那些从不删除任何东西，总是需要'再买一个硬盘'的数字囤积者",
     category: TemplateCategory.MEDIA,
@@ -68,7 +68,7 @@ export const templateDefinitions: Template[] = [
   },
   {
     id: "the-automator",
-    name: "自动化狂人",
+    name: "The Automator",
     description:
       "花10小时自动化一个2分钟的任务，因为'这是原则问题'",
     category: TemplateCategory.HOME_AUTOMATION,
@@ -84,7 +84,7 @@ export const templateDefinitions: Template[] = [
   },
   {
     id: "the-home-office",
-    name: "家庭办公室",
+    name: "The Home Office",
     description:
       "在家工作所需的一切，让你的文件不会成为云服务的人质",
     category: TemplateCategory.PRODUCTIVITY,
@@ -99,7 +99,7 @@ export const templateDefinitions: Template[] = [
   },
   {
     id: "the-coomer",
-    name: "收藏家",
+    name: "The Collector",
     description:
       "让你的'作业文件夹'井井有条并自动化。我们不作评判。",
     category: TemplateCategory.MEDIA,
@@ -108,7 +108,7 @@ export const templateDefinitions: Template[] = [
   },
   {
     id: "the-dashboard-enjoyer",
-    name: "仪表板发烧友",
+    name: "The Dashboard Enjoyer",
     description:
       "花在自定义仪表板上的时间比实际使用服务的时间还多",
     category: TemplateCategory.MONITORING,
@@ -124,7 +124,7 @@ export const templateDefinitions: Template[] = [
   },
   {
     id: "the-security-essentials",
-    name: "安全基础套件",
+    name: "The Security Essentials",
     description:
       "基础的安全设置，适合那些想要保护数字生活又不想把钥匙弄丢的人",
     category: TemplateCategory.SECURITY,
@@ -133,7 +133,7 @@ export const templateDefinitions: Template[] = [
   },
   {
     id: "the-backup-basics",
-    name: "备份基础套件",
+    name: "The Backup Basics",
     description:
       "因为即使是数字囤积者也需要确保他们的收藏能在灾难中幸存",
     category: TemplateCategory.OTHER,
@@ -142,7 +142,7 @@ export const templateDefinitions: Template[] = [
   },
   {
     id: "the-homarr-enjoyer",
-    name: "Homarr 爱好者",
+    name: "The Homarr Enjoyer",
     description:
       "仪表板小部件比实际服务还多，每天都要重新排列'以优化工作流程'",
     category: TemplateCategory.MONITORING,
@@ -151,7 +151,7 @@ export const templateDefinitions: Template[] = [
   },
   {
     id: "the-docker-novice",
-    name: "Docker 新手",
+    name: "The Docker Novice",
     description:
       "看了一个 YouTube 教程后就自豪地宣布'已经掌握容器化了'",
     category: TemplateCategory.MONITORING,
@@ -160,7 +160,7 @@ export const templateDefinitions: Template[] = [
   },
   {
     id: "the-just-the-basics",
-    name: "基础入门包",
+    name: "The Just The Basics",
     description:
       "自托管的可靠入门套件，不会让你整个周末都在读文档",
     category: TemplateCategory.OTHER,
@@ -169,7 +169,7 @@ export const templateDefinitions: Template[] = [
   },
   {
     id: "the-raspberry-pi-warrior",
-    name: "树莓派勇士",
+    name: "The Raspberry Pi Warrior",
     description:
       "在一个35美元的电脑上运行17个关键服务，配上一个随时可能坏掉的 microSD 卡",
     category: TemplateCategory.OTHER,
@@ -178,7 +178,7 @@ export const templateDefinitions: Template[] = [
   },
   {
     id: "the-data-scientist",
-    name: "数据科学家",
+    name: "The Data Scientist",
     description:
       "分析厨房电器使用模式以确定最佳咖啡冲泡时间表",
     category: TemplateCategory.DATABASE,
@@ -194,7 +194,7 @@ export const templateDefinitions: Template[] = [
   },
   {
     id: "the-digital-librarian",
-    name: "数字图书管理员",
+    name: "The Digital Librarian",
     description:
       "拥有比十辈子都读不完的书还要多的藏书，但收藏必须继续增长",
     category: TemplateCategory.MEDIA,

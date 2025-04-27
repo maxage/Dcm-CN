@@ -5,7 +5,7 @@ export const management: DockerTool[] = [
     id: "portainer",
     name: "Portainer",
     description:
-      "A powerful container management interface that provides a user-friendly web UI for managing Docker environments. Features include container deployment, stack management with Docker Compose support, volume management, network configuration, and real-time container monitoring.",
+      "一个强大的容器管理界面，为管理 Docker 环境提供用户友好的 Web UI。功能包括容器部署、支持 Docker Compose 的堆栈管理、卷管理、网络配置和实时容器监控。",
     category: "Management",
     tags: ["Management", "UI", "Monitoring"],
     githubUrl: "https://github.com/portainer/portainer",
@@ -28,7 +28,7 @@ export const management: DockerTool[] = [
     id: "traefik",
     name: "Traefik",
     description:
-      "A modern, cloud-native application proxy and load balancer that makes deploying microservices easy. Features automatic service discovery, Let's Encrypt support, and dynamic configuration.",
+      "一个现代的、云原生的应用程序代理和负载均衡器，使部署微服务变得容易。具有自动服务发现、Let's Encrypt 支持和动态配置等功能。",
     category: "Networking",
     tags: ["Proxy", "Load Balancer", "SSL"],
     githubUrl: "https://github.com/traefik/traefik",
@@ -58,7 +58,7 @@ export const management: DockerTool[] = [
     id: "nginx",
     name: "Nginx",
     description:
-      "A powerful, high-performance web server and reverse proxy server. Features include load balancing, HTTP caching, serving static files, SSL/TLS termination, and acting as a reverse proxy for other services.",
+      "一个强大的、高性能的 Web 服务器和反向代理服务器。功能包括负载均衡、HTTP 缓存、静态文件服务、SSL/TLS 终端和作为其他服务的反向代理。",
     category: "Networking",
     tags: ["Web Server", "Reverse Proxy", "Load Balancer"],
     githubUrl: "https://github.com/nginx/nginx",
@@ -81,7 +81,7 @@ export const management: DockerTool[] = [
   {
     id: "pihole",
     name: "Pi-hole",
-    description: "Network-wide Ad Blocking.",
+    description: "全网广告拦截。",
     category: "Networking",
     tags: ["Ad Blocking", "DNS", "Privacy"],
     githubUrl: "https://github.com/pi-hole/pi-hole",
@@ -107,7 +107,7 @@ export const management: DockerTool[] = [
   {
     id: "adguardhome",
     name: "AdGuard Home",
-    description: "Network-wide ads & trackers blocking DNS server.",
+    description: "全网广告和跟踪器拦截 DNS 服务器。",
     category: "Networking",
     tags: ["Ad Blocking", "DNS", "Privacy"],
     githubUrl: "https://github.com/AdguardTeam/AdGuardHome",
@@ -133,7 +133,7 @@ export const management: DockerTool[] = [
     id: "caddy",
     name: "Caddy",
     description:
-      "Powerful, enterprise-ready, open source web server with automatic HTTPS.",
+      "强大的、企业级的开源 Web 服务器，具有自动 HTTPS 功能。",
     category: "Networking",
     tags: ["Web Server", "Reverse Proxy", "HTTPS"],
     githubUrl: "https://github.com/caddyserver/caddy",

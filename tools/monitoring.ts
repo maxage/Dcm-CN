@@ -5,7 +5,7 @@ export const monitoring: DockerTool[] = [
     id: "homarr",
     name: "Homarr",
     description:
-      "A modern, feature-rich dashboard for your server. Integrates with Docker for container management, supports multiple users with advanced permissions, and provides a sleek interface for managing your self-hosted services.",
+      "一个现代化、功能丰富的服务器仪表板。集成 Docker 进行容器管理，支持具有高级权限的多用户，并为管理您的自托管服务提供流畅的界面。",
     category: "Management",
     tags: ["Dashboard", "Management", "Monitoring"],
     githubUrl: "https://github.com/homarr-labs/homarr",
@@ -28,7 +28,7 @@ export const monitoring: DockerTool[] = [
     id: "grafana",
     name: "Grafana",
     description:
-      "The open and composable observability and data visualization platform. Visualize metrics, logs, and traces from multiple sources.",
+      "开放且可组合的可观察性和数据可视化平台。可视化来自多个来源的指标、日志和跟踪数据。",
     category: "Monitoring",
     tags: ["Monitoring", "Visualization", "Analytics"],
     githubUrl: "https://github.com/grafana/grafana",
@@ -53,7 +53,7 @@ export const monitoring: DockerTool[] = [
     id: "prometheus",
     name: "Prometheus",
     description:
-      "A powerful monitoring and alerting toolkit designed for reliability. Features include a multi-dimensional data model, flexible query language (PromQL), efficient time series database, and modern alerting approach.",
+      "一个强大的监控和告警工具包，专为可靠性而设计。特点包括多维数据模型、灵活的查询语言（PromQL）、高效的时序数据库和现代化的告警方式。",
     category: "Monitoring",
     tags: ["Monitoring", "Metrics", "Alerting"],
     githubUrl: "https://github.com/prometheus/prometheus",
@@ -80,7 +80,7 @@ export const monitoring: DockerTool[] = [
     id: "watchtower",
     name: "Watchtower",
     description:
-      "An automated solution for keeping Docker containers up to date. Monitors running containers and automatically pulls and redeploys containers when it detects that a relevant image has been updated.",
+      "一个用于保持 Docker 容器更新的自动化解决方案。监控运行中的容器，并在检测到相关镜像已更新时自动拉取和重新部署容器。",
     category: "Maintenance",
     tags: ["Automation", "Updates", "Monitoring"],
     githubUrl: "https://github.com/containrrr/watchtower",
@@ -103,7 +103,7 @@ export const monitoring: DockerTool[] = [
     id: "heimdall",
     name: "Heimdall",
     description:
-      "A modern, elegant application dashboard and launcher that helps you organize all your web applications. Features a clean interface, customizable categories, and support for various authentication methods.",
+      "一个现代、优雅的应用程序仪表板和启动器，帮助您组织所有的网络应用程序。具有清晰的界面、可自定义的类别和对各种认证方法的支持。",
     category: "Dashboard",
     tags: ["Dashboard", "Launcher", "Organization"],
     githubUrl: "https://github.com/linuxserver/Heimdall",
@@ -127,7 +127,7 @@ export const monitoring: DockerTool[] = [
     id: "uptime-kuma",
     name: "Uptime Kuma",
     description:
-      "A modern, self-hosted, and easy to use monitoring tool with a beautiful UI. Monitor websites, APIs, and more with real-time alerts.",
+      "一个现代化的、自托管的、易于使用的监控工具，具有漂亮的用户界面。可监控网站、API 等，并提供实时告警。",
     category: "Monitoring",
     tags: ["Uptime", "Status", "Alerts"],
     githubUrl: "https://github.com/louislam/uptime-kuma",
@@ -148,7 +148,7 @@ export const monitoring: DockerTool[] = [
     id: "scrutiny",
     name: "Scrutiny",
     description:
-      "Hard drive S.M.A.R.T monitoring, historical trends, and disk failure prediction with a modern web UI.",
+      "硬盘 S.M.A.R.T 监控、历史趋势和磁盘故障预测，带有现代网页界面。",
     category: "Monitoring",
     tags: ["S.M.A.R.T", "Storage", "Disk Health"],
     githubUrl: "https://github.com/AnalogJ/scrutiny",
@@ -174,7 +174,7 @@ export const monitoring: DockerTool[] = [
     id: "speedtest-tracker",
     name: "Speedtest Tracker",
     description:
-      "Continuously track your internet speed with automatic testing and a dashboard to visualize the results over time.",
+      "通过自动测试持续跟踪您的互联网速度，并提供仪表板来可视化长期结果。",
     category: "Monitoring",
     tags: ["Internet", "Speed", "Tracking"],
     githubUrl: "https://github.com/alexjustesen/speedtest-tracker",
@@ -198,7 +198,7 @@ export const monitoring: DockerTool[] = [
     id: "statping-ng",
     name: "Statping-NG",
     description:
-      "An easy-to-use status page for your websites and applications. Beautiful metrics, analytics, and health checks.",
+      "一个易于使用的网站和应用程序状态页面。提供精美的指标、分析和健康检查。",
     category: "Monitoring",
     tags: ["Status", "Uptime", "Metrics"],
     githubUrl: "https://github.com/statping-ng/statping-ng",
@@ -220,7 +220,7 @@ export const monitoring: DockerTool[] = [
     id: "glances",
     name: "Glances",
     description:
-      "A cross-platform system monitoring tool written in Python. Provides a comprehensive overview of system resources.",
+      "一个用 Python 编写的跨平台系统监控工具。提供系统资源的全面概览。",
     category: "Monitoring",
     tags: ["System", "Resources", "Metrics"],
     githubUrl: "https://github.com/nicolargo/glances",
@@ -244,7 +244,7 @@ export const monitoring: DockerTool[] = [
     id: "netdata",
     name: "Netdata",
     description:
-      "Real-time performance and health monitoring for systems and applications. Features beautiful, interactive web dashboards.",
+      "系统和应用程序的实时性能和健康监控。具有精美的、交互式的网页仪表板。",
     category: "Monitoring",
     tags: ["System", "Performance", "Real-time"],
     githubUrl: "https://github.com/netdata/netdata",
@@ -272,7 +272,7 @@ export const monitoring: DockerTool[] = [
     id: "librenms",
     name: "LibreNMS",
     description:
-      "A fully featured network monitoring system that provides a wealth of features and device support using SNMP.",
+      "一个功能齐全的网络监控系统，它使用SNMP提供了丰富的功能和设备支持。",
     category: "Monitoring",
     tags: ["Network", "SNMP", "Metrics"],
     githubUrl: "https://github.com/librenms/librenms",

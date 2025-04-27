@@ -4,7 +4,7 @@ export const other: DockerTool[] = [
   {
     id: "nextcloud",
     name: "Nextcloud",
-    description: "A safe home for all your data.",
+    description: "为您的所有数据提供一个安全的家。",
     category: "Storage",
     tags: ["Cloud Storage", "File Sharing", "Collaboration"],
     githubUrl: "https://github.com/nextcloud/server",
@@ -49,7 +49,7 @@ export const other: DockerTool[] = [
   {
     id: "vaultwarden",
     name: "Vaultwarden",
-    description: "Unofficial Bitwarden compatible server written in Rust.",
+    description: "用 Rust 编写的非官方 Bitwarden 兼容服务器。",
     category: "Security",
     tags: ["Password Manager", "Security", "Bitwarden"],
     githubUrl: "https://github.com/dani-garcia/vaultwarden",
@@ -71,7 +71,7 @@ export const other: DockerTool[] = [
   {
     id: "gitea",
     name: "Gitea",
-    description: "A painless self-hosted Git service.",
+    description: "一个无痛的自托管 Git 服务。",
     category: "Development",
     tags: ["Git", "Version Control", "CI/CD"],
     githubUrl: "https://github.com/go-gitea/gitea",
@@ -97,7 +97,7 @@ export const other: DockerTool[] = [
     id: "code-server",
     name: "Code Server",
     description:
-      "Run VS Code on any machine anywhere and access it in the browser.",
+      "在任何地方的任何机器上运行 VS Code，并在浏览器中访问它。",
     category: "Development",
     tags: ["IDE", "Development", "VS Code"],
     githubUrl: "https://github.com/coder/code-server",
@@ -121,7 +121,7 @@ export const other: DockerTool[] = [
     id: "elasticsearch",
     name: "Elasticsearch",
     description:
-      "A distributed, RESTful search and analytics engine capable of addressing a growing number of use cases.",
+      "一个分布式的 RESTful 搜索和分析引擎，能够满足越来越多的用例需求。",
     category: "Database",
     tags: ["Search", "Analytics", "Full-Text"],
     githubUrl: "https://github.com/elastic/elasticsearch",
@@ -153,7 +153,7 @@ export const other: DockerTool[] = [
   {
     id: "duplicacy",
     name: "Duplicacy",
-    description: "A lock-free deduplication cloud backup tool.",
+    description: "一个无锁的重复数据删除云备份工具。",
     category: "Backup",
     tags: ["Backup", "Deduplication", "Cloud"],
     githubUrl: "https://github.com/gilbertchen/duplicacy",
@@ -177,7 +177,7 @@ export const other: DockerTool[] = [
   {
     id: "mergerfs",
     name: "MergerFS",
-    description: "A featureful FUSE-based union filesystem.",
+    description: "一个功能丰富的基于 FUSE 的联合文件系统。",
     category: "Storage",
     tags: ["Filesystem", "Storage", "Union FS"],
     githubUrl: "https://github.com/trapexit/mergerfs",
@@ -204,7 +204,7 @@ export const other: DockerTool[] = [
     id: "homeassistant",
     name: "Home Assistant",
     description:
-      "Open source home automation platform that puts local control and privacy first. Supported by a worldwide community of bricoleurs, tinkerers and DIYers.",
+      "开源家庭自动化平台，将本地控制和隐私放在首位。得到全球 DIY 爱好者、修补匠和创客社区的支持。",
     category: "Home Automation",
     tags: ["IoT", "Smart Home", "Automation"],
     githubUrl: "https://github.com/home-assistant/core",
@@ -228,7 +228,7 @@ export const other: DockerTool[] = [
     id: "node-red",
     name: "Node-RED",
     description:
-      "Flow-based programming tool for connecting hardware devices, APIs and online services. Perfect companion for Home Assistant automations.",
+      "基于流的编程工具，用于连接硬件设备、API 和在线服务。是 Home Assistant 自动化的完美伴侣。",
     category: "Home Automation",
     tags: ["IoT", "Automation", "Flow Programming"],
     githubUrl: "https://github.com/node-red/node-red",
@@ -249,7 +249,7 @@ export const other: DockerTool[] = [
     id: "mosquitto",
     name: "Mosquitto",
     description:
-      "Lightweight MQTT broker for IoT messaging. Essential for Home Assistant and IoT device communications.",
+      "一个开源的 MQTT 代理，实现了 MQTT 协议的 3.1 和 3.1.1 版本。",
     category: "Home Automation",
     tags: ["IoT", "MQTT", "Messaging"],
     githubUrl: "https://github.com/eclipse/mosquitto",
@@ -273,7 +273,7 @@ export const other: DockerTool[] = [
     id: "zigbee2mqtt",
     name: "Zigbee2MQTT",
     description:
-      "Enables you to use Zigbee devices without the vendor's bridge or gateway. Connects directly to a wide range of Zigbee adapters.",
+      "使您无需使用供应商的网桥或网关即可使用 Zigbee 设备。可直接连接到各种 Zigbee 适配器。",
     category: "Home Automation",
     tags: ["IoT", "Zigbee", "Smart Home"],
     githubUrl: "https://github.com/Koenkk/zigbee2mqtt",
@@ -296,7 +296,7 @@ export const other: DockerTool[] = [
     id: "freshrss",
     name: "FreshRSS",
     description:
-      "Self-hosted RSS feed aggregator like Google Reader with modern UI and customization options.",
+      "一个自托管的 RSS 聚合器，类似于 Google Reader，具有现代 UI 和定制选项。",
     category: "Productivity",
     tags: ["RSS", "News", "Reading"],
     githubUrl: "https://github.com/FreshRSS/FreshRSS",
@@ -319,7 +319,7 @@ export const other: DockerTool[] = [
     id: "wallabag",
     name: "Wallabag",
     description:
-      "Self-hosted read-it-later application. Save web pages for offline reading and classify articles.",
+      "一个自托管的阅读后保存应用程序。保存网页以离线阅读并分类文章。",
     category: "Productivity",
     tags: ["Reading", "Bookmark", "Archive"],
     githubUrl: "https://github.com/wallabag/wallabag",
@@ -342,7 +342,7 @@ export const other: DockerTool[] = [
     id: "tandoorrecipes",
     name: "Tandoor Recipes",
     description:
-      "The recipe manager that allows you to manage your ever-growing collection of digital recipes.",
+      "一个允许您管理不断增长的数字食谱收藏的食谱管理器。",
     category: "Productivity",
     tags: ["Cooking", "Recipes", "Food"],
     githubUrl: "https://github.com/vabene1111/recipes",
@@ -368,7 +368,7 @@ export const other: DockerTool[] = [
     id: "filebrowser",
     name: "File Browser",
     description:
-      "Web-based file manager with a clean UI for browsing, managing, and sharing files from your server.",
+      "基于 Web 的文件管理器，具有干净的 UI，用于浏览、管理和共享来自您服务器的文件。",
     category: "Productivity",
     tags: ["Files", "Manager", "Sharing"],
     githubUrl: "https://github.com/filebrowser/filebrowser",
@@ -393,7 +393,7 @@ export const other: DockerTool[] = [
     id: "openvscode",
     name: "OpenVSCode Server",
     description:
-      "Run VS Code in the browser with server-side computation. Perfect for remote development.",
+      "在浏览器中运行 VS Code 与服务器端计算。非常适合远程开发。",
     category: "Development",
     tags: ["IDE", "Editor", "Development"],
     githubUrl: "https://github.com/gitpod-io/openvscode-server",
@@ -414,7 +414,7 @@ export const other: DockerTool[] = [
     id: "actualbudget",
     name: "Actual Budget",
     description:
-      "A super fast and privacy-focused app for managing your finances.",
+      "一个超级快速且注重隐私的财务管理应用程序。",
     category: "Finance",
     tags: ["Money", "Budgeting", "Finance"],
     githubUrl: "https://github.com/actualbudget/actual",
@@ -450,7 +450,7 @@ export const other: DockerTool[] = [
     id: "firefly",
     name: "Firefly III",
     description:
-      "Personal finance manager to help track expenses, income, budgets and more.",
+      "个人财务经理，帮助跟踪支出、收入、预算等。",
     category: "Finance",
     tags: ["Money", "Budgeting", "Finance"],
     githubUrl: "https://github.com/firefly-iii/firefly-iii",
@@ -478,7 +478,7 @@ export const other: DockerTool[] = [
     id: "homepage",
     name: "Homepage",
     description:
-      "A modern, fully static, fast, secure dashboard for public/private services. Perfect homepage for your server.",
+      "一个现代化、全静态、快速、安全的公共/私有服务仪表板。非常适合您的服务器。",
     category: "Productivity",
     tags: ["Dashboard", "Homepage", "UI"],
     githubUrl: "https://github.com/benphelps/homepage",
@@ -500,7 +500,7 @@ export const other: DockerTool[] = [
     id: "calibreweb",
     name: "Calibre-Web",
     description:
-      "Web app for browsing, reading and downloading eBooks stored in a Calibre database.",
+      "一个用于浏览、阅读和下载存储在 Calibre 数据库中的电子书的 Web 应用程序。",
     category: "Media",
     tags: ["eBooks", "Reading", "Library"],
     githubUrl: "https://github.com/janeczku/calibre-web",
@@ -524,7 +524,7 @@ export const other: DockerTool[] = [
     id: "unifi",
     name: "Unifi Controller",
     description:
-      "Network management controller for Ubiquiti UniFi devices, enabling centralized management.",
+      "用于 Ubiquiti UniFi 设备的网络管理控制器，实现集中管理。",
     category: "Network",
     tags: ["Network", "Management", "Ubiquiti"],
     githubUrl: "https://github.com/jacobalberty/unifi-docker",
@@ -550,7 +550,7 @@ export const other: DockerTool[] = [
     id: "mealie",
     name: "Mealie",
     description:
-      "A self-hosted recipe manager and meal planner with a sleek interface and powerful features.",
+      "一个自托管的食谱管理器和膳食计划器，具有时尚的界面和强大的功能。",
     category: "Productivity",
     tags: ["Recipes", "Cooking", "Meal Planning"],
     githubUrl: "https://github.com/hay-kot/mealie",

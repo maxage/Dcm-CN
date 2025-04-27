@@ -4,7 +4,7 @@ export const databases: DockerTool[] = [
   {
     id: "mariadb",
     name: "MariaDB",
-    description: "One of the most popular database servers.",
+    description: "最受欢迎的数据库服务器之一。",
     category: "Database",
     tags: ["SQL", "Database", "MySQL"],
     githubUrl: "https://github.com/MariaDB/server",
@@ -30,7 +30,7 @@ export const databases: DockerTool[] = [
     id: "mysql",
     name: "MySQL",
     description:
-      "The world's most popular open source database. Features high performance, reliability, and ease of use.",
+      "世界上最受欢迎的开源数据库。具有高性能、可靠性和易用性特点。",
     category: "Database",
     tags: ["SQL", "Database", "Relational"],
     githubUrl: "https://github.com/mysql/mysql-server",
@@ -58,7 +58,7 @@ export const databases: DockerTool[] = [
   {
     id: "postgres",
     name: "PostgreSQL",
-    description: "The world's most advanced open source database.",
+    description: "世界上最先进的开源数据库。",
     category: "Database",
     tags: ["SQL", "Database", "Relational"],
     githubUrl: "https://github.com/postgres/postgres",
@@ -84,7 +84,7 @@ export const databases: DockerTool[] = [
     id: "mongodb",
     name: "MongoDB",
     description:
-      "A document-oriented NoSQL database that provides high performance, high availability, and easy scalability.",
+      "一个面向文档的 NoSQL 数据库，提供高性能、高可用性和易扩展性。",
     category: "Database",
     tags: ["NoSQL", "Database", "Document"],
     githubUrl: "https://github.com/mongodb/mongo",
@@ -109,7 +109,7 @@ export const databases: DockerTool[] = [
     id: "redis",
     name: "Redis",
     description:
-      "A source-available, in-memory data structure store used as a database, cache, message broker, and queue.",
+      "一个开源的内存数据结构存储，可用作数据库、缓存、消息代理和队列。",
     category: "Database",
     tags: ["Cache", "Database", "In-Memory"],
     githubUrl: "https://github.com/redis/redis",

@@ -5,7 +5,7 @@ export const media: DockerTool[] = [
     id: "jellyfin",
     name: "Jellyfin",
     description:
-      "A free software media system that puts you in control of managing and streaming your media. It is an alternative to the proprietary Emby and Plex, with no premium features behind a paywall.",
+      "一个免费的媒体系统，让您完全掌控媒体的管理和流媒体播放。这是专有软件 Emby 和 Plex 的替代品，没有任何付费墙后的高级功能。",
     category: "Media",
     tags: ["Streaming", "Media Server", "Transcoding"],
     githubUrl: "https://github.com/jellyfin/jellyfin",
@@ -30,7 +30,7 @@ export const media: DockerTool[] = [
     id: "plex",
     name: "Plex",
     description:
-      "A powerful media server that organizes video, music, and photos from personal libraries and streams them to smart TVs, streaming boxes, and mobile devices. Features a polished interface and advanced features for media management.",
+      "一个强大的媒体服务器，可以组织来自个人媒体库的视频、音乐和照片，并将其流式传输到智能电视、流媒体盒子和移动设备。具有精美的界面和先进的媒体管理功能。",
     category: "Media",
     tags: ["Streaming", "Media Server", "Transcoding"],
     githubUrl: "https://github.com/plexinc/pms-docker",
@@ -59,7 +59,7 @@ export const media: DockerTool[] = [
     id: "emby",
     name: "Emby",
     description:
-      "A powerful media server that organizes and streams your video, music, live TV, and photos from personal media libraries to smart TVs, streaming boxes, and mobile devices. Features a standalone server with comprehensive media management capabilities.",
+      "一个强大的媒体服务器，可以组织并流式传输您的视频、音乐、直播电视和照片，从个人媒体库传输到智能电视、流媒体盒子和移动设备。具有独立的服务器和全面的媒体管理功能。",
     category: "Media",
     tags: ["Streaming", "Media Server", "Live TV"],
     githubUrl: "https://github.com/MediaBrowser/Emby",
@@ -88,7 +88,7 @@ export const media: DockerTool[] = [
     id: "tautulli",
     name: "Tautulli",
     description:
-      "A monitoring application for Plex Media Server that provides statistics and analytics for your media library.",
+      "一个 Plex 媒体服务器的监控应用程序，为您的媒体库提供统计和分析数据。",
     category: "Monitoring",
     tags: ["Plex", "Monitoring", "Statistics"],
     githubUrl: "https://github.com/Tautulli/Tautulli",
@@ -112,7 +112,7 @@ export const media: DockerTool[] = [
     id: "jellyseerr",
     name: "Jellyseerr",
     description:
-      "A request management and media discovery tool for Jellyfin. Fork of Overseerr with native Jellyfin support.",
+      "一个用于 Jellyfin 的请求管理和媒体发现工具。这是 Overseerr 的一个分支，具有原生 Jellyfin 支持。",
     category: "Media",
     tags: ["Requests", "Media Management", "Jellyfin"],
     githubUrl: "https://github.com/Fallenbagel/jellyseerr",
@@ -136,7 +136,7 @@ export const media: DockerTool[] = [
     id: "overseerr",
     name: "Overseerr",
     description:
-      "A request management and media discovery tool for Plex. Integrates with Sonarr and Radarr.",
+      "一个用于 Plex 的请求管理和媒体发现工具。可与 Sonarr 和 Radarr 集成。",
     category: "Media",
     tags: ["Requests", "Media Management", "Plex"],
     githubUrl: "https://github.com/sct/overseerr",
@@ -160,7 +160,7 @@ export const media: DockerTool[] = [
     id: "stash",
     name: "Stash",
     description:
-      "An organizer for your adult media. Collects and organizes your adult media collection.",
+      "一个成人媒体管理器。收集和组织您的成人媒体收藏。",
     category: "Media",
     tags: ["Adult", "Media Management", "Organization"],
     githubUrl: "https://github.com/stashapp/stash",
@@ -185,7 +185,7 @@ export const media: DockerTool[] = [
     id: "doplarr",
     name: "Doplarr",
     description:
-      "An automation tool that integrates with Sonarr/Radarr and Discord to automatically process requests from a Discord bot.",
+      "一个自动化工具，集成了 Sonarr/Radarr 和 Discord，可以通过 Discord 机器人自动处理请求。",
     category: "Media",
     tags: ["Discord", "Requests", "Bot"],
     githubUrl: "https://github.com/kiranshila/Doplarr",
@@ -209,7 +209,7 @@ export const media: DockerTool[] = [
     id: "requestrr",
     name: "Requestrr",
     description:
-      "A chatbot for Discord that allows users to request content on your media server through simple chat commands.",
+      "一个 Discord 聊天机器人，允许用户通过简单的聊天命令在您的媒体服务器上请求内容。",
     category: "Media",
     tags: ["Discord", "Requests", "Bot"],
     githubUrl: "https://github.com/darkalfx/requestrr",
@@ -232,7 +232,7 @@ export const media: DockerTool[] = [
     id: "ombi",
     name: "Ombi",
     description:
-      "A self-hosted web application that automatically sends your media requests to Sonarr, Radarr, and Lidarr.",
+      "一个自托管的网络应用程序，可以自动将您的媒体请求发送到 Sonarr、Radarr 和 Lidarr。",
     category: "Media",
     tags: ["Requests", "Media Management", "Integration"],
     githubUrl: "https://github.com/Ombi-app/Ombi",
@@ -255,7 +255,7 @@ export const media: DockerTool[] = [
     id: "sabnzbd",
     name: "SABnzbd",
     description:
-      "Free and easy binary newsreader, makes downloading from Usenet easy by automating the process.",
+      "免费且易用的二进制新闻阅读器，通过自动化流程使从 Usenet 下载变得简单。",
     category: "Download",
     tags: ["Usenet", "Download", "NZB"],
     githubUrl: "https://github.com/sabnzbd/sabnzbd",
@@ -279,8 +279,7 @@ export const media: DockerTool[] = [
   {
     id: "transmission",
     name: "Transmission",
-    description:
-      "A fast, easy, and free BitTorrent client with a web interface.",
+    description: "快速、简单且免费的 BitTorrent 客户端，带有网页界面。",
     category: "Download",
     tags: ["BitTorrent", "Download", "P2P"],
     githubUrl: "https://github.com/transmission/transmission",
@@ -310,7 +309,7 @@ export const media: DockerTool[] = [
     id: "metube",
     name: "MeTube",
     description:
-      "A web GUI for youtube-dl with playlist support. Allows you to download videos from YouTube and dozens of other sites.",
+      "一个支持播放列表的 youtube-dl 网页界面。允许您从 YouTube 和其他数十个网站下载视频。",
     category: "Media",
     tags: ["YouTube", "Download", "Video"],
     githubUrl: "https://github.com/alexta69/metube",
@@ -333,7 +332,7 @@ export const media: DockerTool[] = [
     id: "navidrome",
     name: "Navidrome",
     description:
-      "Modern Music Server and Streamer compatible with Subsonic/Airsonic API. Stream your music collection from your own server.",
+      "现代音乐服务器和流媒体播放器，兼容 Subsonic/Airsonic API。从您自己的服务器流式传输您的音乐收藏。",
     category: "Media",
     tags: ["Music", "Streaming", "Audio"],
     githubUrl: "https://github.com/navidrome/navidrome",
@@ -358,7 +357,7 @@ export const media: DockerTool[] = [
     id: "airsonic-advanced",
     name: "Airsonic Advanced",
     description:
-      "A more modern implementation of the Airsonic fork with features like podcasts, audiobooks, and last.fm scrobbling.",
+      "Airsonic 分支的更现代实现，具有播客、有声书和 last.fm 记录等功能。",
     category: "Media",
     tags: ["Music", "Streaming", "Audio"],
     githubUrl: "https://github.com/airsonic-advanced/airsonic-advanced",
@@ -385,7 +384,7 @@ export const media: DockerTool[] = [
     id: "audiobookshelf",
     name: "Audiobookshelf",
     description:
-      "Self-hosted audiobook and podcast server with a modern interface for managing and listening to your audio collections.",
+      "自托管的有声书和播客服务器，具有现代界面，用于管理和收听您的音频收藏。",
     category: "Media",
     tags: ["Audiobooks", "Podcasts", "Library"],
     githubUrl: "https://github.com/advplyr/audiobookshelf",
@@ -409,8 +408,7 @@ export const media: DockerTool[] = [
   {
     id: "flaresolverr",
     name: "FlareSolverr",
-    description:
-      "Proxy server to bypass Cloudflare and DDoS-GUARD protection, used by indexers to scrape content from protected sites.",
+    description: "代理服务器，用于绕过 Cloudflare 和 DDoS-GUARD 保护，索引器用它来抓取受保护站点的内容。",
     category: "Download",
     tags: ["Proxy", "Cloudflare", "Bypass"],
     githubUrl: "https://github.com/FlareSolverr/FlareSolverr",
@@ -431,7 +429,7 @@ export const media: DockerTool[] = [
     name: "Immich",
     isUnsupported: true,
     description:
-      "Self-hosted photo and video backup solution directly from your mobile phone. Alternative to Google Photos with a similar user experience.",
+      "自托管的照片和视频备份解决方案，可直接从您的手机备份。类似 Google Photos 的替代品，具有相似的用户体验。",
     category: "Media",
     tags: ["Photos", "Videos", "Backup"],
     githubUrl: "https://github.com/immich-app/immich",
@@ -458,7 +456,7 @@ export const media: DockerTool[] = [
     id: "photoprism",
     name: "PhotoPrism",
     description:
-      "AI-powered photos app for browsing, organizing & sharing your photo collection. Features face recognition, object detection, and geolocation.",
+      "AI 驱动的照片应用程序，用于浏览、组织和分享您的照片收藏。具有人脸识别、物体检测和地理位置功能。",
     category: "Media",
     tags: ["Photos", "AI", "Gallery"],
     githubUrl: "https://github.com/photoprism/photoprism",
@@ -484,7 +482,7 @@ export const media: DockerTool[] = [
     id: "kavita",
     name: "Kavita",
     description:
-      "Fast, feature rich, cross platform reading server for comics, manga, magazines, and ebooks. Responsive web UI with a focus on manga reading.",
+      "快速、功能丰富的跨平台阅读服务器，支持漫画、日本漫画、杂志和电子书。响应式网页界面，专注于漫画阅读体验。",
     category: "Media",
     tags: ["Comics", "Manga", "eBooks"],
     githubUrl: "https://github.com/Kareadita/Kavita",
@@ -508,7 +506,7 @@ export const media: DockerTool[] = [
     id: "pairdrop",
     name: "PairDrop",
     description:
-      "File sharing on your local network that works on all platforms.",
+      "在本地网络上进行文件共享，适用于所有平台。",
     category: "Media",
     tags: ["Cloud", "Sharing"],
     githubUrl: "https://github.com/schlagmichdoch/PairDrop",
@@ -533,7 +531,7 @@ export const media: DockerTool[] = [
     id: "pinchflat",
     name: "Pinchflat",
     description:
-      "A self-hosted app for downloading YouTube content built using yt-dlp.",
+      "一个使用 yt-dlp 构建的自托管 YouTube 内容下载应用。",
     category: "Media",
     tags: ["TV", "PVR", "Monitoring"],
     githubUrl: "https://github.com/kieraneglin/pinchflat",
@@ -554,7 +552,7 @@ export const media: DockerTool[] = [
     id: "netalertx",
     name: "NetAlertX",
     description:
-      "Network intruder and presence detector. Scans for devices connected to your network and alerts you if new and unknown devices are found.",
+      "网络入侵者和存在检测器。扫描连接到您网络的设备，并在发现新的和未知设备时提醒您。",
     category: "Media",
     tags: ["Monitoring", "Security", "Network"],
     githubUrl: "https://github.com/jokob-sk/NetAlertX",
@@ -571,6 +569,26 @@ export const media: DockerTool[] = [
       - \${DATA_PATH}/netalertx/db:/app/db
       - \${DATA_PATH}/netalertx/logs:/app/log
       - /tmp/api:/app/api
+    restart: \${RESTART_POLICY}`,
+  },
+  {
+    id: "jackett",
+    name: "Jackett",
+    description: "为您喜爱的 torrent 追踪器提供 API 支持，将搜索转换为追踪器站点特定的查询。",
+    category: "Download",
+    tags: ["Indexer", "Proxy", "Torrent"],
+    githubUrl: "https://github.com/Jackett/Jackett",
+    icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/jackett.svg",
+    composeContent: `services:
+  jackett:
+    image: ghcr.io/hotio/jackett:latest
+    container_name: \${CONTAINER_PREFIX}jackett
+    environment:
+      - TZ=\${TZ}
+    volumes:
+      - \${CONFIG_PATH}/jackett:/config
+    ports:
+      - 9117:9117
     restart: \${RESTART_POLICY}`,
   },
 ]
