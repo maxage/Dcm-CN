@@ -45,9 +45,9 @@ export function TemplateCard({
         setLoading(true)
         try {
           onUnselectTemplate(template.tools)
-          toast.success(`Removed tools from "${template.name}" template`)
+          toast.success(`已从"${template.name}"模板中移除工具`)
         } catch (error) {
-          toast.error("Failed to remove template tools")
+          toast.error("移除模板工具失败")
           console.error(error)
         } finally {
           setLoading(false)
@@ -67,10 +67,10 @@ export function TemplateCard({
 
       onSelectTemplate(templateTools)
       toast.success(
-        `Added ${templateTools.length} tools from "${template.name}" template`,
+        `已将${templateTools.length}个工具添加到您的配置中`,
       )
     } catch (error) {
-      toast.error("Failed to add template tools")
+      toast.error("添加模板工具失败")
       console.error(error)
     } finally {
       setLoading(false)
@@ -136,7 +136,7 @@ export function TemplateCard({
               className="flex items-center gap-1 bg-background/80 backdrop-blur-sm"
             >
               <Eye size={14} />
-              <span className="text-xs">View</span>
+              <span className="text-xs">查看</span>
             </Button>
           </Link>
         </div>
@@ -184,11 +184,11 @@ export function TemplateCard({
         </div>
         <div className="flex items-center gap-2 text-sm">
           <Badge variant="secondary" className="font-normal">
-            {templateTools.length} tools included
+            包含 {templateTools.length} 个工具
           </Badge>
           {unavailableTools > 0 && (
             <span className="text-muted-foreground text-xs">
-              ({unavailableTools} unavailable)
+              ({unavailableTools} 个不可用)
             </span>
           )}
         </div>
@@ -228,7 +228,7 @@ export function TemplateCard({
               variant="outline"
               className="rounded-md bg-muted/80 px-1 py-0.5 font-normal text-xs"
             >
-              +{templateTools.length - 4} more
+              还有 {templateTools.length - 4} 个
             </Badge>
           )}
         </div>
@@ -264,17 +264,17 @@ export function TemplateCard({
           {loading ? (
             <span className="flex items-center gap-2">
               <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-              {isSelected ? "Removing..." : "Adding..."}
+              {isSelected ? "移除中..." : "添加中..."}
             </span>
           ) : isSelected ? (
             <>
               <MinusCircle size={16} className="text-red-500" />
-              Remove Template
+              移除模板
             </>
           ) : (
             <>
               <PlusCircle size={16} />
-              Use Template
+              使用模板
             </>
           )}
         </Button>

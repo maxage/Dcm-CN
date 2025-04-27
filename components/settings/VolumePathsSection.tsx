@@ -15,10 +15,10 @@ export function VolumePathsSection({
 }: VolumePathsSectionProps) {
   return (
     <div className="motion-safe:animate-fade-in">
-      <h4 className="mb-3 font-medium text-sm">Volume Paths</h4>
+      <h4 className="mb-3 font-medium text-sm">卷路径</h4>
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="grid gap-2">
-          <Label htmlFor="configPath">Config Path</Label>
+          <Label htmlFor="configPath">配置路径</Label>
           <Input
             id="configPath"
             placeholder="/path/to/config"
@@ -27,11 +27,11 @@ export function VolumePathsSection({
             className="motion-safe:transition-all motion-safe:duration-300 motion-safe:focus:scale-[1.01]"
           />
           <p className="text-muted-foreground text-xs">
-            Path where configuration files will be stored
+            配置文件的存储路径
           </p>
         </div>
         <div className="grid gap-2">
-          <Label htmlFor="dataPath">Data Path</Label>
+          <Label htmlFor="dataPath">数据路径</Label>
           <Input
             id="dataPath"
             placeholder="/path/to/data"
@@ -40,7 +40,7 @@ export function VolumePathsSection({
             className="motion-safe:transition-all motion-safe:duration-300 motion-safe:focus:scale-[1.01]"
           />
           <p className="text-muted-foreground text-xs">
-            Path where application data will be stored
+            应用数据的存储路径
           </p>
         </div>
       </div>

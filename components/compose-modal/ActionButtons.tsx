@@ -17,25 +17,25 @@ export default function ActionButtons({
   return (
     <div className="flex gap-2">
       <Button
-        aria-label="Download file"
+        aria-label="下载文件"
         className="ml-2 rounded-md"
         onClick={onDownload}
         size="icon"
         variant="outline"
       >
-        <span className="sr-only">Download</span>
+        <span className="sr-only">下载</span>
         <Download className="h-4 w-4" />
       </Button>
 
       <Button
-        aria-label={copied ? "Copied" : "Copy to clipboard"}
+        aria-label={copied ? "已复制" : "复制到剪贴板"}
         className="relative ml-2 rounded-md"
         id="copy-button"
         onClick={onCopy}
         size="icon"
         variant="outline"
       >
-        <span className="sr-only">{copied ? "Copied" : "Copy"}</span>
+        <span className="sr-only">{copied ? "已复制" : "复制"}</span>
         <Copy
           className={`h-4 w-4 transition-all duration-300 ${
             copied ? "scale-0" : "scale-100"

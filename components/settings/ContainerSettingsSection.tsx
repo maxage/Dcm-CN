@@ -22,10 +22,10 @@ export function ContainerSettingsSection({
 }: ContainerSettingsSectionProps) {
   return (
     <div className="[animation-delay:600ms] motion-safe:animate-fade-in">
-      <h4 className="mb-3 font-medium text-sm">Container Settings</h4>
+      <h4 className="mb-3 font-medium text-sm">容器设置</h4>
       <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
         <div className="grid gap-2">
-          <Label htmlFor="restartPolicy">Restart Policy</Label>
+          <Label htmlFor="restartPolicy">重启策略</Label>
           <Select
             value={settings.restartPolicy}
             onValueChange={(value) => onSettingsChange("restartPolicy", value)}
@@ -34,21 +34,21 @@ export function ContainerSettingsSection({
               id="restartPolicy"
               className="motion-safe:transition-all motion-safe:duration-300 motion-safe:focus:scale-[1.01]"
             >
-              <SelectValue placeholder="Select policy" />
+              <SelectValue placeholder="选择策略" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="no">no</SelectItem>
-              <SelectItem value="always">always</SelectItem>
-              <SelectItem value="on-failure">on-failure</SelectItem>
-              <SelectItem value="unless-stopped">unless-stopped</SelectItem>
+              <SelectItem value="no">不重启</SelectItem>
+              <SelectItem value="always">总是重启</SelectItem>
+              <SelectItem value="on-failure">失败时重启</SelectItem>
+              <SelectItem value="unless-stopped">除非手动停止</SelectItem>
             </SelectContent>
           </Select>
           <p className="text-muted-foreground text-xs">
-            When containers should restart
+            设置容器何时重启
           </p>
         </div>
         <div className="grid gap-2">
-          <Label htmlFor="networkMode">Network Mode</Label>
+          <Label htmlFor="networkMode">网络模式</Label>
           <Select
             value={settings.networkMode}
             onValueChange={(value) => onSettingsChange("networkMode", value)}
@@ -57,20 +57,20 @@ export function ContainerSettingsSection({
               id="networkMode"
               className="motion-safe:transition-all motion-safe:duration-300 motion-safe:focus:scale-[1.01]"
             >
-              <SelectValue placeholder="Select network" />
+              <SelectValue placeholder="选择网络" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="bridge">bridge</SelectItem>
-              <SelectItem value="host">host</SelectItem>
-              <SelectItem value="none">none</SelectItem>
+              <SelectItem value="bridge">桥接</SelectItem>
+              <SelectItem value="host">主机</SelectItem>
+              <SelectItem value="none">无网络</SelectItem>
             </SelectContent>
           </Select>
           <p className="text-muted-foreground text-xs">
-            How containers connect to network
+            设置容器如何连接网络
           </p>
         </div>
         <div className="grid gap-2">
-          <Label htmlFor="containerNamePrefix">Container Name Prefix</Label>
+          <Label htmlFor="containerNamePrefix">容器名称前缀</Label>
           <Input
             id="containerNamePrefix"
             placeholder="homestack"
@@ -81,7 +81,7 @@ export function ContainerSettingsSection({
             className="motion-safe:transition-all motion-safe:duration-300 motion-safe:focus:scale-[1.01]"
           />
           <p className="text-muted-foreground text-xs">
-            Prefix for container names
+            设置容器名称的前缀
           </p>
         </div>
       </div>

@@ -10,10 +10,10 @@ export function Header() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="mb-2 font-bold text-xl motion-safe:animate-slide-in-left md:text-2xl lg:text-3xl">
-              Docker Compose Generator
+              Docker Compose 配置生成器
             </h1>
             <p className="text-sm opacity-90 [animation-delay:150ms] motion-safe:animate-slide-in-left md:text-lg lg:text-xl">
-              Select the tools you want to include in your docker-compose.yaml
+              选择要包含在 docker-compose.yaml 中的工具
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
@@ -26,7 +26,7 @@ export function Header() {
               gradientTo="to-orange-400/20"
             >
               <Heart fill="currentColor" />
-              <span>Support me</span>
+              <span>支持我</span>
             </GradientButton>
 
             <GradientButton

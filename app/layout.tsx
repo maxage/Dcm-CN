@@ -13,9 +13,11 @@ import { PostHogProvider } from "./providers"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Docker Compose Generator",
-  description: "Select tools to generate your docker-compose.yaml file",
-  generator: "v0.dev",
+  title: "Docker Compose 生成器",
+  description: "选择工具生成您的 docker-compose.yaml 文件",
+  icons: {
+    icon: "/favicon.ico",
+  },
 }
 
 export default function RootLayout({

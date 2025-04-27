@@ -18,11 +18,10 @@ export default function PortConflictsAlert({
   return (
     <Alert variant="info" className="my-3 bg-secondary">
       <AlertCircle className="h-4 w-4" />
-      <AlertTitle>Port conflicts detected and fixed</AlertTitle>
+      <AlertTitle>检测到端口冲突并已修复</AlertTitle>
       <AlertDescription className="text-foreground text-xs">
-        We found {portConflicts.conflicts.length} port conflict(s) and fixed{" "}
-        {portConflicts.fixed} issue(s). We've fixed it for you. Because we're
-        just <b>that cool 😎</b>
+        我们发现了 {portConflicts.conflicts.length} 个端口冲突并修复了{" "}
+        {portConflicts.fixed} 个问题。我们已经帮您处理好了。因为我们就是这么酷 😎
         <ul className="mt-2 list-disc pl-6">
           {portConflicts.conflicts.map((conflict, i) => {
             // Parse the conflict message to extract port change information

@@ -60,10 +60,10 @@ export default function SettingsPanel({
       >
         <div className="flex items-center justify-between bg-muted/30 px-4 py-3">
           <div className="flex items-center gap-2">
-            <h3 className="font-medium text-lg">Docker Compose Settings</h3>
+            <h3 className="font-medium text-lg">Docker Compose 设置</h3>
             {isSaving && (
               <div className="flex items-center gap-1 font-medium text-green-500 text-sm">
-                <span className="animate-pulse">Saving...</span>
+                <span className="animate-pulse">保存中...</span>
               </div>
             )}
           </div>
@@ -75,7 +75,7 @@ export default function SettingsPanel({
               type="button"
               className="motion-safe:transition-all motion-safe:duration-300 motion-safe:hover:scale-105"
             >
-              {isOpen ? "Hide Settings" : "Show Settings"}
+              {isOpen ? "隐藏设置" : "显示设置"}
             </Button>
           </CollapsibleTrigger>
         </div>

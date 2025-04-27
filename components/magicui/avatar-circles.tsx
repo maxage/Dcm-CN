@@ -44,7 +44,7 @@ export const ServiceCircles = ({
                   src={service.icon}
                   width={40}
                   height={40}
-                  alt={`Icon of ${service.name}`}
+                  alt={`${service.name} 的图标`}
                   onClick={() => onToggleServiceSelection?.(service.id)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
@@ -89,7 +89,7 @@ export const ServiceCircles = ({
             side="top"
           >
             <h3 className="mb-2 font-medium text-gray-900 text-sm dark:text-gray-100">
-              More services
+              更多服务
             </h3>
             <ul className="space-y-1">
               {remainingServices.map((service) => (
@@ -110,7 +110,7 @@ export const ServiceCircles = ({
                         src={service.icon}
                         width={24}
                         height={24}
-                        alt={`Icon of ${service.name}`}
+                        alt={`${service.name} 的图标`}
                       />
                     ) : (
                       <div className="flex h-full w-full items-center justify-center rounded-full font-bold text-primary text-xs">

@@ -1,128 +1,128 @@
 <div align="center">
   <img src="./public/favicon.png" height="80" alt="DCM Logo" />
-  <h3>DCM - Docker Compose Maker</h3>
+  <h3>DCM - Docker Compose 生成器</h3>
 </div>
 
 <p align="center">
 <img src="https://img.shields.io/github/stars/ajnart/dcm?label=%E2%AD%90%20Stars&style=flat-square?branch=main&kill_cache=1%22">
 <a href="https://github.com/ajnart/dcm/actions">
-  <img title="CI Status" src="https://github.com/ajnart/dcm/actions/workflows/build_image.yml/badge.svg" alt="CI Status">
+  <img title="CI 状态" src="https://github.com/ajnart/dcm/actions/workflows/build_image.yml/badge.svg" alt="CI 状态">
 </a>
 <a href="https://github.com/ajnart/dcm/pkgs/container/dcm">
-  <img alt="Docker Image" src="https://img.shields.io/badge/🐳_Docker_Image-ghcr.io/ajnart/dcm-blue">
+  <img alt="Docker 镜像" src="https://img.shields.io/badge/🐳_Docker_镜像-ghcr.io/ajnart/dcm-blue">
 </a>
 </p>
 
-<!-- Links -->
+<!-- 链接 -->
 <p align="center">
   <a href="https://compose.ajnart.dev">
-    <strong>Live Demo 🚀</strong>
+    <strong>在线演示 🚀</strong>
   </a>
   •
-  <a href="#-quick-start">
-    <strong>Install 💻</strong>
+  <a href="#-快速开始">
+    <strong>安装 💻</strong>
   </a>
   •
-  <a href="#-contributing">
-    <strong>Contribute 🤝</strong>
+  <a href="#-贡献">
+    <strong>贡献 🤝</strong>
   </a>
   •
-  <a href="#-supported-tools">
-    <strong>Supported Tools 📦</strong>
+  <a href="#-支持的工具">
+    <strong>支持的工具 📦</strong>
   </a>
   •
-  <a href="#-screenshots">
-    <strong>Screenshots 📸</strong>
+  <a href="#-截图">
+    <strong>截图 📸</strong>
   </a>
 </p>
 
-## 📋 About
+## 📋 关于
 
 > [!NOTE]
-> 🌟 **Community-Driven Project**: DCM started as a simple tool but aims to become the go-to resource for Docker Compose configurations, powered by the community. We believe everyone has their favorite self-hosted tools, and we'd love for you to share yours! Whether you're using a popular application or a hidden gem, your contribution helps others discover and easily deploy great software.
+> 🌟 **社区驱动项目**: DCM 最初是一个简单的工具，但目标是成为 Docker Compose 配置的首选资源，由社区驱动。我们相信每个人都有自己喜欢的自托管工具，我们希望您能分享您的工具！无论您使用的是流行应用还是小众软件，您的贡献都能帮助他人发现并轻松部署优秀的软件。
 
-DCM (Docker Compose Maker) is a simple yet powerful tool that helps you create `docker-compose.yaml` files for your self-hosted applications. Select from a curated list of popular containers and generate a ready-to-use configuration file with just a few clicks.
+DCM (Docker Compose 生成器) 是一个简单但功能强大的工具，可帮助您为自托管应用创建 `docker-compose.yaml` 文件。从精选的流行容器列表中选择，只需点击几下即可生成可用的配置文件。
 
-No more copy-pasting from documentation or trying to remember the correct configuration options - this tool makes it easy to set up your Docker environment.
+不再需要从文档中复制粘贴或试图记住正确的配置选项 - 这个工具让您轻松设置 Docker 环境。
 
 > [!TIP]
-> Most containers come pre-configured with best practices and sensible defaults, saving you hours of documentation reading and configuration tweaking.
+> 大多数容器都预先配置了最佳实践和合理的默认值，为您节省了阅读文档和调整配置的时间。
 
-> 💡 **Share Your Stack**: Using a great tool that's not listed here? We'd love to include it! Check out our [contribution guide](CONTRIBUTING.md) to help others discover and use your favorite containers.
+> 💡 **分享您的方案**: 使用了一个很棒但尚未列出的工具？我们很乐意收录它！查看我们的[贡献指南](CONTRIBUTING.md)，帮助他人发现和使用您喜欢的容器。
 
-## 🔧 How to Use DCM
+## 🔧 如何使用 DCM
 
-Using Docker Compose Maker is simple and intuitive:
+使用 Docker Compose 生成器简单直观：
 
-1. **Select containers** - Browse the curated list of self-hosted applications and click to select the ones you want to include
-2. **Use templates** - Choose from predefined templates in the Template Gallery for common stacks like media servers
-3. **Configure settings** - Adjust environment variables, paths, and other common settings
-4. **Generate your configuration** - Click "Copy Compose" to view and customize your docker-compose.yaml
-5. **Deploy your stack** - Use one of the following methods to deploy your containers:
+1. **选择容器** - 浏览精选的自托管应用列表，点击选择您想要包含的应用
+2. **使用模板** - 从模板库中选择预定义的模板，如媒体服务器等常见方案
+3. **配置设置** - 调整环境变量、路径和其他常见设置
+4. **生成配置** - 点击"复制 Compose"查看和自定义您的 docker-compose.yaml
+5. **部署方案** - 使用以下方法之一部署您的容器：
 
 > [!IMPORTANT]
-> All containers are configured to use environment variables like `${PUID}`, `${PGID}`, and `${TZ}`. Make sure to set these in your deployment to avoid permission issues.
+> 所有容器都配置为使用环境变量，如 `${PUID}`、`${PGID}` 和 `${TZ}`。确保在部署时设置这些变量以避免权限问题。
 
-### Deployment Options
+### 部署选项
 
-Once you have your docker-compose configuration, you have several ways to deploy it:
+获得 docker-compose 配置后，您有几种部署方式：
 
-#### Copy & Paste
-Simply copy the generated docker-compose.yaml and .env content, save them locally, and run `docker-compose up -d` to start your containers.
+#### 复制粘贴
+只需复制生成的 docker-compose.yaml 和 .env 内容，本地保存，然后运行 `docker-compose up -d` 启动容器。
 
-#### Download Files
-Download the generated docker-compose.yaml and .env files directly from the interface, then use them with your preferred Docker management tool.
+#### 下载文件
+直接从界面下载生成的 docker-compose.yaml 和 .env 文件，然后使用您喜欢的 Docker 管理工具。
 
 > [!NOTE]
-> The downloaded .env file contains all the environment variables referenced in your docker-compose.yaml. Keep both files in the same directory when deploying.
+> 下载的 .env 文件包含 docker-compose.yaml 中引用的所有环境变量。部署时请将两个文件放在同一目录。
 
-#### Portainer Stacks
-If you're already using [Portainer](https://github.com/portainer/portainer) to manage your Docker environment, you can easily deploy your configuration as a stack:
+#### Portainer 堆栈
+如果您已经在使用 [Portainer](https://github.com/portainer/portainer) 管理 Docker 环境，您可以轻松将配置部署为堆栈：
 
-1. Navigate to your Portainer dashboard and select **Stacks** from the sidebar
-2. Click **Add stack**
-3. Give your stack a name
-4. Select **Web editor** and paste the generated docker-compose content
-5. (Optional) Add the environment variables from the .env file
-6. Click **Deploy the stack**
+1. 导航到 Portainer 仪表板并从侧边栏选择 **堆栈**
+2. 点击 **添加堆栈**
+3. 为堆栈命名
+4. 选择 **Web 编辑器** 并粘贴生成的 docker-compose 内容
+5. (可选) 添加 .env 文件中的环境变量
+6. 点击 **部署堆栈**
 
 > [!CAUTION]
-> When using Portainer Stacks, you'll need to manually add the environment variables or upload the .env file, as Portainer doesn't automatically read the .env file in all configurations.
+> 使用 Portainer 堆栈时，您需要手动添加环境变量或上传 .env 文件，因为 Portainer 不会在所有配置中自动读取 .env 文件。
 
-Using Portainer provides a user-friendly web interface to manage, update, and monitor your containers without needing command-line tools.
+使用 Portainer 提供了用户友好的 Web 界面来管理、更新和监控容器，无需命令行工具。
 
-#### Other Docker Management Tools
-The generated compose file works with any tool that supports docker-compose syntax, such as Docker Desktop, Rancher, Yacht, or command-line tools.
+#### 其他 Docker 管理工具
+生成的 compose 文件适用于任何支持 docker-compose 语法的工具，如 Docker Desktop、Rancher、Yacht 或命令行工具。
 
-## 🚀 Quick Start
+## 🚀 快速开始
 
-If you want to try DCM for yourself, there are several ways to get started:
+如果您想亲自尝试 DCM，有几种方式可以开始：
 
-### 🌐 Use the Online Version
+### 🌐 使用在线版本
 
-Visit [compose.ajnart.dev](https://compose.ajnart.dev) to use the tool immediately without installation.
+访问 [compose.ajnart.dev](https://compose.ajnart.dev) 立即使用，无需安装。
 
 > [!NOTE]
-> The online version includes analytics for usage tracking, while the self-hosted version does not.
+> 在线版本包含用于使用跟踪的分析功能，而自托管版本则没有。
 
-### 🐳 Run with Docker
+### 🐳 使用 Docker 运行
 
-Run with a single command:
+使用单个命令运行：
 
 ```bash
 docker run -p 7576:7576 --name dcm --rm ghcr.io/ajnart/dcm
 ```
 
-Then visit `http://localhost:7576` in your browser.
+然后在浏览器中访问 `http://localhost:7576`。
 
-The Docker image is available for multiple platforms:
+Docker 镜像支持多个平台：
 - linux/amd64
 - linux/arm64
 - linux/arm/v7
 
-### 📦 Using Docker Compose
+### 📦 使用 Docker Compose
 
-Create a `docker-compose.yaml` file:
+创建 `docker-compose.yaml` 文件：
 
 ```yaml
 services:
@@ -134,69 +134,69 @@ services:
     restart: unless-stopped
 ```
 
-Then run:
+然后运行：
 
 ```bash
 docker-compose up -d
 ```
 
-### 🛠️ Build from Source
+### 🛠️ 从源码构建
 
-1. Clone the repository:
+1. 克隆仓库：
 ```bash
 git clone https://github.com/ajnart/dcm.git
 cd dcm
 ```
 
-2. Install dependencies:
+2. 安装依赖：
 
-First install [Bun](https://bun.sh/) if you haven't already, then run:
+如果还没有安装 [Bun](https://bun.sh/)，请先安装，然后运行：
 ```bash
 bun install
 ```
 
 > [!WARNING]
-> Using npm instead of Bun may result in longer installation times and potential compatibility issues. We strongly recommend using Bun for development.
+> 使用 npm 而不是 Bun 可能会导致安装时间更长和潜在的兼容性问题。我们强烈建议使用 Bun 进行开发。
 
-3. Build and start:
+3. 构建并启动：
 ```bash
 bun run build
 bun start
 ```
 
-## 🧰 Supported Tools
+## 🧰 支持的工具
 
-DCM includes configuration for many popular self-hosted applications, including:
+DCM 包含许多流行的自托管应用配置，包括：
 
-📺 **Media Management**: 
-  - **Media Servers**: [Jellyfin](https://github.com/jellyfin/jellyfin), [Plex](https://github.com/plexinc/pms-docker), [Emby](https://github.com/MediaBrowser/Emby)
-  - **Media Automation**: [Sonarr](https://github.com/Sonarr/Sonarr), [Radarr](https://github.com/Radarr/Radarr), [Lidarr](https://github.com/lidarr/Lidarr), [Readarr](https://github.com/Readarr/Readarr), [Prowlarr](https://github.com/Prowlarr/Prowlarr), [Bazarr](https://github.com/morpheus65535/bazarr), [Whisparr](https://github.com/whisparr/whisparr)
-  - **Media Requests**: [Jellyseerr](https://github.com/Fallenbagel/jellyseerr), [Overseerr](https://github.com/sct/overseerr), [Doplarr](https://github.com/kiranshila/Doplarr), [Requestrr](https://github.com/darkalfx/requestrr)
+📺 **媒体管理**: 
+  - **媒体服务器**: [Jellyfin](https://github.com/jellyfin/jellyfin), [Plex](https://github.com/plexinc/pms-docker), [Emby](https://github.com/MediaBrowser/Emby)
+  - **媒体自动化**: [Sonarr](https://github.com/Sonarr/Sonarr), [Radarr](https://github.com/Radarr/Radarr), [Lidarr](https://github.com/lidarr/Lidarr), [Readarr](https://github.com/Readarr/Readarr), [Prowlarr](https://github.com/Prowlarr/Prowlarr), [Bazarr](https://github.com/morpheus65535/bazarr), [Whisparr](https://github.com/whisparr/whisparr)
+  - **媒体请求**: [Jellyseerr](https://github.com/Fallenbagel/jellyseerr), [Overseerr](https://github.com/sct/overseerr), [Doplarr](https://github.com/kiranshila/Doplarr), [Requestrr](https://github.com/darkalfx/requestrr)
 
-🔍 **Dashboards & Management**: 
-  - **Dashboards**: [Homarr](https://github.com/homarr-labs/homarr), [Heimdall](https://github.com/linuxserver/Heimdall)
-  - **Container Management**: [Portainer](https://github.com/portainer/portainer)
-  - **Media Analytics**: [Tautulli](https://github.com/Tautulli/Tautulli)
+🔍 **仪表板和管理**: 
+  - **仪表板**: [Homarr](https://github.com/homarr-labs/homarr), [Heimdall](https://github.com/linuxserver/Heimdall)
+  - **容器管理**: [Portainer](https://github.com/portainer/portainer)
+  - **媒体分析**: [Tautulli](https://github.com/Tautulli/Tautulli)
 
-📥 **Download Management**:
-  - **Torrent**: [qBittorrent](https://github.com/qbittorrent/qBittorrent)
+📥 **下载管理**:
+  - **种子**: [qBittorrent](https://github.com/qbittorrent/qBittorrent)
   - **Usenet**: [NZBGet](https://github.com/nzbget/nzbget), [NZBHydra 2](https://github.com/theotherp/nzbhydra2)
-  - **Indexers**: [Jackett](https://github.com/Jackett/Jackett), [Prowlarr](https://github.com/Prowlarr/Prowlarr)
+  - **索引器**: [Jackett](https://github.com/Jackett/Jackett), [Prowlarr](https://github.com/Prowlarr/Prowlarr)
 
-🗄️ **Databases**: 
+🗄️ **数据库**: 
   - **SQL**: [MariaDB](https://github.com/MariaDB/server), [MySQL](https://github.com/mysql/mysql-server), [PostgreSQL](https://github.com/postgres/postgres)
   - **NoSQL**: [MongoDB](https://github.com/mongodb/mongo), [Redis](https://github.com/redis/redis)
 
-📊 **Monitoring & Automation**: 
-  - **Monitoring**: [Grafana](https://github.com/grafana/grafana), [Prometheus](https://github.com/prometheus/prometheus)
-  - **Updates**: [Watchtower](https://github.com/containrrr/watchtower)
-  - **Home Automation**: [Home Assistant](https://github.com/home-assistant/core)
+📊 **监控和自动化**: 
+  - **监控**: [Grafana](https://github.com/grafana/grafana), [Prometheus](https://github.com/prometheus/prometheus)
+  - **更新**: [Watchtower](https://github.com/containrrr/watchtower)
+  - **家庭自动化**: [Home Assistant](https://github.com/home-assistant/core)
 
-🔐 **Security**: [Vaultwarden](https://github.com/dani-garcia/vaultwarden)
+🔐 **安全**: [Vaultwarden](https://github.com/dani-garcia/vaultwarden)
 
-💾 **Storage & Files**: [Nextcloud](https://github.com/nextcloud/server)
+💾 **存储和文件**: [Nextcloud](https://github.com/nextcloud/server)
 
-Each tool includes a detailed description, GitHub star count, and pre-configured docker-compose settings.
+每个工具都包含详细描述、GitHub 星标数和预配置的 docker-compose 设置。
 
 ## 🧪 Testing
 

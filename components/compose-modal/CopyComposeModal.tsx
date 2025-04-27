@@ -186,10 +186,9 @@ export function CopyComposeModal({
       <AlertDialogContent className="flex h-[90vh] max-w-[95vw] flex-col overflow-y-auto">
         <AlertDialogHeader className="flex flex-row items-center justify-between">
           <div>
-            <AlertDialogTitle>Docker Compose Configuration</AlertDialogTitle>
+            <AlertDialogTitle>Docker Compose 配置</AlertDialogTitle>
             <AlertDialogDescription>
-              Generated docker-compose files for {selectedTools.length} selected
-              service{selectedTools.length !== 1 ? "s" : ""}.
+              已为 {selectedTools.length} 个选定的服务生成 docker-compose 文件。
             </AlertDialogDescription>
           </div>
           <div className="flex items-center gap-4">
@@ -200,7 +199,7 @@ export function CopyComposeModal({
                 onCheckedChange={setShowInterpolated}
               />
               <Label htmlFor="interpolate-values">
-                Show interpolated values
+                显示插值后的值
               </Label>
             </div>
           </div>
@@ -236,7 +235,7 @@ export function CopyComposeModal({
               </TabsTrigger>
               <TabsTrigger value="settings">
                 <Settings className="mr-2 h-4 w-4" />
-                Settings
+                设置
               </TabsTrigger>
             </TabsList>
 
@@ -284,9 +283,9 @@ export function CopyComposeModal({
         </div>
 
         <AlertDialogFooter className="mt-4">
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>取消</AlertDialogCancel>
           <AlertDialogAction onClick={onOpenChange.bind(null, false)}>
-            Done
+            完成
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

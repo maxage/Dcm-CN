@@ -101,17 +101,17 @@ export default function FloatingBar({
     try {
       await navigator.clipboard.writeText(shareUrl)
 
-      toast.success("Share URL copied to clipboard!", {
-        description: "Share this link to show your selected services",
+      toast.success("分享链接已复制到剪贴板！", {
+        duration: 2000,
       })
 
       posthog.capture("share_selection_clipboard", {
         selected_tools: selectedTools,
         url: shareUrl,
       })
-    } catch (err) {
-      toast.error("Failed to copy URL", {
-        description: "Please try again or copy manually",
+    } catch (error) {
+      toast.error("复制链接失败", {
+        duration: 2000,
       })
     }
 
@@ -178,7 +178,7 @@ export default function FloatingBar({
           <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
             <div className="items-center gap-2">
               <span className="font-xs text-muted-foreground">
-                {selectedCount} service{selectedCount !== 1 ? "s" : ""} selected
+                已选择 {selectedCount} 个服务
               </span>
               <div className="sm:w-auto">
                 {selectedCount > 0 && (
@@ -203,7 +203,7 @@ export default function FloatingBar({
                   disabled={!onToggleToolSelection}
                 >
                   <Search className="h-3.5 w-3.5" />
-                  <span className="xs:inline hidden">Search</span>
+                  <span className="xs:inline hidden">搜索</span>
                   <kbd className="pointer-events-none ml-1 hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-medium font-mono text-[10px] text-muted-foreground opacity-100 sm:inline-flex">
                     <span className="text-xs">
                       {isMounted ? (isApple ? "⌘" : "Ctrl") : "⌘"}
@@ -224,7 +224,7 @@ export default function FloatingBar({
                   onClick={handleShare}
                 >
                   <Share2 className="h-3.5 w-3.5" />
-                  <span className="xs:inline hidden">Share</span>
+                  <span className="xs:inline hidden">分享</span>
                 </Button>
 
                 {onReset && (
@@ -243,11 +243,11 @@ export default function FloatingBar({
                     />
                     {!isResetActive ? (
                       <span className="xs:inline hidden xs:min-w-16">
-                        Unselect
+                        取消选择
                       </span>
                     ) : (
                       <span className="motion-preset-shake xs:min-w-16 text-destructive-foreground">
-                        <span className="xs:inline hidden">U sure?</span>
+                        <span className="xs:inline hidden">确定吗？</span>
                       </span>
                     )}
                   </Button>
@@ -258,7 +258,7 @@ export default function FloatingBar({
                 className="hover:motion-preset-confetti xs:w-auto font-semibold"
                 onClick={() => setIsCopyDialogOpen(true)}
               >
-                Copy Compose
+                复制 Compose
               </Button>
             </div>
           </div>

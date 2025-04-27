@@ -13,9 +13,9 @@ export async function copyToClipboard(
     await navigator.clipboard.writeText(content)
 
     toast.success(
-      `${fileType === "compose" ? "Docker Compose" : ".env"} file copied to clipboard`,
+      `${fileType === "compose" ? "Docker Compose" : ".env"} 文件已复制到剪贴板`,
       {
-        description: `${selectedTools.length} service${selectedTools.length !== 1 ? "s" : ""} configuration copied.`,
+        description: `已复制 ${selectedTools.length} 个服务的配置。`,
         duration: 3000,
       },
     )
@@ -30,9 +30,9 @@ export async function copyToClipboard(
   } catch (err) {
     console.error("Failed to copy: ", err)
 
-    toast.error("Failed to copy to clipboard", {
+    toast.error("复制到剪贴板失败", {
       description:
-        err instanceof Error ? err.message : "An error occurred while copying",
+        err instanceof Error ? err.message : "复制时发生错误",
       duration: 5000,
     })
 
@@ -57,8 +57,8 @@ export function downloadFile(
     document.body.appendChild(a)
     a.click()
 
-    toast.success(`${filename} downloaded`, {
-      description: "File has been downloaded to your computer.",
+    toast.success(`${filename} 已下载`, {
+      description: "文件已下载到您的计算机。",
       duration: 3000,
     })
 
@@ -75,11 +75,11 @@ export function downloadFile(
   } catch (err) {
     console.error("Failed to download file: ", err)
 
-    toast.error("Failed to download file", {
+    toast.error("文件下载失败", {
       description:
         err instanceof Error
           ? err.message
-          : "An error occurred while downloading",
+          : "下载时发生错误",
       duration: 5000,
     })
   }

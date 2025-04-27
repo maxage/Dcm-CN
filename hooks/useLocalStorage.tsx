@@ -17,13 +17,13 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
     if (!hasMounted.current) {
       hasMounted.current = true
       try {
-        const item = localStorage.getItem(key)
+        const item = window.localStorage.getItem(key)
         if (item) {
           const parsedValue = JSON.parse(item)
           setStoredValue(parsedValue)
         }
       } catch (error) {
-        console.error(`Error loading ${key} from localStorage:`, error)
+        console.error(`从本地存储加载 ${key} 时出错:`, error)
       }
     }
   }, [key])
@@ -33,9 +33,9 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
     if (typeof window === "undefined" || !hasMounted.current) return
 
     try {
-      localStorage.setItem(key, JSON.stringify(storedValue))
+      window.localStorage.setItem(key, JSON.stringify(storedValue))
     } catch (error) {
-      console.error(`Error saving ${key} to localStorage:`, error)
+      console.error(`保存 ${key} 到本地存储时出错:`, error)
     }
   }, [key, storedValue])
 
@@ -45,23 +45,34 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
         const valueToStore =
           value instanceof Function ? value(storedValue) : value
         setStoredValue(valueToStore)
+        window.localStorage.setItem(key, JSON.stringify(valueToStore))
       } catch (error) {
-        console.error(`Error setting ${key} in localStorage:`, error)
+        console.error(`保存 ${key} 到本地存储时出错:`, error)
       }
     },
     [key, storedValue],
   )
 
+  const setValueDirect = useCallback(
+    (value: T) => {
+      try {
+        setStoredValue(value)
+        window.localStorage.setItem(key, JSON.stringify(value))
+      } catch (error) {
+        console.error(`设置 ${key} 到本地存储时出错:`, error)
+      }
+    },
+    [key],
+  )
+
   const removeValue = useCallback(() => {
     try {
-      if (typeof window !== "undefined") {
-        localStorage.removeItem(key)
-      }
       setStoredValue(initialValue)
+      window.localStorage.removeItem(key)
     } catch (error) {
-      console.error(`Error removing ${key} from localStorage:`, error)
+      console.error(`从本地存储删除 ${key} 时出错:`, error)
     }
   }, [key, initialValue])
 
-  return { value: storedValue, setValue, removeValue }
+  return { value: storedValue, setValue, setValueDirect, removeValue }
 }

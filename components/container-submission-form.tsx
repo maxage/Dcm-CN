@@ -55,15 +55,15 @@ import { Alert, AlertDescription, AlertTitle } from "./ui/alert"
 import { GradientButton } from "./ui/gradient-button"
 
 const CATEGORIES = [
-  "Media",
-  "Management",
-  "Networking",
-  "Storage",
-  "Database",
-  "Monitoring",
-  "Home Automation",
-  "Security",
-  "Development",
+  "媒体",
+  "管理",
+  "网络",
+  "存储",
+  "数据库",
+  "监控",
+  "家庭自动化",
+  "安全",
+  "开发",
 ]
 
 // Collect all unique tags from existing tools
@@ -72,17 +72,17 @@ const ALL_TAGS = Array.from(new Set(tools.flatMap((tool) => tool.tags))).sort()
 const formSchema = z.object({
   id: z
     .string()
-    .min(1, "Container ID is required")
+    .min(1, "容器 ID 不能为空")
     .regex(
       /^[a-z0-9-]+$/,
-      "ID must contain only lowercase letters, numbers, and hyphens",
+      "ID 只能包含小写字母、数字和连字符",
     ),
-  name: z.string().min(1, "Name is required"),
-  description: z.string().min(1, "Description is required"),
-  category: z.string().min(1, "Category is required"),
-  tags: z.array(z.string()).min(1, "At least one tag is required"),
-  githubUrl: z.string().url("Must be a valid URL").or(z.literal("")),
-  icon: z.string().url("Must be a valid URL").or(z.literal("")),
+  name: z.string().min(1, "名称不能为空"),
+  description: z.string().min(1, "描述不能为空"),
+  category: z.string().min(1, "类别不能为空"),
+  tags: z.array(z.string()).min(1, "至少需要一个标签"),
+  githubUrl: z.string().url("必须是有效的 URL").or(z.literal("")),
+  icon: z.string().url("必须是有效的 URL").or(z.literal("")),
   containerData: composeContentSchema,
 })
 
@@ -163,17 +163,15 @@ export function ContainerSubmissionForm() {
           className="[animation-delay:300ms] motion-safe:animate-slide-in-right"
         >
           <PlusCircle size={18} />
-          <span>Suggest container</span>
+          <span>建议容器</span>
         </GradientButton>
       </DialogTrigger>
       <DialogContent className="max-h-[95vh] max-w-4xl overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Suggest a new container</DialogTitle>
+          <DialogTitle>建议新容器</DialogTitle>
           <DialogDescription>
-            Creating a submission will redirect you to creating an issue on
-            GitHub, pre-filled with this form. The submission will then be
-            reviewed by the maintainers and added to the list of containers if
-            accepted.
+            提交表单将会跳转到 GitHub 创建一个预填充了此表单内容的 Issue。
+            维护者将会审核提交的内容，如果通过，将会被添加到容器列表中。
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -184,9 +182,9 @@ export function ContainerSubmissionForm() {
                 name="id"
                 render={({ field }) => (
                   <FormItem className="space-y-2">
-                    <FormLabel>Container ID</FormLabel>
+                    <FormLabel>容器 ID</FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g., sonarr, postgres" {...field} />
+                      <Input placeholder="例如：sonarr, postgres" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -197,10 +195,10 @@ export function ContainerSubmissionForm() {
                 name="name"
                 render={({ field }) => (
                   <FormItem className="space-y-2">
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel>名称</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Display name (e.g., Sonarr, PostgreSQL)"
+                        placeholder="显示名称 (例如：Sonarr, PostgreSQL)"
                         {...field}
                       />
                     </FormControl>
@@ -215,10 +213,10 @@ export function ContainerSubmissionForm() {
               name="description"
               render={({ field }) => (
                 <FormItem className="space-y-2">
-                  <FormLabel>Description</FormLabel>
+                  <FormLabel>描述</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Brief description of the container's purpose"
+                      placeholder="容器用途的简要描述"
                       className="min-h-[50px] resize-none"
                       {...field}
                     />
@@ -234,14 +232,14 @@ export function ContainerSubmissionForm() {
                 name="category"
                 render={({ field }) => (
                   <FormItem className="space-y-2">
-                    <FormLabel>Category</FormLabel>
+                    <FormLabel>类别</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select a category" />
+                          <SelectValue placeholder="选择类别" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -261,7 +259,7 @@ export function ContainerSubmissionForm() {
                 name="githubUrl"
                 render={({ field }) => (
                   <FormItem className="space-y-2">
-                    <FormLabel>GitHub URL (Optional)</FormLabel>
+                    <FormLabel>GitHub URL (可选)</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="https://github.com/username/repo"
@@ -279,7 +277,7 @@ export function ContainerSubmissionForm() {
               name="icon"
               render={({ field }) => (
                 <FormItem className="space-y-2">
-                  <FormLabel>Icon URL (Optional)</FormLabel>
+                  <FormLabel>图标 URL (可选)</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/example.svg"
@@ -287,7 +285,7 @@ export function ContainerSubmissionForm() {
                     />
                   </FormControl>
                   <p className="text-muted-foreground text-xs">
-                    We recommend using icons from{" "}
+                    我们推荐使用来自{" "}
                     <a 
                       href="https://github.com/homarr-labs/dashboard-icons" 
                       target="_blank" 
@@ -296,7 +294,7 @@ export function ContainerSubmissionForm() {
                     >
                       homarr-labs/dashboard-icons
                     </a>
-                    . Format: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/[name].svg
+                    . 格式：https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/[name].svg
                   </p>
                   <FormMessage />
                 </FormItem>
@@ -308,7 +306,7 @@ export function ContainerSubmissionForm() {
               name="tags"
               render={({ field }) => (
                 <FormItem className="space-y-2">
-                  <FormLabel>Tags</FormLabel>
+                  <FormLabel>标签</FormLabel>
                   <FormControl>
                     <MultiSelector
                       values={field.value}
@@ -316,7 +314,7 @@ export function ContainerSubmissionForm() {
                     >
                       <MultiSelectorTrigger>
                         <MultiSelectorInput
-                          placeholder="Add tags and press Enter"
+                          placeholder="添加标签并按 Enter"
                           value={tagInput}
                           onValueChange={setTagInput}
                         />
@@ -350,10 +348,10 @@ export function ContainerSubmissionForm() {
               name="containerData"
               render={({ field }) => (
                 <FormItem className="space-y-2">
-                  <FormLabel>Docker Compose Service Definition</FormLabel>
+                  <FormLabel>Docker Compose 服务定义</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Enter the service definition in YAML format"
+                      placeholder="请输入 YAML 格式的服务定义"
                       className="min-h-[280px] resize-none font-mono"
                       {...field}
                     />
@@ -365,9 +363,9 @@ export function ContainerSubmissionForm() {
                       {validationResult.errors.length > 0 && (
                         <Alert variant="destructive">
                           <AlertTriangle className="h-4 w-4" />
-                          <AlertTitle>Validation Errors</AlertTitle>
+                          <AlertTitle>验证错误</AlertTitle>
                           <AlertDescription>
-                            <ul className="ml-4 list-disc">
+                            <ul className="list-inside list-disc">
                               {validationResult.errors.map((error) => (
                                 <li key={generateUniqueKey("error", error)}>
                                   {error}
@@ -381,9 +379,9 @@ export function ContainerSubmissionForm() {
                       {validationResult.warnings.length > 0 && (
                         <Alert variant="warning">
                           <AlertTriangle className="h-4 w-4" />
-                          <AlertTitle>Recommendations</AlertTitle>
+                          <AlertTitle>警告</AlertTitle>
                           <AlertDescription>
-                            <ul className="ml-4 list-disc">
+                            <ul className="list-inside list-disc">
                               {validationResult.warnings.map((warning) => (
                                 <li key={generateUniqueKey("warning", warning)}>
                                   {warning}
@@ -394,29 +392,24 @@ export function ContainerSubmissionForm() {
                         </Alert>
                       )}
 
-                      {validationResult.isValid &&
+                      {validationResult.errors.length === 0 &&
                         validationResult.warnings.length === 0 && (
                           <Alert variant="success">
                             <CheckCircle className="h-4 w-4" />
-                            <AlertTitle>Valid Configuration</AlertTitle>
+                            <AlertTitle>验证通过</AlertTitle>
                             <AlertDescription>
-                              Your Docker Compose configuration looks good!
+                              Docker Compose 配置有效
                             </AlertDescription>
                           </Alert>
                         )}
 
-                      {validationResult.suggestedEnvVars.length > 0 && (
-                        <Alert variant="info">
-                          <Info className="h-4 w-4" />
-                          <AlertTitle>
-                            Suggested Environment Variables
-                          </AlertTitle>
-                          <AlertDescription>
-                            Consider using these environment variables:{" "}
-                            {validationResult.suggestedEnvVars.join(", ")}
-                          </AlertDescription>
-                        </Alert>
-                      )}
+                      <Alert variant="info">
+                        <Info className="h-4 w-4" />
+                        <AlertTitle>提示</AlertTitle>
+                        <AlertDescription>
+                          请确保您的 Docker Compose 配置使用了环境变量，这样其他用户可以根据自己的需求进行调整。
+                        </AlertDescription>
+                      </Alert>
                     </div>
                   )}
 
@@ -433,7 +426,7 @@ export function ContainerSubmissionForm() {
                 className="flex items-center gap-2"
               >
                 <Github size={18} />
-                <span>Open GitHub Issue template directly</span>
+                <span>直接打开 GitHub Issue 模板</span>
               </Button>
 
               <div className="flex items-center gap-2">
@@ -442,14 +435,14 @@ export function ContainerSubmissionForm() {
                   variant="outline"
                   onClick={() => setOpen(false)}
                 >
-                  Cancel
+                  取消
                 </Button>
                 <Button
                   type="button"
                   onClick={form.handleSubmit(onSubmit)}
                   className="flex items-center gap-1 bg-primary text-primary-foreground hover:bg-primary/90"
                 >
-                  <span>Submit Container</span>
+                  <span>提交容器</span>
                   <ExternalLink size={16} />
                 </Button>
               </div>

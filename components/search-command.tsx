@@ -13,6 +13,8 @@ import { cn } from "@/lib/utils"
 import { tools } from "@/tools"
 import { Check, X } from "lucide-react"
 import { useEffect, useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Tooltip, TooltipTrigger } from "@/components/ui/tooltip"
 
 interface SearchCommandProps {
   selectedTools: string[]
@@ -60,14 +62,14 @@ export function SearchCommand({
 
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
-      <DialogTitle className="sr-only">Search Services</DialogTitle>
+      <DialogTitle>搜索</DialogTitle>
       <CommandInput
-        placeholder="Search for services..."
+        placeholder="搜索服务..."
         value={searchTerm}
         onValueChange={setSearchTerm}
       />
       <CommandList>
-        <CommandEmpty>No services found.</CommandEmpty>
+        <CommandEmpty>未找到结果</CommandEmpty>
 
         <CommandGroup>
           {filteredTools.map((tool) => (
@@ -89,7 +91,7 @@ export function SearchCommand({
                   {tool.icon ? (
                     <img
                       src={tool.icon}
-                      alt={`${tool.name} icon`}
+                      alt={`${tool.name} 图标`}
                       className="h-full w-full object-contain p-0.5"
                     />
                   ) : (
@@ -103,7 +105,7 @@ export function SearchCommand({
               {tool.isUnsupported && (
                 <div
                   className="ml-2 flex items-center text-destructive"
-                  title="This service is not supported"
+                  title="此服务不受支持"
                 >
                   <X className="h-4 w-4" />
                 </div>

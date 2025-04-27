@@ -30,7 +30,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
         setSettings(JSON.parse(storedSettings))
       }
     } catch (error) {
-      console.error("Error loading settings from localStorage:", error)
+      console.error("从本地存储加载设置时出错:", error)
     } finally {
       setIsLoading(false)
     }
@@ -43,7 +43,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     try {
       localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings))
     } catch (error) {
-      console.error("Error saving settings to localStorage:", error)
+      console.error("保存设置到本地存储时出错:", error)
     }
   }, [settings, isLoading])
 
@@ -83,7 +83,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
 export function useSettings() {
   const context = useContext(SettingsContext)
   if (context === undefined) {
-    throw new Error("useSettings must be used within a SettingsProvider")
+    throw new Error("useSettings 必须在 SettingsProvider 内部使用")
   }
   return context
 }

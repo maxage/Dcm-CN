@@ -132,10 +132,10 @@ export function EnvironmentVariablesSection({
 }: EnvironmentVariablesSectionProps) {
   return (
     <div className="[animation-delay:400ms] motion-safe:animate-fade-in">
-      <h4 className="mb-3 font-medium text-sm">Environment Variables</h4>
+      <h4 className="mb-3 font-medium text-sm">环境变量</h4>
       <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4">
         <div className="grid gap-2">
-          <Label htmlFor="timezone">Timezone</Label>
+          <Label htmlFor="timezone">时区</Label>
           <Select
             value={settings.timezone}
             onValueChange={(value) => onSettingsChange("timezone", value)}
@@ -144,7 +144,7 @@ export function EnvironmentVariablesSection({
               id="timezone"
               className="motion-safe:transition-all motion-safe:duration-300 motion-safe:focus:scale-[1.01]"
             >
-              <SelectValue placeholder="Select timezone" />
+              <SelectValue placeholder="选择时区" />
             </SelectTrigger>
             <SelectContent className="max-h-[300px]">
               {Object.entries(timezoneData).map(([region, timezones]) => (
@@ -168,7 +168,7 @@ export function EnvironmentVariablesSection({
               ))}
             </SelectContent>
           </Select>
-          <p className="text-muted-foreground text-xs">Container timezone</p>
+          <p className="text-muted-foreground text-xs">容器时区设置</p>
         </div>
         <div className="grid gap-2">
           <Label htmlFor="puid">PUID</Label>
@@ -180,7 +180,7 @@ export function EnvironmentVariablesSection({
             className="motion-safe:transition-all motion-safe:duration-300 motion-safe:focus:scale-[1.01]"
           />
           <p className="text-muted-foreground text-xs">
-            User ID for permissions
+            权限用户 ID
           </p>
         </div>
         <div className="grid gap-2">
@@ -193,11 +193,11 @@ export function EnvironmentVariablesSection({
             className="motion-safe:transition-all motion-safe:duration-300 motion-safe:focus:scale-[1.01]"
           />
           <p className="text-muted-foreground text-xs">
-            Group ID for permissions
+            权限组 ID
           </p>
         </div>
         <div className="grid gap-2">
-          <Label htmlFor="umask">UMASK</Label>
+          <Label htmlFor="umask">文件权限掩码</Label>
           <Input
             id="umask"
             placeholder="022"
@@ -205,7 +205,7 @@ export function EnvironmentVariablesSection({
             onChange={(e) => onSettingsChange("umask", e.target.value)}
             className="motion-safe:transition-all motion-safe:duration-300 motion-safe:focus:scale-[1.01]"
           />
-          <p className="text-muted-foreground text-xs">File permission mask</p>
+          <p className="text-muted-foreground text-xs">文件权限掩码</p>
         </div>
       </div>
     </div>
