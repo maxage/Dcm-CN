@@ -73,7 +73,7 @@ export default function TemplateGalleryClient({
         <Link prefetch href="/">
           <Button variant="ghost" className="flex items-center gap-2">
             <ArrowLeft size={16} />
-            Back to Container Selection
+            返回容器选择
           </Button>
         </Link>
       </div>

@@ -51,10 +51,9 @@ export function TemplateGallery({
   return (
     <div className="space-y-6">
       <div className="flex flex-col space-y-2">
-        <h2 className="font-bold text-2xl">Template Gallery</h2>
+        <h2 className="font-bold text-2xl">模板库</h2>
         <p className="text-muted-foreground">
-          Choose from predefined templates to quickly set up common Docker
-          stacks
+          从预定义模板中选择，快速设置常用的 Docker 方案
         </p>
       </div>
 

@@ -5,18 +5,18 @@ import type { Template } from "./templates"
 export const templateDefinitions: Template[] = [
   {
     id: "the-self-promo",
-    name: "The Self Promo",
+    name: "自我推销者",
     description:
-      "Promoting your other self-hosted services, really? It's almost embarrassing...",
+      "推广你的其他自托管服务？这真是有点尴尬...",
     category: TemplateCategory.MEDIA,
     icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/homarr.png",
     tools: ["homarr"],
   },
   {
     id: "the-privacy-schizo",
-    name: "The Privacy Schizo",
+    name: "隐私偏执狂",
     description:
-      "Because they're not paranoid if they're really watching you. Tinfoil hat sold separately.",
+      "如果他们真的在监视你，那就不是偏执了。锡箔帽需要另外购买。",
     category: TemplateCategory.SECURITY,
     icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/pi-hole.png",
     tools: [
@@ -30,27 +30,27 @@ export const templateDefinitions: Template[] = [
   },
   {
     id: "the-dad",
-    name: "The Dad",
+    name: "家庭管理员",
     description:
-      "The essential family server setup that keeps everyone happy and the Wi-Fi complaints to a minimum",
+      "基础的家庭服务器设置，让所有人都开心，并将 Wi-Fi 投诉降到最低",
     category: TemplateCategory.MEDIA,
     icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/jellyfin.png",
     tools: ["jellyfin", "nextcloud", "pihole", "homarr", "homeassistant"],
   },
   {
     id: "the-media-server-starter",
-    name: "The Media Server Starter",
+    name: "媒体服务器入门版",
     description:
-      "A straightforward media server setup for the 'Netflix is raising prices again?' crowd",
+      "一个简单的媒体服务器设置，适合那些'Netflix又涨价了？'的人群",
     category: TemplateCategory.MEDIA,
     icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/jellyfin.png",
     tools: ["jellyfin", "sonarr", "radarr", "prowlarr", "qbittorrent"],
   },
   {
     id: "the-media-hoarder",
-    name: "The Media Hoarder",
+    name: "媒体收藏狂",
     description:
-      "For the digital dragon who never deletes anything and needs 'just one more hard drive'",
+      "适合那些从不删除任何东西，总是需要'再买一个硬盘'的数字囤积者",
     category: TemplateCategory.MEDIA,
     icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/jellyfin.png",
     tools: [
@@ -68,9 +68,9 @@ export const templateDefinitions: Template[] = [
   },
   {
     id: "the-automator",
-    name: "The Automator",
+    name: "自动化狂人",
     description:
-      "Spent 10 hours automating a 2-minute task because 'it's about the principle'",
+      "花10小时自动化一个2分钟的任务，因为'这是原则问题'",
     category: TemplateCategory.HOME_AUTOMATION,
     icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/home-assistant.png",
     tools: [
@@ -84,9 +84,9 @@ export const templateDefinitions: Template[] = [
   },
   {
     id: "the-home-office",
-    name: "The Home Office",
+    name: "家庭办公室",
     description:
-      "Everything you need to work from home without your files becoming hostages to cloud services",
+      "在家工作所需的一切，让你的文件不会成为云服务的人质",
     category: TemplateCategory.PRODUCTIVITY,
     icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/nextcloud.png",
     tools: [
@@ -99,18 +99,18 @@ export const templateDefinitions: Template[] = [
   },
   {
     id: "the-coomer",
-    name: "The Coomer",
+    name: "收藏家",
     description:
-      "Keep your 'homework folder' meticulously organized and automated. We won't judge.",
+      "让你的'作业文件夹'井井有条并自动化。我们不作评判。",
     category: TemplateCategory.MEDIA,
     icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/stash.png",
     tools: ["whisparr", "prowlarr", "transmission", "flaresolverr"],
   },
   {
     id: "the-dashboard-enjoyer",
-    name: "The Dashboard Enjoyer",
+    name: "仪表板发烧友",
     description:
-      "Spends more time customizing dashboards than using the actual services",
+      "花在自定义仪表板上的时间比实际使用服务的时间还多",
     category: TemplateCategory.MONITORING,
     icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/homepage.png",
     tools: [
@@ -124,63 +124,63 @@ export const templateDefinitions: Template[] = [
   },
   {
     id: "the-security-essentials",
-    name: "The Security Essentials",
+    name: "安全基础套件",
     description:
-      "Basic security setup for those who want to keep their digital life locked up but still find their keys",
+      "基础的安全设置，适合那些想要保护数字生活又不想把钥匙弄丢的人",
     category: TemplateCategory.SECURITY,
     icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/vaultwarden.png",
     tools: ["vaultwarden", "wireguard", "pihole", "traefik", "authelia"],
   },
   {
     id: "the-backup-basics",
-    name: "The Backup Basics",
+    name: "备份基础套件",
     description:
-      "Because even digital packrats need to make sure their collection survives a catastrophe",
+      "因为即使是数字囤积者也需要确保他们的收藏能在灾难中幸存",
     category: TemplateCategory.OTHER,
     icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/duplicacy.png",
     tools: ["nextcloud", "syncthing", "mariadb"],
   },
   {
     id: "the-homarr-enjoyer",
-    name: "The Homarr Enjoyer",
+    name: "Homarr 爱好者",
     description:
-      "Has more dashboard widgets than actual services and rearranges them daily 'for optimal workflow'",
+      "仪表板小部件比实际服务还多，每天都要重新排列'以优化工作流程'",
     category: TemplateCategory.MONITORING,
     icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/homarr.svg",
     tools: ["homarr", "uptime-kuma", "portainer", "watchtower", "statping-ng"],
   },
   {
     id: "the-docker-novice",
-    name: "The Docker Novice",
+    name: "Docker 新手",
     description:
-      "Proudly announces they've 'ascended to containerization' after watching one YouTube tutorial",
+      "看了一个 YouTube 教程后就自豪地宣布'已经掌握容器化了'",
     category: TemplateCategory.MONITORING,
     icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/portainer.png",
     tools: ["portainer", "watchtower", "homarr", "nginx"],
   },
   {
     id: "the-just-the-basics",
-    name: "Just The Basics",
+    name: "基础入门包",
     description:
-      "A solid starter pack for self-hosting that won't have you reading documentation all weekend",
+      "自托管的可靠入门套件，不会让你整个周末都在读文档",
     category: TemplateCategory.OTHER,
     icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/portainer.png",
     tools: ["portainer", "nextcloud", "jellyfin", "pihole"],
   },
   {
     id: "the-raspberry-pi-warrior",
-    name: "The Raspberry Pi Warrior",
+    name: "树莓派勇士",
     description:
-      "Running 17 critical services on a $35 computer with a microSD card that could fail any minute",
+      "在一个35美元的电脑上运行17个关键服务，配上一个随时可能坏掉的 microSD 卡",
     category: TemplateCategory.OTHER,
     icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/pi-hole.png",
     tools: ["pihole", "portainer", "nextcloud", "traefik"],
   },
   {
     id: "the-data-scientist",
-    name: "The Data Scientist",
+    name: "数据科学家",
     description:
-      "Analyzes kitchen appliance usage patterns to determine the optimal coffee brewing schedule",
+      "分析厨房电器使用模式以确定最佳咖啡冲泡时间表",
     category: TemplateCategory.DATABASE,
     icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/grafana.png",
     tools: [
@@ -194,9 +194,9 @@ export const templateDefinitions: Template[] = [
   },
   {
     id: "the-digital-librarian",
-    name: "The Digital Librarian",
+    name: "数字图书管理员",
     description:
-      "Has more books than they'll read in 10 lifetimes, but the collection must grow",
+      "拥有比十辈子都读不完的书还要多的藏书，但收藏必须继续增长",
     category: TemplateCategory.MEDIA,
     icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/calibre-web.png",
     tools: [
@@ -210,9 +210,9 @@ export const templateDefinitions: Template[] = [
   },
   {
     id: "the-small-office",
-    name: "The Small Office",
+    name: "小型办公室",
     description:
-      "For the small business or home office that wants to keep their data on-premises and save a few bucks",
+      "适合想要将数据保持在本地并节省一些费用的小型企业或家庭办公室",
     category: TemplateCategory.PRODUCTIVITY,
     icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/nextcloud.png",
     tools: [
@@ -226,36 +226,36 @@ export const templateDefinitions: Template[] = [
   },
   {
     id: "the-recipe-collector",
-    name: "The Recipe Collector",
+    name: "食谱收藏家",
     description:
-      "Saves every recipe they'll never cook, but the food pictures look amazing",
+      "保存了永远不会做的每一道菜谱，但食物照片看起来很棒",
     category: TemplateCategory.PRODUCTIVITY,
     icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/tandoor.png",
     tools: ["tandoorrecipes", "mealie", "postgres"],
   },
   {
     id: "the-budget-hawk",
-    name: "The Budget Hawk",
+    name: "预算守护者",
     description:
-      "Tracks every penny spent while hosting $500 worth of services to save $5 per month",
+      "花500美元托管服务来节省每月5美元的费用，同时追踪每一分钱",
     category: TemplateCategory.FINANCE,
     icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/firefly-iii.png",
     tools: ["firefly", "mariadb", "scrutiny"],
   },
   {
     id: "the-homelab-newbie",
-    name: "The Homelab Newbie",
+    name: "家庭实验室新手",
     description:
-      "About to discover why everyone keeps mentioning 'backups' in an ominous tone",
+      "即将发现为什么大家总是用不祥的语气提到'备份'",
     category: TemplateCategory.OTHER,
     icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/nextcloud.png",
     tools: ["nextcloud", "jellyfin", "portainer", "pihole", "homarr"],
   },
   {
     id: "the-perpetual-student",
-    name: "The Perpetual Student",
+    name: "永恒学习者",
     description:
-      "Turns their home server into a personal knowledge management system they never actually use",
+      "把家庭服务器变成一个永远不会真正使用的个人知识管理系统",
     category: TemplateCategory.PRODUCTIVITY,
     icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/nextcloud.png",
     tools: [
@@ -269,99 +269,99 @@ export const templateDefinitions: Template[] = [
   },
   {
     id: "the-dev-environment",
-    name: "The Dev Environment",
+    name: "开发环境",
     description:
-      "Convinces themselves they need enterprise-level CI/CD for their personal projects",
+      "说服自己需要企业级的 CI/CD 来做个人项目",
     category: TemplateCategory.DEVELOPMENT,
     icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/vscode.png",
     tools: ["code-server", "gitea", "jenkins", "postgres", "redis", "nginx"],
   },
   {
     id: "the-family-tech-support",
-    name: "The Family Tech Support",
+    name: "家庭技术支持",
     description:
-      "Set up the perfect stack so family can ask 'is the internet down?' instead of Googling it",
+      "搭建了完美的系统，这样家人就可以问'网络是不是坏了？'而不是自己去谷歌",
     category: TemplateCategory.OTHER,
     icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/adguard-home.png",
     tools: ["pihole", "uptime-kuma", "nextcloud", "jellyfin", "homeassistant"],
   },
   {
     id: "the-note-taking-addict",
-    name: "The Note Taking Addict",
+    name: "笔记收集狂",
     description:
-      "Has tried every note-taking app and still can't decide which one to stick with",
+      "尝试过每一个笔记应用，却还是无法决定用哪一个",
     category: TemplateCategory.PRODUCTIVITY,
     icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/joplin.png",
     tools: ["joplin-server", "wikijs", "bookstack", "logseq", "mariadb"],
   },
   {
     id: "the-uptime-obsessor",
-    name: "The Uptime Obsessor",
+    name: "在线率执着者",
     description:
-      "Checks status dashboards more than social media and panics over 0.1% downtime",
+      "查看状态仪表板的频率比社交媒体还高，为0.1%的宕机时间而恐慌",
     category: TemplateCategory.MONITORING,
     icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/uptime-kuma.png",
     tools: ["uptime-kuma", "statping-ng", "prometheus", "grafana", "netdata"],
   },
   {
     id: "the-compose-enthusiast",
-    name: "The Compose Enthusiast",
+    name: "Compose 发烧友",
     description:
-      "Has a git repo of meticulously crafted YAML files that are 'definitely not copied from random GitHub repos'",
+      "有一个精心制作的 YAML 文件 Git 仓库，'绝对不是从随机 GitHub 仓库复制的'",
     category: TemplateCategory.DEVELOPMENT,
     icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/portainer.png",
     tools: ["portainer", "nginx", "traefik", "watchtower", "homarr"],
   },
   {
     id: "the-paperless-dreamer",
-    name: "The Paperless Dreamer",
+    name: "无纸化梦想家",
     description:
-      "Scans every receipt and document while drowning in a sea of actual paper on their desk",
+      "扫描每一张收据和文档，同时桌上堆满了真实的纸张",
     category: TemplateCategory.PRODUCTIVITY,
     icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/paperless-ngx.png",
     tools: ["nextcloud", "mariadb", "redis"],
   },
   {
     id: "the-wiki-hoarder",
-    name: "The Wiki Hoarder",
+    name: "Wiki 收藏家",
     description:
-      "Documents every single system configuration down to the last SSH key and never refers to it again",
+      "记录每一个系统配置直到最后一个 SSH 密钥，却从未翻阅过",
     category: TemplateCategory.PRODUCTIVITY,
     icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/wikijs.png",
     tools: ["wikijs", "bookstack", "postgres", "nginx"],
   },
   {
     id: "the-vpn-tunneler",
-    name: "The VPN Tunneler",
+    name: "VPN 隧道专家",
     description:
-      "Routes traffic through so many layers of encryption they've forgotten what website they were trying to visit",
+      "通过如此多层加密路由流量，以至于忘记了自己想要访问什么网站",
     category: TemplateCategory.SECURITY,
     icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/wireguard.png",
     tools: ["wireguard", "traefik", "pihole", "adguardhome"],
   },
   {
     id: "the-reverse-proxy-master",
-    name: "The Reverse Proxy Master",
+    name: "反向代理大师",
     description:
-      "Can explain the difference between Traefik, Nginx, and Caddy in excruciating detail to anyone who makes eye contact",
+      "可以向任何与之眼神接触的人详细解释 Traefik、Nginx 和 Caddy 之间的区别",
     category: TemplateCategory.NETWORK,
     icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/traefik.png",
     tools: ["traefik", "nginx", "caddy", "portainer"],
   },
   {
     id: "the-minimalist",
-    name: "The Minimalist",
+    name: "极简主义者",
     description:
-      "Runs only the 'essential' 25 containers and calls it a 'lightweight setup'",
+      "只运行'必要的' 25 个容器，并称之为'轻量级设置'",
     category: TemplateCategory.OTHER,
     icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/alpine.png",
     tools: ["nginx", "pihole", "portainer", "nextcloud"],
   },
   {
     id: "the-file-synchronizer",
-    name: "The File Synchronizer",
+    name: "文件同步控",
     description:
-      "Has the same files copied across 7 different services 'just to be safe'",
+      "'为了安全起见'在7个不同的服务上复制了相同的文件",
     category: TemplateCategory.OTHER,
     icon: "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/syncthing.png",
     tools: ["syncthing", "nextcloud", "filebrowser", "mariadb"],

@@ -426,7 +426,7 @@ export function TemplateClient({
                       htmlFor="interpolate-env"
                       className="font-medium text-sm"
                     >
-                      Interpolate environment variables
+                      插值环境变量
                     </Label>
                   </div>
 
@@ -450,15 +450,25 @@ export function TemplateClient({
 
               <TabsContent value="env" className="mt-0">
                 <div className="mb-4 flex items-center justify-between">
-                  <p className="text-muted-foreground text-sm">
-                    Environment variables for your Docker Compose configuration.
-                  </p>
+                  <div className="flex items-center gap-2">
+                    <Switch
+                      id="interpolate-env"
+                      checked={interpolateEnv}
+                      onCheckedChange={setInterpolateEnv}
+                    />
+                    <Label
+                      htmlFor="interpolate-env"
+                      className="font-medium text-sm"
+                    >
+                      插值环境变量
+                    </Label>
+                  </div>
+                </div>
 
-                  <ActionButtons
-                    onCopy={handleCopy}
-                    onDownload={handleDownload}
-                    copied={copied}
-                  />
+                <div className="mb-4 flex items-center justify-between">
+                  <p className="text-muted-foreground text-sm">
+                    Docker Compose 配置的环境变量
+                  </p>
                 </div>
 
                 <div className="h-[750px] w-full rounded-md border bg-card shadow-sm">

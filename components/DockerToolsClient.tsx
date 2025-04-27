@@ -75,11 +75,11 @@ export default function DockerToolsClient({
   return (
     <SettingsProvider>
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="font-bold text-3xl">Docker Compose Maker</h1>
+        <h1 className="font-bold text-3xl">Docker Compose 生成器</h1>
         <Link prefetch href="/templates">
           <Button className="flex items-center gap-2">
             <Palette size={16} />
-            Template Gallery
+            模板库
           </Button>
         </Link>
       </div>

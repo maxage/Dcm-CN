@@ -9,6 +9,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
 import { useState } from "react"
+import { RefreshCw, X } from "lucide-react"
 
 interface SettingsPanelProps {
   isEmbedded?: boolean
@@ -41,6 +42,10 @@ export default function SettingsPanel({
     setIsSaving(saving)
     // Pass the saving state up to parent if the callback exists
     if (onSavingChange) onSavingChange(saving)
+  }
+
+  const handleReset = () => {
+    // Implementation of handleReset function
   }
 
   if (isEmbedded) {
@@ -82,6 +87,29 @@ export default function SettingsPanel({
 
         <CollapsibleContent className="motion-safe:animate-slide-down">
           <CardContent className="p-4 pt-0">
+            <div className="flex items-center justify-between">
+              <h2 className="font-bold text-2xl">设置</h2>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex items-center gap-2"
+                  onClick={handleReset}
+                >
+                  <RefreshCw size={14} />
+                  重置
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex items-center gap-2"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <X size={14} />
+                  返回模板
+                </Button>
+              </div>
+            </div>
             <SettingsForm onSavingChange={handleSavingChange} />
           </CardContent>
         </CollapsibleContent>
