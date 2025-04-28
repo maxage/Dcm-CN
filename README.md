@@ -36,6 +36,35 @@
   </a>
 </p>
 
+## ⬇️下载安装方式
+### 拉取镜像
+（国内加速）：docker pull ghcr.nju.edu.cn/maxage/dcm-cn:latest
+
+（直接拉取）：docker pull ghcr.io/maxage/dcm-cn:latest
+
+## 🖥️部署方式
+1、使用单个命令运行：
+```bash
+docker run -p 7576:7576 --name dcm --rm ghcr.nju.edu.cn/maxage/dcm-cn
+```
+2、📦 使用 Docker Compose
+创建 docker-compose.yaml 文件：
+```bash
+services:
+  dcm:
+    image: ghcr.nju.edu.cn/maxage/dcm-cn
+    container_name: dcm
+    ports:
+      - "7576:7576"
+    restart: unless-stopped
+```
+然后运行：
+```bash
+docker-compose up -d
+```
+
+然后在浏览器中访问   http://localhost:7576
+
 ## 📋 关于
 
 > [!NOTE]
